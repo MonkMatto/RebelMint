@@ -6,7 +6,7 @@ interface OpenMintProps {
 
 const OpenMint = ({ contractAddress }: OpenMintProps) => {
   return (
-    <div id="OpenMint-Container" className="w-full h-full bg-white text-xl">
+    <div id="OpenMint-Container" className="w-full h-full bg-red-600 text-xl">
       {contractAddress}
     </div>
   );
