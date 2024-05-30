@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../output.css";
 
 interface OpenMintProps {
   contractAddress: string;
@@ -6,7 +7,7 @@ interface OpenMintProps {
 
 const OpenMint = ({ contractAddress }: OpenMintProps) => {
   return (
-    <div id="OpenMint-Container" className="w-full h-full bg-red-600 text-xl">
+    <div id="OpenMint-Container" className="w-full h-full text-xl">
       {contractAddress}
     </div>
   );

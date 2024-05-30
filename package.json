@@ -1,5 +1,11 @@
 {
   "devDependencies": {
     "tailwindcss": "^3.4.3"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.40.0",
+    "@web3modal/wagmi": "^4.2.3",
+    "viem": "^2.13.1",
+    "wagmi": "^2.9.8"
   }
 }
