@@ -7,10 +7,10 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { WagmiProvider } from "wagmi";
 import { arbitrum, sepolia, base, mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OpenMintInfo from "./components/ProjectInfo";
 import OpenMintControls from "./components/Controls";
-import { useWeb3ModalTheme } from "@web3modal/wagmi/react";
+import { ReadContract } from "./contract/FetchData";
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
@@ -41,8 +41,8 @@ createWeb3Modal({
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true, // Optional - false as default
   themeVariables: {
-    "--w3m-font-family": "Roboto, sans-serif",
-    "--w3m-accent-color": "#F5841F",
+    "--w3m-accent": "#3481CB",
+    "--w3m-border-radius-master": "8px",
   },
 });
 
@@ -63,7 +63,7 @@ const OpenMint = ({ contractAddress }: OpenMintProps) => {
     title: "Title",
     creator: "Creator",
     desc: "This project is a project that a creator has created",
-    mintPrice: 5,
+    mintPrice: 0.15,
     imgURL:
       "https://images.unsplash.com/photo-1549289524-06cf8837ace5?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   });
@@ -76,12 +76,7 @@ const OpenMint = ({ contractAddress }: OpenMintProps) => {
   } as React.CSSProperties;
 
   return (
-    <Web3ModalProvider
-      themeVariables={{
-        "--w3m-font-family": "Roboto, sans-serif",
-        "--w3m-accent-color": "#F5841F",
-      }}
-    >
+    <Web3ModalProvider>
       <div
         id="OM-container"
         style={style}
@@ -93,8 +88,9 @@ const OpenMint = ({ contractAddress }: OpenMintProps) => {
         >
           <OpenMintButton buttonText="Connect Wallet" />
         </div>
+        {/* <ReadContract /> */}
         <OpenMintInfo project={project} />
-        <OpenMintControls />
+        <OpenMintControls cost={project.mintPrice} />
       </div>
     </Web3ModalProvider>
   );

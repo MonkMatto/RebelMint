@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         textcol: "#ffffff",
         bgcol: "#000000",
+        accent: "#E66799",
       },
     },
   },
