@@ -1,4 +1,4 @@
-import "../output.css";
+import "./output.css";
 import OpenMintButton from "./components/Button";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 
@@ -9,6 +9,8 @@ import { arbitrum, sepolia, base, mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import OpenMintInfo from "./components/ProjectInfo";
+import OpenMintControls from "./components/Controls";
+import { useWeb3ModalTheme } from "@web3modal/wagmi/react";
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
@@ -38,6 +40,10 @@ createWeb3Modal({
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true, // Optional - false as default
+  themeVariables: {
+    "--w3m-font-family": "Roboto, sans-serif",
+    "--w3m-accent-color": "#F5841F",
+  },
 });
 
 export function Web3ModalProvider({ children }) {
@@ -57,14 +63,29 @@ const OpenMint = ({ contractAddress }: OpenMintProps) => {
     title: "Title",
     creator: "Creator",
     desc: "This project is a project that a creator has created",
+    mintPrice: 5,
     imgURL:
       "https://images.unsplash.com/photo-1549289524-06cf8837ace5?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   });
+
+  const style = {
+    "--image-url": `linear-gradient(
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.3)
+    ), url(${project.imgURL})`,
+  } as React.CSSProperties;
+
   return (
-    <Web3ModalProvider>
+    <Web3ModalProvider
+      themeVariables={{
+        "--w3m-font-family": "Roboto, sans-serif",
+        "--w3m-accent-color": "#F5841F",
+      }}
+    >
       <div
         id="OM-container"
-        className="w-full h-full text-xl flex flex-col justify-center align-center p-2"
+        style={style}
+        className="w-full h-full text-xl bg-[image:var(--image-url)] bg-cover bg-center flex flex-col justify-center align-center p-2 text-textcol"
       >
         <div
           id="OM-header"
@@ -73,6 +94,7 @@ const OpenMint = ({ contractAddress }: OpenMintProps) => {
           <OpenMintButton buttonText="Connect Wallet" />
         </div>
         <OpenMintInfo project={project} />
+        <OpenMintControls />
       </div>
     </Web3ModalProvider>
   );
