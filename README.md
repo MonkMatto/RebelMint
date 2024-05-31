@@ -5,4 +5,4 @@ OpenMint is a React component that creates a minting interface for any web3 proj
 🚨Developers!
 This project uses Tailwind. Run this from the root folder to keep the CSS updating properly while styling
 
-```npx tailwindcss -i ./input.css -o ./output.css --watch```
+`npx tailwindcss -i ./src/input.css -o ./src/output.css --watch`
