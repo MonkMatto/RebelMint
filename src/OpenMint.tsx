@@ -1,4 +1,4 @@
-import "../output.css";
+import "./output.css";
 import OpenMintButton from "./components/Button";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 
@@ -7,6 +7,10 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { WagmiProvider } from "wagmi";
 import { arbitrum, sepolia, base, mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import OpenMintInfo from "./components/ProjectInfo";
+import OpenMintControls from "./components/Controls";
+import { ReadContract } from "./contract/FetchData";
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
@@ -36,6 +40,10 @@ createWeb3Modal({
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true, // Optional - false as default
+  themeVariables: {
+    "--w3m-accent": "#3481CB",
+    "--w3m-border-radius-master": "8px",
+  },
 });
 
 export function Web3ModalProvider({ children }) {
@@ -47,17 +55,42 @@ export function Web3ModalProvider({ children }) {
 }
 
 interface OpenMintProps {
-  contractAddress: string;
+  contractAddress?: string;
 }
 
 const OpenMint = ({ contractAddress }: OpenMintProps) => {
+  const [project, setProject] = useState({
+    title: "Title",
+    creator: "Creator",
+    desc: "This project is a project that a creator has created",
+    mintPrice: 0.15,
+    imgURL:
+      "https://images.unsplash.com/photo-1549289524-06cf8837ace5?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  });
+
+  const style = {
+    "--image-url": `linear-gradient(
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.3)
+    ), url(${project.imgURL})`,
+  } as React.CSSProperties;
+
   return (
     <Web3ModalProvider>
       <div
-        id="OpenMint-Container"
-        className="w-full h-full text-xl flex justify-center align-center"
+        id="OM-container"
+        style={style}
+        className="w-full h-full text-xl bg-[image:var(--image-url)] bg-cover bg-center flex flex-col justify-center align-center p-2 text-textcol"
       >
-        <OpenMintButton buttonText="Connect Wallet" />
+        <div
+          id="OM-header"
+          className="h-fit w-full flex justify-end justify-self-start"
+        >
+          <OpenMintButton buttonText="Connect Wallet" />
+        </div>
+        {/* <ReadContract /> */}
+        <OpenMintInfo project={project} />
+        <OpenMintControls cost={project.mintPrice} />
       </div>
     </Web3ModalProvider>
   );
