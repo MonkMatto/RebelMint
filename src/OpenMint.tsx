@@ -7,6 +7,8 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { WagmiProvider } from "wagmi";
 import { arbitrum, sepolia, base, mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
+import OpenMintInfo from "./components/ProjectInfo";
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
@@ -47,17 +49,30 @@ export function Web3ModalProvider({ children }) {
 }
 
 interface OpenMintProps {
-  contractAddress: string;
+  contractAddress?: string;
 }
 
 const OpenMint = ({ contractAddress }: OpenMintProps) => {
+  const [project, setProject] = useState({
+    title: "Title",
+    creator: "Creator",
+    desc: "This project is a project that a creator has created",
+    imgURL:
+      "https://images.unsplash.com/photo-1549289524-06cf8837ace5?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  });
   return (
     <Web3ModalProvider>
       <div
-        id="OpenMint-Container"
-        className="w-full h-full text-xl flex justify-center align-center"
+        id="OM-container"
+        className="w-full h-full text-xl flex flex-col justify-center align-center p-2"
       >
-        <OpenMintButton buttonText="Connect Wallet" />
+        <div
+          id="OM-header"
+          className="h-fit w-full flex justify-end justify-self-start"
+        >
+          <OpenMintButton buttonText="Connect Wallet" />
+        </div>
+        <OpenMintInfo project={project} />
       </div>
     </Web3ModalProvider>
   );
