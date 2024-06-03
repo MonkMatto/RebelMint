@@ -17,9 +17,6 @@ const OpenMintControls = ({ maxCount, cost }: ControlProps) => {
 
   const costToUser = cost ? Math.round(cost * count * 10000) / 10000 : "?";
 
-  console.log(address.address);
-  console.log(address.chain);
-
   if (address.address) {
     return (
       <div id="OM-controls" className="w-full flex justify-center mb-5 gap-5">
