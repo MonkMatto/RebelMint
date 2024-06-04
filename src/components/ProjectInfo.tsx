@@ -11,10 +11,10 @@ interface InfoProps {
 const OpenMintInfo = ({ project }: InfoProps) => {
   const { title, creator, desc } = project;
   return (
-    <div id="OM-info" className="w-full h-full rounded-lg p-12">
+    <div id="OM-info" className="w-full h-fit rounded-lg p-12">
       <h1 className="mb-2 text-5xl">{title}</h1>
       <h3 className="mb-10 text-xl">{"by " + creator}</h3>
-      <p className="">{desc}</p>
+      <p className="h-fit">{desc}</p>
     </div>
   );
 };

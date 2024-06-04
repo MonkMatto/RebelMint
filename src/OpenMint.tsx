@@ -1,5 +1,4 @@
 import "./output.css";
-import OpenMintButton from "./components/Button";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
@@ -7,7 +6,6 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { WagmiProvider } from "wagmi";
 import { arbitrum, sepolia, base, mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 import { OpenMintApp } from "./OMApp.tsx";
 

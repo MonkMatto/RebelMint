@@ -7,6 +7,8 @@ import OpenMintControls from "./components/Controls";
 
 import contractABI from "./contract/abi";
 import { useReadContract } from "wagmi";
+import { TokenCard } from "./components/TokenCard";
+import { OMGallery } from "./components/Gallery";
 
 interface OpenMintProps {
   contractAddress?: string;
@@ -27,9 +29,11 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
   const contractData = result.data;
 
   const project = {
-    title: contractData ? contractData[0] : "Title",
+    title: "Title",
     creator: "Creator",
-    desc: "This project is a project that a creator has created",
+    desc: contractData
+      ? contractData[0]
+      : "This project is a project that a creator has created",
     mintPrice: 0.15,
     allTokens: contractData ? contractData[1] : [],
     imgURL:
@@ -81,16 +85,24 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
     <div
       id="OM-container"
       style={style}
-      className="w-full h-full text-xl bg-[image:var(--image-url)] bg-cover bg-center flex flex-col justify-center align-center p-2 text-textcol"
+      className="w-full h-full text-xl bg-[image:var(--image-url)] bg-cover bg-center flex flex-col justify-between align-center p-2 text-textcol"
     >
       <div
         id="OM-header"
         className="h-fit w-full flex justify-end justify-self-start"
       >
-        <OpenMintButton buttonText="Connect Wallet" />
+        <w3m-button balance="hide" />
       </div>
       <OpenMintInfo project={project} />
-      <OpenMintControls cost={project.mintPrice} />
+      {tokens && tokens[0] ? (
+        <OMGallery project={project} tokens={tokens as []} />
+      ) : (
+        <></>
+      )}
+      <OpenMintControls
+        cost={project.mintPrice}
+        contractAddress={contractAddress as `0x${string}`}
+      />
     </div>
   );
 };
