@@ -37,8 +37,6 @@ export const TokenCard = ({
         args: [tokenIndex],
     })
     const availableSupply = result.data ? result.data.toString() : '0'
-    console.log('availableSupply:')
-    console.log(availableSupply)
     if (token) {
         const { name, created_by, image } = token
         const creator = created_by ? created_by : '...'
