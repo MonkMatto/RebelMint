@@ -1,29 +1,5 @@
-import OpenMintControls from './Controls'
-
-interface saleInfoProps {
-    isTokenSaleActive: boolean
-    maxSupply: string | number
-    tokenCost: string | number
-    tokenUri: string
-}
-interface tokenProps {
-    name: string
-    created_by: string
-    description: string
-    external_url: string
-    attributes: []
-    image: string
-}
-interface ControlProps {
-    contractAddress?: `0x${string}`
-    selection: {
-        saleInfo: saleInfoProps
-        token: tokenProps
-    }
-    selectionIndex: number
-    setSelectionIndex: (p: number) => void
-    numTokens: number
-}
+import { RebelMintControls } from './Controls'
+import { DisplayProps } from '../../contract/versioning/typeInterfacing'
 
 export const PopUp = ({
     contractAddress,
@@ -31,7 +7,7 @@ export const PopUp = ({
     selectionIndex,
     setSelectionIndex = () => {},
     numTokens,
-}: ControlProps) => {
+}: DisplayProps) => {
     const { name, image, description, attributes, animation_url } =
         selection.token
     const style = {
@@ -128,7 +104,7 @@ export const PopUp = ({
                 className="bg-bghover relative flex h-4/5 w-4/5 flex-col justify-between rounded-lg p-5"
             >
                 <p
-                    className="hover:bg-cardhover bg-bghover absolute right-0 top-[-5%] z-0 aspect-[4/1] h-fit p-2 text-center hover:cursor-pointer"
+                    className="hover:bg-cardhover bg-bghover absolute right-0 top-[-5%] z-0 aspect-[4/1] h-fit rounded-t-lg p-2 text-center hover:cursor-pointer"
                     onClick={() => setSelectionIndex(-1)}
                 >
                     X
@@ -153,7 +129,7 @@ export const PopUp = ({
                     </div>
                 </div>
                 <div className="mt-5 box-border h-fit justify-self-end">
-                    <OpenMintControls
+                    <RebelMintControls
                         selectionIndex={selectionIndex}
                         selection={selection}
                         contractAddress={contractAddress as `0x${string}`}
@@ -162,7 +138,7 @@ export const PopUp = ({
             </div>
             <button
                 disabled={selectionIndex + 1 > numTokens}
-                className="bg-bgcol hover:bg-bghover disabled:bg-bgcol h-1/4 h-24 w-12 rounded-r-lg disabled:invert-[70%]"
+                className="bg-bgcol hover:bg-bghover disabled:bg-bgcol h-24 w-12 rounded-r-lg disabled:invert-[70%]"
                 onClick={(e) => {
                     e.stopPropagation()
                     setSelectionIndex(selectionIndex + 1)

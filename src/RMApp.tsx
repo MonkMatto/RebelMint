@@ -1,22 +1,20 @@
 import './output.css'
 
 import { useEffect, useState } from 'react'
-import OpenMintInfo from './components/ProjectInfo'
-import OpenMintControls from './components/Controls'
+import RebelMintInfo from './components/ProjectInfo'
 
 import contractABI from './contract/abi'
 import { useReadContract } from 'wagmi'
-import { OMGallery } from './components/Gallery'
-import { PopUp } from './components/Display'
+import { RMGallery } from './components/Gallery/Gallery'
+import { PopUp } from './components/PopUp/Display'
+import { tokenStruct } from './contract/versioning/typeInterfacing'
 
-interface OpenMintProps {
+interface RebelMintProps {
     contractAddress?: string
 }
 
-export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
+export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     const [tokens, setTokens] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
     const [selectionIndex, setSelectionIndex] = useState(-1)
     console.log('selectionIndexIndex is:')
     console.log(selectionIndex)
@@ -44,8 +42,9 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
     }
 
     // We have each token URI and need to fetch info like Token image, creator,
+
     useEffect(() => {
-        const fetchDataFromURI = async (uri) => {
+        const fetchDataFromURI = async (uri: tokenStruct) => {
             const response = await fetch(uri)
             if (!response.ok) {
                 throw new Error(
@@ -67,9 +66,6 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
                     console.log(results)
                 } catch (error) {
                     console.log(error.message)
-                    setError(error.message)
-                } finally {
-                    setLoading(false)
                 }
             }
         }
@@ -77,7 +73,7 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
         fetchAllTokens()
     }, [project.allTokens])
 
-    const selection =
+    const selection: { token: tokenStruct } =
         tokens != null && tokens[0] && selectionIndex >= 0
             ? {
                   saleInfo: project.allTokens[selectionIndex],
@@ -95,13 +91,6 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
                   },
               }
 
-    const style = {
-        '--image-url': `linear-gradient(
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0.3)
-      ), url(${project.imgURL})`,
-    } as React.CSSProperties
-
     const ShowPopUp = () => {
         if (selection && selectionIndex >= 0) {
             return (
@@ -117,34 +106,27 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
     }
     return (
         <div
-            id="OM-container"
-            // style={style}
-            className="bg-bgcol align-center text-textcol relative flex h-full w-full flex-col justify-between bg-cover bg-center p-2 text-xl"
+            id="RM-container"
+            className="bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-between bg-cover bg-center p-2 text-xl"
         >
             <ShowPopUp />
             <div
-                id="OM-header"
+                id="RM-header"
                 className="flex h-fit w-full justify-end justify-self-start"
             >
                 <w3m-button balance="hide" />
             </div>
-            <OpenMintInfo project={project} />
+            <RebelMintInfo project={project} />
             {tokens && tokens[0] ? (
-                <OMGallery
-                    project={project}
+                <RMGallery
+                    allTokenSaleInfo={project.allTokens}
                     selectionIndex={selectionIndex}
                     setSelectionIndex={setSelectionIndex}
-                    tokens={tokens as []}
+                    tokens={tokens}
                 />
             ) : (
                 <></>
             )}
-            {/* <OpenMintControls
-                cost={project.mintPrice}
-                selectionIndex={selectionIndex}
-                selection={selection}
-                contractAddress={contractAddress as `0x${string}`}
-            /> */}
         </div>
     )
 }

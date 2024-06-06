@@ -1,40 +1,19 @@
-import { useEffect, useState } from 'react'
-import icon from '../assets/ether.webp'
 import { useReadContract } from 'wagmi'
-import contractABI from '../contract/abi'
-interface saleInfoProps {
-    isTokenSaleActive: boolean
-    maxSupply: string | number
-    tokenCost: string | number
-    tokenUri: string
-}
-interface tokenProps {
-    name: string
-    created_by: string
-    description: string
-    external_url: string
-    attributes: []
-    image: string
-}
-interface cardProps {
-    token: tokenProps
-    saleInfo: saleInfoProps
-    tokenIndex: number
-    setSelectionIndex: (p: number) => void
-    selectionIndex: number
-}
-export const TokenCard = ({
+import contractABI from '../../contract/abi'
+import { CardProps } from '../../contract/versioning/typeInterfacing'
+
+export const RMTokenCard = ({
     token,
     saleInfo,
     tokenIndex,
     setSelectionIndex = () => {},
     selectionIndex,
-}: cardProps) => {
+}: CardProps) => {
     const result = useReadContract({
         abi: contractABI,
         address: '0xfbE3687896B583E9E9727a58BD96207f35fD015c',
         functionName: 'totalSupply',
-        args: [tokenIndex],
+        args: [BigInt(tokenIndex)],
     })
     const availableSupply = result.data ? result.data.toString() : '0'
     if (token) {
@@ -46,7 +25,6 @@ export const TokenCard = ({
                 ? '< 0.000001'
                 : Number(tokenCost) / 1000000000000000000
         const supplyIndicator = availableSupply + ' / ' + maxSupply.toString()
-        const tokenCostInEth = Number(tokenCost) / 1000000000
         const style = {
             '--image-url': ` url(${image})`,
         } as React.CSSProperties

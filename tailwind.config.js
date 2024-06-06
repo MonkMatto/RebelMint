@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
     content: [
         './src/**/*.{html,js,jsx,tsx,ts}',
         './src/components/**/*.{html,js,jsx,tsx,ts}',
@@ -7,6 +7,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                satoshi: ['Satoshi'],
+            },
             colors: {
                 textcol: '#ffffff',
                 bgcol: '#000000',

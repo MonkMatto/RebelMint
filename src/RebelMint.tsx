@@ -1,5 +1,6 @@
 import './output.css'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { Web3ModalProviderProps } from './contract/versioning/typeInterfacing.ts'
 
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
@@ -7,7 +8,7 @@ import { WagmiProvider } from 'wagmi'
 import { arbitrum, sepolia, base, mainnet } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { OpenMintApp } from './OMApp.tsx'
+import { RebelMintApp } from './RMApp.tsx'
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
@@ -43,7 +44,7 @@ createWeb3Modal({
     },
 })
 
-export function Web3ModalProvider({ children }) {
+export function Web3ModalProvider({ children }: Web3ModalProviderProps) {
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
@@ -53,16 +54,16 @@ export function Web3ModalProvider({ children }) {
     )
 }
 
-interface OpenMintProps {
+interface RebelMintProps {
     contractAddress?: string
 }
 
-const OpenMint = ({ contractAddress }: OpenMintProps) => {
+const RebelMint = ({ contractAddress }: RebelMintProps) => {
     return (
         <Web3ModalProvider>
-            <OpenMintApp contractAddress={contractAddress} />
+            <RebelMintApp contractAddress={contractAddress} />
         </Web3ModalProvider>
     )
 }
 
-export default OpenMint
+export default RebelMint

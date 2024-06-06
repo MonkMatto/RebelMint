@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'Satoshi';
+        src: url(./assets/fonts/Satoshi-Variable.ttf) format('ttf');
+    }
+}
