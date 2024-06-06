@@ -41,30 +41,37 @@ export const TokenCard = ({
     console.log(availableSupply)
     if (token) {
         const { name, created_by, image } = token
+        const creator = created_by ? created_by : '...'
         const { maxSupply, tokenCost } = saleInfo
+        const costToDisplay =
+            Number(tokenCost) / 1000000000000000000 < 0.000001
+                ? '< 0.000001'
+                : Number(tokenCost) / 1000000000000000000
         const supplyIndicator = availableSupply + ' / ' + maxSupply.toString()
         const tokenCostInEth = Number(tokenCost) / 1000000000
+        const style = {
+            '--image-url': ` url(${image})`,
+        } as React.CSSProperties
         if (tokenIndex == selectionIndex) {
             // Show that this token IS selected
             return (
                 <div
-                    className="border-textcol bg-card hover:bg-cardhover box-border flex h-fit w-1/4 max-w-52 flex-1 scale-105 flex-col justify-between rounded-lg border-2 p-2 align-middle duration-200"
+                    className="border-textcol bg-card hover:bg-cardhover box-border flex h-full w-full max-w-52 scale-105 flex-col justify-between rounded-lg border-2 p-2 align-middle duration-200"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
-                    <img src={image} className="object-contain" />
+                    <div
+                        className="aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
+                        style={style}
+                    />
                     <div className="flex w-full flex-col">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-xl">{name}</p>
-                            <p className="truncate text-sm">{created_by}</p>
+                            <p className="truncate text-sm">{creator}</p>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex flex-wrap justify-between align-middle">
                             <div className="flex h-5 flex-row justify-start align-middle">
-                                <img
-                                    className="aspect-auto h-1/2 invert"
-                                    src={icon}
-                                />
                                 <p className="text-sm">
-                                    {tokenCostInEth.toString()}
+                                    {costToDisplay.toString() + ' ETH'}
                                 </p>
                             </div>
                             <p className="text-sm">{supplyIndicator}</p>
@@ -76,23 +83,22 @@ export const TokenCard = ({
             //Show that this token IS NOT selected
             return (
                 <div
-                    className="border-bgcol bg-card hover:bg-cardhover box-border flex h-fit w-1/4 max-w-52 flex-1 flex-col justify-between rounded-lg border-2 p-2 align-middle duration-200"
+                    className="border-bgcol bg-card hover:bg-cardhover box-border flex h-full w-full max-w-52 flex-col justify-between rounded-lg border-2 p-2 align-middle duration-200"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
-                    <img src={image} className="object-contain" />
+                    <div
+                        className="aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
+                        style={style}
+                    />
                     <div className="flex w-full flex-col">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-xl">{name}</p>
-                            <p className="truncate text-sm">{created_by}</p>
+                            <p className="truncate text-sm">{creator}</p>
                         </div>
-                        <div className="flex justify-between">
-                            <div className="flex h-5 align-middle">
-                                <img
-                                    className="aspect-auto h-1/2 invert"
-                                    src={icon}
-                                />
+                        <div className="flex flex-wrap justify-between align-middle">
+                            <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
-                                    {tokenCostInEth.toString()}
+                                    {costToDisplay.toString() + ' ETH'}
                                 </p>
                             </div>
                             <p className="text-sm">{supplyIndicator}</p>
