@@ -7,6 +7,7 @@ import OpenMintControls from './components/Controls'
 import contractABI from './contract/abi'
 import { useReadContract } from 'wagmi'
 import { OMGallery } from './components/Gallery'
+import { PopUp } from './components/Display'
 
 interface OpenMintProps {
     contractAddress?: string
@@ -16,7 +17,7 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
     const [tokens, setTokens] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [selectionIndex, setSelectionIndex] = useState(null)
+    const [selectionIndex, setSelectionIndex] = useState(-1)
     console.log('selectionIndexIndex is:')
     console.log(selectionIndex)
     const result = useReadContract({
@@ -77,7 +78,7 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
     }, [project.allTokens])
 
     const selection =
-        tokens != null && tokens[0] && selectionIndex
+        tokens != null && tokens[0] && selectionIndex >= 0
             ? {
                   saleInfo: project.allTokens[selectionIndex],
                   token: tokens[selectionIndex],
@@ -101,12 +102,26 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
       ), url(${project.imgURL})`,
     } as React.CSSProperties
 
+    const ShowPopUp = () => {
+        if (selection && selectionIndex >= 0) {
+            return (
+                <PopUp
+                    setSelectionIndex={setSelectionIndex}
+                    selectionIndex={selectionIndex}
+                    contractAddress={contractAddress}
+                    selection={selection}
+                    numTokens={tokens.length - 1}
+                />
+            )
+        }
+    }
     return (
         <div
             id="OM-container"
             // style={style}
-            className="bg-bgcol align-center text-textcol flex h-full w-full flex-col justify-between bg-cover bg-center p-2 text-xl"
+            className="bg-bgcol align-center text-textcol relative flex h-full w-full flex-col justify-between bg-cover bg-center p-2 text-xl"
         >
+            <ShowPopUp />
             <div
                 id="OM-header"
                 className="flex h-fit w-full justify-end justify-self-start"
@@ -124,12 +139,12 @@ export const OpenMintApp = ({ contractAddress }: OpenMintProps) => {
             ) : (
                 <></>
             )}
-            <OpenMintControls
+            {/* <OpenMintControls
                 cost={project.mintPrice}
                 selectionIndex={selectionIndex}
                 selection={selection}
                 contractAddress={contractAddress as `0x${string}`}
-            />
+            /> */}
         </div>
     )
 }

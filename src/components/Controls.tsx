@@ -64,7 +64,7 @@ const OpenMintControls = ({
                     BigInt(selectionIndex),
                     BigInt(count),
                 ],
-                value: tokenCost,
+                value: BigInt(tokenCost),
             })
             console.log('Transaction sent successfully')
             console.log(hash)
@@ -76,10 +76,7 @@ const OpenMintControls = ({
     if (!userAddress) {
         // Not signed in
         return (
-            <div
-                id="OM-controls"
-                className="mb-5 flex w-full justify-center gap-5"
-            >
+            <div id="OM-controls" className="flex w-full justify-center gap-5">
                 <button
                     className="bg-bgcol hover:bg-bghover w-fit rounded-xl border-[1px] border-white p-5 duration-100 hover:scale-[102%]"
                     onClick={() => {
@@ -90,13 +87,10 @@ const OpenMintControls = ({
                 </button>
             </div>
         )
-    } else if (selectionIndex == undefined) {
+    } else if (selectionIndex < 0) {
         // Nothing Selected
         return (
-            <div
-                id="OM-controls"
-                className="mb-5 flex w-full justify-center gap-5"
-            >
+            <div id="OM-controls" className="flex w-full justify-center gap-5">
                 <button
                     className="bg-textcol text-bgcol w-60 rounded-xl p-5 duration-300 ease-in-out hover:invert disabled:invert-[70%]"
                     disabled
@@ -108,10 +102,7 @@ const OpenMintControls = ({
     } else if (!isTokenSaleActive) {
         // Token Sold Out
         return (
-            <div
-                id="OM-controls"
-                className="mb-5 flex w-full justify-center gap-5"
-            >
+            <div id="OM-controls" className="flex w-full justify-center gap-5">
                 <button
                     id="OM-minus"
                     disabled={true}
@@ -138,21 +129,18 @@ const OpenMintControls = ({
     } else {
         // Good to mint!
         return (
-            <div
-                id="OM-controls"
-                className="mb-5 flex w-full justify-center gap-5"
-            >
+            <div id="OM-controls" className="flex w-full justify-center gap-5">
                 <button
                     id="OM-minus"
                     disabled={minusDisabled}
                     onClick={() => setCount(count - 1)}
-                    className="bg-textcol text-bgcol rounded-xl p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%]"
+                    className="bg-textcol text-bgcol hover:border-bgcol rounded-xl border-2 border-transparent p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%] disabled:hover:border-transparent"
                 >
                     -
                 </button>
                 <button
                     id="OM-mint"
-                    className="bg-textcol text-bgcol w-60 rounded-xl p-5 duration-300 ease-in-out hover:invert"
+                    className="bg-textcol text-bgcol hover:border-bgcol w-60 rounded-xl border-2 border-transparent p-5 duration-300 ease-in-out hover:invert disabled:hover:border-transparent"
                     onClick={handleMint}
                 >
                     {'Mint ' +
@@ -166,7 +154,7 @@ const OpenMintControls = ({
                     id="OM-plus"
                     disabled={plusDisabled}
                     onClick={() => setCount(count + 1)}
-                    className="bg-textcol text-bgcol rounded-xl p-5 duration-150 ease-in-out hover:invert disabled:invert-[50%]"
+                    className="bg-textcol text-bgcol hover:border-bgcol rounded-xl border-2 border-transparent p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%] disabled:hover:border-transparent"
                 >
                     +
                 </button>
