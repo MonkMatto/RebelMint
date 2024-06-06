@@ -6,7 +6,9 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.40.0",
+    "@types/react": "^18.3.3",
     "@web3modal/wagmi": "^4.2.3",
+    "typescript": "^5.4.5",
     "viem": "^2.13.1",
     "wagmi": "^2.9.8",
     "web3": "^4.9.0",
