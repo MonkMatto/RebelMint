@@ -14,17 +14,18 @@ export const RebelMintControls = ({
         : null
     const { name, totalSupply } = selection ? selection.token : null
     const maxCount = selection ? Number(maxSupply) - Number(totalSupply) : 0
-    const { writeContractAsync, writeContract, data: hash } = useWriteContract()
+    const { writeContractAsync, data: hash } = useWriteContract()
     const { open } = useWeb3Modal()
     const { address } = useAccount()
     const userAddress = address as `0x${string}`
     const [count, setCount] = useState(1)
     const minusDisabled = count <= 1 ? true : false
     const plusDisabled = count >= (maxCount ? maxCount : 999999) ? true : false
-    const costToDisplay =
+    const valueInEth =
         Number(tokenCost) / 1000000000000000000 < 0.000001
             ? '< 0.000001'
             : Number(tokenCost) / 1000000000000000000
+    const costToDisplay = Math.round(valueInEth * count * 1000000) / 1000000
 
     console.log('isTokenSaleActive')
     console.log(isTokenSaleActive)
@@ -38,7 +39,7 @@ export const RebelMintControls = ({
                 args: [
                     userAddress as `0x${string}`,
                     BigInt(selectionIndex),
-                    count,
+                    BigInt(count),
                 ],
                 value: BigInt(tokenCost),
             })
@@ -116,14 +117,10 @@ export const RebelMintControls = ({
                 </button>
                 <button
                     id="RM-mint"
-                    className="bg-textcol text-bgcol hover:border-bgcol w-60 rounded-xl border-2 border-transparent p-5 duration-300 ease-in-out hover:invert disabled:hover:border-transparent"
+                    className="bg-textcol text-bgcol hover:border-bgcol w-60 rounded-xl border-2 border-transparent p-5 font-bold duration-300 ease-in-out hover:invert disabled:hover:border-transparent"
                     onClick={handleMint}
                 >
-                    {'Mint ' +
-                        (count ? count : '1') +
-                        ' ' +
-                        name +
-                        (count ? (count > 1 ? 's' : '') : '')}
+                    {'Mint ' + (count ? count : '1')}
                     <p>{costToDisplay + ' ' + 'ETH'}</p>
                 </button>
                 <button

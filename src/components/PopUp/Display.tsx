@@ -41,11 +41,11 @@ export const PopUp = ({
         if (animation_url) {
             return (
                 <div
-                    className="bg-bgcol relative flex aspect-square w-1/2 items-center rounded-lg"
+                    className="bg-bgcol relative flex aspect-square max-h-full w-1/2 items-center rounded-lg"
                     onClick={openInNewTab}
                 >
                     <iframe
-                        className="h-full w-full"
+                        className="h-full max-h-full w-full"
                         src={animation_url}
                         onClick={openInNewTab}
                     ></iframe>
@@ -61,9 +61,9 @@ export const PopUp = ({
             )
         } else {
             return (
-                <div className="bg-bgcol relative flex aspect-square w-1/2 items-center rounded-lg">
+                <div className="bg-bgcol relative flex aspect-square max-h-full w-1/2 items-center rounded-lg">
                     <div
-                        className="aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
+                        className="aspect-square max-h-full w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
                         onClick={openInNewTab}
                     ></div>
@@ -121,7 +121,7 @@ export const PopUp = ({
                         <h1 className="mb-8 text-center text-2xl font-bold">
                             {name}
                         </h1>
-                        <p className="max-h-96 overflow-y-auto text-wrap">
+                        <p className="max-h-96 overflow-y-auto text-wrap font-light">
                             {description}
                         </p>
 

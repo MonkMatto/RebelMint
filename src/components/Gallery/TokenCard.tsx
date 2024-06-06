@@ -9,6 +9,7 @@ export const RMTokenCard = ({
     setSelectionIndex = () => {},
     selectionIndex,
 }: CardProps) => {
+    // Retrieve already minted supply of given token
     const result = useReadContract({
         abi: contractABI,
         address: '0xfbE3687896B583E9E9727a58BD96207f35fD015c',
@@ -25,6 +26,7 @@ export const RMTokenCard = ({
                 ? '< 0.000001'
                 : Number(tokenCost) / 1000000000000000000
         const supplyIndicator = availableSupply + ' / ' + maxSupply.toString()
+
         const style = {
             '--image-url': ` url(${image})`,
         } as React.CSSProperties
@@ -42,7 +44,9 @@ export const RMTokenCard = ({
                     <div className="flex w-full flex-col">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-xl">{name}</p>
-                            <p className="truncate text-sm">{creator}</p>
+                            <p className="truncate text-sm font-light">
+                                {creator}
+                            </p>
                         </div>
                         <div className="flex flex-wrap justify-between align-middle">
                             <div className="flex h-5 flex-row justify-start align-middle">
@@ -68,8 +72,10 @@ export const RMTokenCard = ({
                     />
                     <div className="flex w-full flex-col">
                         <div className="mb-4 mt-3">
-                            <p className="truncate text-xl">{name}</p>
-                            <p className="truncate text-sm">{creator}</p>
+                            <p className="truncate text-lg">{name}</p>
+                            <p className="truncate text-sm font-light">
+                                {creator}
+                            </p>
                         </div>
                         <div className="flex flex-wrap justify-between align-middle">
                             <div className="flex h-5 flex-row justify-start align-middle">
