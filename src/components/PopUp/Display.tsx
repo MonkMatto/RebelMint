@@ -41,7 +41,7 @@ export const PopUp = ({
         if (animation_url) {
             return (
                 <div
-                    className="bg-bgcol relative flex aspect-square max-h-full w-1/2 items-center rounded-lg"
+                    className="bg-bgcol relative flex aspect-square max-h-full w-full items-center rounded-lg md:w-1/2"
                     onClick={openInNewTab}
                 >
                     <iframe
@@ -61,7 +61,7 @@ export const PopUp = ({
             )
         } else {
             return (
-                <div className="bg-bgcol relative flex aspect-square max-h-full w-1/2 items-center rounded-lg">
+                <div className="bg-bgcol relative flex aspect-square max-h-full w-full items-center rounded-lg md:w-1/2">
                     <div
                         className="aspect-square max-h-full w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
@@ -111,12 +111,12 @@ export const PopUp = ({
                 </p>
                 <div
                     id="OM-popup-token-card"
-                    className="flex h-3/4 w-full flex-row gap-12"
+                    className="flex h-3/4 w-full flex-col gap-12 md:flex-row"
                 >
                     <Display />
                     <div
                         id="OM-popup-token-info"
-                        className="flex h-full w-1/2 flex-col justify-start"
+                        className="flex h-full flex-col justify-start md:w-1/2"
                     >
                         <h1 className="mb-8 text-center text-2xl font-bold">
                             {name}

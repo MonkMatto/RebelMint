@@ -1,6 +1,10 @@
 import { useWeb3Modal } from '@web3modal/wagmi/react'
-import { useState } from 'react'
-import { useAccount, useWriteContract } from 'wagmi'
+import { useEffect, useState } from 'react'
+import {
+    useAccount,
+    useWaitForTransactionReceipt,
+    useWriteContract,
+} from 'wagmi'
 import contractABI from '../../contract/abi'
 import { ControlProps } from '../../contract/versioning/typeInterfacing'
 
@@ -14,17 +18,22 @@ export const RebelMintControls = ({
         : null
     const { name, totalSupply } = selection ? selection.token : null
     const maxCount = selection ? Number(maxSupply) - Number(totalSupply) : 0
-    const { writeContractAsync, data: hash } = useWriteContract()
+    const { writeContractAsync, data: hash, isPending } = useWriteContract()
+    const { isLoading: isConfirming, isSuccess: isConfirmed } =
+        useWaitForTransactionReceipt({
+            hash,
+        })
     const { open } = useWeb3Modal()
     const { address } = useAccount()
     const userAddress = address as `0x${string}`
     const [count, setCount] = useState(1)
     const minusDisabled = count <= 1 ? true : false
     const plusDisabled = count >= (maxCount ? maxCount : 999999) ? true : false
-    const valueInEth =
+    const valueInEth = Number(
         Number(tokenCost) / 1000000000000000000 < 0.000001
             ? '< 0.000001'
             : Number(tokenCost) / 1000000000000000000
+    )
     const costToDisplay = Math.round(valueInEth * count * 1000000) / 1000000
 
     console.log('isTokenSaleActive')
@@ -105,33 +114,70 @@ export const RebelMintControls = ({
         )
     } else {
         // Good to mint!
-        return (
-            <div id="RM-controls" className="flex w-full justify-center gap-5">
-                <button
-                    id="RM-minus"
-                    disabled={minusDisabled}
-                    onClick={() => setCount(count - 1)}
-                    className="bg-textcol text-bgcol hover:border-bgcol rounded-xl border-2 border-transparent p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%] disabled:hover:border-transparent"
+        if (isConfirming) {
+            return (
+                <div
+                    id="RM-controls"
+                    className="flex w-full justify-center gap-5"
                 >
-                    -
-                </button>
-                <button
-                    id="RM-mint"
-                    className="bg-textcol text-bgcol hover:border-bgcol w-60 rounded-xl border-2 border-transparent p-5 font-bold duration-300 ease-in-out hover:invert disabled:hover:border-transparent"
-                    onClick={handleMint}
+                    <button
+                        id="RM-mint"
+                        disabled
+                        className="text-bgcol w-60 rounded-xl border-2 border-transparent bg-yellow-200 p-5 font-bold duration-300 ease-in-out"
+                    >
+                        Confirming...
+                    </button>
+                </div>
+            )
+        } else if (isConfirmed) {
+            return (
+                <div
+                    id="RM-controls"
+                    className="flex w-full justify-center gap-5"
                 >
-                    {'Mint ' + (count ? count : '1')}
-                    <p>{costToDisplay + ' ' + 'ETH'}</p>
-                </button>
-                <button
-                    id="RM-plus"
-                    disabled={plusDisabled}
-                    onClick={() => setCount(count + 1)}
-                    className="bg-textcol text-bgcol hover:border-bgcol rounded-xl border-2 border-transparent p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%] disabled:hover:border-transparent"
+                    <button
+                        id="RM-mint"
+                        disabled
+                        className="text-bgcol w-60 rounded-xl border-2 border-transparent bg-green-300 p-5 font-bold duration-300 ease-in-out"
+                    >
+                        Mint Successful!
+                    </button>
+                </div>
+            )
+        } else {
+            return (
+                <div
+                    id="RM-controls"
+                    className="flex w-full justify-center gap-5"
                 >
-                    +
-                </button>
-            </div>
-        )
+                    <button
+                        id="RM-minus"
+                        disabled={minusDisabled}
+                        onClick={() => setCount(count - 1)}
+                        className="bg-textcol text-bgcol hover:border-bgcol rounded-xl border-2 border-transparent p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%] disabled:hover:border-transparent"
+                    >
+                        -
+                    </button>
+
+                    <button
+                        id="RM-mint"
+                        className="bg-textcol text-bgcol hover:border-bgcol w-60 rounded-xl border-2 border-transparent p-5 font-bold duration-300 ease-in-out hover:invert disabled:hover:border-transparent"
+                        onClick={handleMint}
+                    >
+                        {'Mint ' + (count ? count : '1')}
+                        <p>{costToDisplay + ' ' + 'ETH'}</p>
+                    </button>
+
+                    <button
+                        id="RM-plus"
+                        disabled={plusDisabled}
+                        onClick={() => setCount(count + 1)}
+                        className="bg-textcol text-bgcol hover:border-bgcol rounded-xl border-2 border-transparent p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%] disabled:hover:border-transparent"
+                    >
+                        +
+                    </button>
+                </div>
+            )
+        }
     }
 }
