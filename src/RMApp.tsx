@@ -20,7 +20,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     console.log(selectionIndex)
     const result = useReadContract({
         abi: contractABI,
-        address: '0xfbE3687896B583E9E9727a58BD96207f35fD015c',
+        address: contractAddress,
         functionName: 'getContractData',
     })
     console.log('Contract Data Returned:')
