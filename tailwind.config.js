@@ -10,6 +10,9 @@ export default {
             fontFamily: {
                 satoshi: ['Satoshi'],
             },
+            containers: {
+                '2xs': '16rem',
+            },
             colors: {
                 textcol: '#ffffff',
                 bgcol: '#000000',
@@ -20,5 +23,5 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [require('@tailwindcss/container-queries')],
 }

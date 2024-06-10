@@ -2,13 +2,12 @@ import './output.css'
 
 import { useEffect, useState } from 'react'
 import RebelMintInfo from './components/ProjectInfo'
-import { useToken } from 'wagmi'
 import contractABI from './contract/abi'
 import { useReadContract } from 'wagmi'
 import { RMGallery } from './components/Gallery/Gallery'
 import { PopUp } from './components/PopUp/Display'
 import {
-    saleInfoStruct,
+    currencyStruct,
     tokenStruct,
 } from './contract/versioning/typeInterfacing'
 
@@ -17,11 +16,18 @@ interface RebelMintProps {
 }
 
 export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
-    const [tokens, setTokens] = useState(null)
-    const [selectionIndex, setSelectionIndex] = useState(-1)
+    const [tokens, setTokens] = useState<
+        (tokenStruct | { currency_details: currencyStruct })[]
+    >([])
+
+    const [selectionIndex, setSelectionIndex] = useState<number>(-1)
+    const validContractAddress =
+        contractAddress && contractAddress.startsWith('0x')
+            ? contractAddress
+            : undefined
     const result = useReadContract({
         abi: contractABI,
-        address: contractAddress,
+        address: validContractAddress as `0x${string}` | undefined,
         functionName: 'getCollectionAndTokenDataJSON',
     })
 
@@ -43,7 +49,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     // We have each token URI and need to fetch info like Token image, creator,
 
     useEffect(() => {
-        const fetchDataFromURI = async (uri: tokenStruct) => {
+        const fetchDataFromURI = async (uri: string) => {
             const response = await fetch(uri)
             if (!response.ok) {
                 throw new Error(
@@ -53,33 +59,45 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
             return response.json()
         }
 
-        const fetchCurrencyDetails = async (currencyAddress) => {
-            return { symbol: 'ETH' }
+        const fetchCurrencyDetails = async (currencyAddress: string) => {
+            return { symbol: 'ETH', address: currencyAddress }
         }
 
         const fetchAllTokens = async () => {
             if (project.tokens.length > 0) {
                 try {
-                    const tokenUris = project.tokens.map((token) => token.uri)
+                    const tokenUris = project.tokens.map(
+                        (token: tokenStruct) => token.uri
+                    )
                     const dataPromises = tokenUris.map(fetchDataFromURI)
                     const results = await Promise.all(dataPromises)
                     // setTokens(results)
-                    const tokensWithCurrency = await Promise.all(
+                    const tokensWithCurrency: (
+                        | tokenStruct
+                        | { currency_details: currencyStruct }
+                    )[] = await Promise.all(
                         results.map(async (token, index) => {
-                            if (project.tokens[index].currency_address) {
-                                const currency_details =
-                                    await fetchCurrencyDetails(
-                                        project.tokens[index].currency_address
-                                    )
-                                return { ...token, currency_details }
-                            } else {
-                                return token
+                            try {
+                                if (project.tokens[index].currency_address) {
+                                    const currency_details =
+                                        await fetchCurrencyDetails(
+                                            project.tokens[index]
+                                                .currency_address
+                                        )
+                                    return { ...token, currency_details }
+                                } else {
+                                    return token
+                                }
+                            } catch (error: any) {
+                                throw new Error(
+                                    `Error fetching currency details for token at index ${index}: ${error.message}`
+                                )
                             }
                         })
                     )
 
                     setTokens(tokensWithCurrency)
-                } catch (error) {
+                } catch (error: any) {
                     console.log(error.message)
                 }
             }
@@ -91,29 +109,29 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
 
     // Create a central source of token information:
     // Sale Info, URI Info, Currency Info are all included here
-    const allTokens = project.tokens.map((token, index) => {
-        return tokens && tokens[index] ? { ...token, ...tokens[index] } : token
-    })
+    const allTokens = project.tokens.map(
+        (token: tokenStruct, index: number) => {
+            return tokens && tokens[index]
+                ? { ...token, ...tokens[index] }
+                : token
+        }
+    )
     console.log('Final tokens array with all info:')
     console.log(allTokens)
 
-    const selection: { token: tokenStruct } =
+    const selection: tokenStruct =
         tokens != null && tokens[0] && selectionIndex >= 0
             ? allTokens[selectionIndex]
             : {
-                  saleInfo: {
-                      isTokenSaleActive: false,
-                      maxSupply: 0,
-                      tokenCost: 0,
-                      tokenUri: '',
-                  },
-                  token: {
-                      name: 'unknown',
-                  },
+                  name: '',
+                  is_token_sale_active: false,
+                  max_supply: 0,
+                  token_cost: 0,
+                  uri: '',
               }
 
     const ShowPopUp = () => {
-        if (selection && selectionIndex >= 0) {
+        if (selection && selectionIndex >= 0 && contractAddress) {
             return (
                 <PopUp
                     setSelectionIndex={setSelectionIndex}
@@ -128,7 +146,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     return (
         <div
             id="RM-container"
-            className="bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-start bg-cover bg-center p-2 text-xl"
+            className="@container bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-start bg-cover bg-center p-2 text-xl"
         >
             <ShowPopUp />
             <div
@@ -143,7 +161,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                     allTokens={allTokens}
                     selectionIndex={selectionIndex}
                     setSelectionIndex={setSelectionIndex}
-                    tokens={tokens}
+                    tokens={tokens as [tokenStruct]}
                 />
             ) : (
                 <></>

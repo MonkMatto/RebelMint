@@ -1,7 +1,4 @@
-import { useToken } from 'wagmi'
 import { CardProps } from '../../contract/versioning/typeInterfacing'
-
-import { UseTokenParameters } from 'wagmi'
 
 export const RMTokenCard = ({
     token,

@@ -60,13 +60,17 @@ export interface selectionStruct {
 }
 export interface ControlProps {
     contractAddress: `0x${string}`
-    selection: selectionStruct
+    selection: tokenStruct
     selectionIndex: number
 }
 export interface DisplayProps {
-    contractAddress: `0x${string}`
-    selection: selectionStruct
+    contractAddress: string
+    selection: tokenStruct
     selectionIndex: number
     setSelectionIndex: (p: number) => void
     numTokens: number
+}
+export interface currencyStruct {
+    symbol: string
+    address: string
 }
