@@ -1,31 +1,39 @@
-import { useReadContract } from 'wagmi'
-import contractABI from '../../contract/abi'
+import { useToken } from 'wagmi'
 import { CardProps } from '../../contract/versioning/typeInterfacing'
+
+import { UseTokenParameters } from 'wagmi'
 
 export const RMTokenCard = ({
     token,
-    saleInfo,
     tokenIndex,
     setSelectionIndex = () => {},
     selectionIndex,
 }: CardProps) => {
-    // Retrieve already minted supply of given token
-    const result = useReadContract({
-        abi: contractABI,
-        address: '0xfbE3687896B583E9E9727a58BD96207f35fD015c',
-        functionName: 'totalSupply',
-        args: [BigInt(tokenIndex)],
-    })
-    const availableSupply = result.data ? result.data.toString() : '0'
     if (token) {
-        const { name, created_by, image } = token
+        const {
+            name,
+            created_by,
+            image,
+            max_supply,
+            current_supply,
+            token_cost,
+            currency_address,
+        } = token
+        const currencySymbol =
+            currency_address == '0x0000000000000000000000000000000000000000'
+                ? ' ETH'
+                : ' TEMP'
         const creator = created_by ? created_by : '...'
-        const { maxSupply, tokenCost } = saleInfo
+        // const currency = UseTokenParameters(token.currency_address)
         const costToDisplay =
-            Number(tokenCost) / 1000000000000000000 < 0.000001
+            Number(token_cost) / 1000000000000000000 < 0.000001
                 ? '< 0.000001'
-                : Number(tokenCost) / 1000000000000000000
-        const supplyIndicator = availableSupply + ' / ' + maxSupply.toString()
+                : Number(token_cost) / 1000000000000000000
+
+        const supplyIndicator =
+            current_supply && max_supply
+                ? current_supply + ' / ' + max_supply.toString()
+                : ''
 
         const style = {
             '--image-url': ` url(${image})`,
@@ -51,7 +59,7 @@ export const RMTokenCard = ({
                         <div className="flex flex-wrap justify-between align-middle">
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
-                                    {costToDisplay.toString() + ' ETH'}
+                                    {costToDisplay.toString() + currencySymbol}
                                 </p>
                             </div>
                             <p className="text-sm">{supplyIndicator}</p>
@@ -80,7 +88,7 @@ export const RMTokenCard = ({
                         <div className="flex flex-wrap justify-between align-middle">
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
-                                    {costToDisplay.toString() + ' ETH'}
+                                    {costToDisplay.toString() + currencySymbol}
                                 </p>
                             </div>
                             <p className="text-sm">{supplyIndicator}</p>

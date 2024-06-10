@@ -1,97 +1,109 @@
 const contractABI = [
-    { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
+    {
+        inputs: [],
+        stateMutability: 'nonpayable',
+        type: 'constructor',
+    },
     {
         inputs: [
-            { internalType: 'address', name: 'sender', type: 'address' },
-            { internalType: 'uint256', name: 'balance', type: 'uint256' },
-            { internalType: 'uint256', name: 'needed', type: 'uint256' },
-            { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+            {
+                internalType: 'address',
+                name: 'sender',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'balance',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'needed',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'tokenId',
+                type: 'uint256',
+            },
         ],
         name: 'ERC1155InsufficientBalance',
         type: 'error',
     },
     {
         inputs: [
-            { internalType: 'address', name: 'approver', type: 'address' },
+            {
+                internalType: 'address',
+                name: 'approver',
+                type: 'address',
+            },
         ],
         name: 'ERC1155InvalidApprover',
         type: 'error',
     },
     {
         inputs: [
-            { internalType: 'uint256', name: 'idsLength', type: 'uint256' },
-            { internalType: 'uint256', name: 'valuesLength', type: 'uint256' },
+            {
+                internalType: 'uint256',
+                name: 'idsLength',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'valuesLength',
+                type: 'uint256',
+            },
         ],
         name: 'ERC1155InvalidArrayLength',
         type: 'error',
     },
     {
         inputs: [
-            { internalType: 'address', name: 'operator', type: 'address' },
+            {
+                internalType: 'address',
+                name: 'operator',
+                type: 'address',
+            },
         ],
         name: 'ERC1155InvalidOperator',
         type: 'error',
     },
     {
         inputs: [
-            { internalType: 'address', name: 'receiver', type: 'address' },
+            {
+                internalType: 'address',
+                name: 'receiver',
+                type: 'address',
+            },
         ],
         name: 'ERC1155InvalidReceiver',
         type: 'error',
     },
     {
-        inputs: [{ internalType: 'address', name: 'sender', type: 'address' }],
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'sender',
+                type: 'address',
+            },
+        ],
         name: 'ERC1155InvalidSender',
         type: 'error',
     },
     {
         inputs: [
-            { internalType: 'address', name: 'operator', type: 'address' },
-            { internalType: 'address', name: 'owner', type: 'address' },
+            {
+                internalType: 'address',
+                name: 'operator',
+                type: 'address',
+            },
+            {
+                internalType: 'address',
+                name: 'owner',
+                type: 'address',
+            },
         ],
         name: 'ERC1155MissingApprovalForAll',
-        type: 'error',
-    },
-    {
-        inputs: [
-            { internalType: 'uint256', name: 'numerator', type: 'uint256' },
-            { internalType: 'uint256', name: 'denominator', type: 'uint256' },
-        ],
-        name: 'ERC2981InvalidDefaultRoyalty',
-        type: 'error',
-    },
-    {
-        inputs: [
-            { internalType: 'address', name: 'receiver', type: 'address' },
-        ],
-        name: 'ERC2981InvalidDefaultRoyaltyReceiver',
-        type: 'error',
-    },
-    {
-        inputs: [
-            { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-            { internalType: 'uint256', name: 'numerator', type: 'uint256' },
-            { internalType: 'uint256', name: 'denominator', type: 'uint256' },
-        ],
-        name: 'ERC2981InvalidTokenRoyalty',
-        type: 'error',
-    },
-    {
-        inputs: [
-            { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-            { internalType: 'address', name: 'receiver', type: 'address' },
-        ],
-        name: 'ERC2981InvalidTokenRoyaltyReceiver',
-        type: 'error',
-    },
-    {
-        inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
-        name: 'OwnableInvalidOwner',
-        type: 'error',
-    },
-    {
-        inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
-        name: 'OwnableUnauthorizedAccount',
         type: 'error',
     },
     {
@@ -121,6 +133,12 @@ const contractABI = [
     },
     {
         anonymous: false,
+        inputs: [],
+        name: 'CollectionUpdate',
+        type: 'event',
+    },
+    {
+        anonymous: false,
         inputs: [
             {
                 indexed: true,
@@ -136,6 +154,92 @@ const contractABI = [
             },
         ],
         name: 'OwnershipTransferred',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'uint256',
+                name: 'tokenId',
+                type: 'uint256',
+            },
+            {
+                components: [
+                    {
+                        internalType: 'bool',
+                        name: 'isTokenSaleActive',
+                        type: 'bool',
+                    },
+                    {
+                        internalType: 'address',
+                        name: 'currencyAddress',
+                        type: 'address',
+                    },
+                    {
+                        internalType: 'uint256',
+                        name: 'tokenCost',
+                        type: 'uint256',
+                    },
+                    {
+                        internalType: 'uint256',
+                        name: 'maxSupply',
+                        type: 'uint256',
+                    },
+                    {
+                        internalType: 'string',
+                        name: 'tokenUri',
+                        type: 'string',
+                    },
+                ],
+                indexed: false,
+                internalType: 'struct RebelMint_v0.tokenData',
+                name: 'token',
+                type: 'tuple',
+            },
+        ],
+        name: 'TokenDeleted',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                components: [
+                    {
+                        internalType: 'bool',
+                        name: 'isTokenSaleActive',
+                        type: 'bool',
+                    },
+                    {
+                        internalType: 'address',
+                        name: 'currencyAddress',
+                        type: 'address',
+                    },
+                    {
+                        internalType: 'uint256',
+                        name: 'tokenCost',
+                        type: 'uint256',
+                    },
+                    {
+                        internalType: 'uint256',
+                        name: 'maxSupply',
+                        type: 'uint256',
+                    },
+                    {
+                        internalType: 'string',
+                        name: 'tokenUri',
+                        type: 'string',
+                    },
+                ],
+                indexed: false,
+                internalType: 'struct RebelMint_v0.tokenData',
+                name: 'token',
+                type: 'tuple',
+            },
+        ],
+        name: 'TokenUpdate',
         type: 'event',
     },
     {
@@ -232,96 +336,52 @@ const contractABI = [
         type: 'event',
     },
     {
-        inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
         name: 'allTokenData',
         outputs: [
-            { internalType: 'bool', name: 'isTokenSaleActive', type: 'bool' },
-            { internalType: 'uint256', name: 'tokenCost', type: 'uint256' },
-            { internalType: 'uint256', name: 'maxSupply', type: 'uint256' },
-            { internalType: 'string', name: 'tokenUri', type: 'string' },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [
-            { internalType: 'address', name: 'account', type: 'address' },
-            { internalType: 'uint256', name: 'id', type: 'uint256' },
-        ],
-        name: 'balanceOf',
-        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [
-            { internalType: 'address[]', name: 'accounts', type: 'address[]' },
-            { internalType: 'uint256[]', name: 'ids', type: 'uint256[]' },
-        ],
-        name: 'balanceOfBatch',
-        outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
-        name: 'closeSaleAndCapSupply',
-        outputs: [],
-        stateMutability: 'nonpayable',
-        type: 'function',
-    },
-    {
-        inputs: [],
-        name: 'contractDescription',
-        outputs: [{ internalType: 'string', name: '', type: 'string' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
-        name: 'exists',
-        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [],
-        name: 'fundsReceiver',
-        outputs: [{ internalType: 'address', name: '', type: 'address' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [],
-        name: 'getContractData',
-        outputs: [
-            { internalType: 'string', name: '', type: 'string' },
             {
-                components: [
-                    {
-                        internalType: 'bool',
-                        name: 'isTokenSaleActive',
-                        type: 'bool',
-                    },
-                    {
-                        internalType: 'uint256',
-                        name: 'tokenCost',
-                        type: 'uint256',
-                    },
-                    {
-                        internalType: 'uint256',
-                        name: 'maxSupply',
-                        type: 'uint256',
-                    },
-                    {
-                        internalType: 'string',
-                        name: 'tokenUri',
-                        type: 'string',
-                    },
-                ],
-                internalType: 'struct OpenMintTest.tokenData[]',
+                internalType: 'bool',
+                name: 'isTokenSaleActive',
+                type: 'bool',
+            },
+            {
+                internalType: 'address',
+                name: 'currencyAddress',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'tokenCost',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'maxSupply',
+                type: 'uint256',
+            },
+            {
+                internalType: 'string',
+                name: 'tokenUri',
+                type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'artistName',
+        outputs: [
+            {
+                internalType: 'string',
                 name: '',
-                type: 'tuple[]',
+                type: 'string',
             },
         ],
         stateMutability: 'view',
@@ -329,19 +389,316 @@ const contractABI = [
     },
     {
         inputs: [
-            { internalType: 'address', name: 'account', type: 'address' },
-            { internalType: 'address', name: 'operator', type: 'address' },
+            {
+                internalType: 'address',
+                name: 'account',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
         ],
-        name: 'isApprovedForAll',
-        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+        name: 'balanceOf',
+        outputs: [
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            { internalType: 'address', name: 'account', type: 'address' },
-            { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-            { internalType: 'uint256', name: 'amount', type: 'uint256' },
+            {
+                internalType: 'address[]',
+                name: 'accounts',
+                type: 'address[]',
+            },
+            {
+                internalType: 'uint256[]',
+                name: 'ids',
+                type: 'uint256[]',
+            },
+        ],
+        name: 'balanceOfBatch',
+        outputs: [
+            {
+                internalType: 'uint256[]',
+                name: '',
+                type: 'uint256[]',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'account',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+            },
+        ],
+        name: 'burn',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'account',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256[]',
+                name: 'ids',
+                type: 'uint256[]',
+            },
+            {
+                internalType: 'uint256[]',
+                name: 'values',
+                type: 'uint256[]',
+            },
+        ],
+        name: 'burnBatch',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'collectionDescription',
+        outputs: [
+            {
+                internalType: 'string',
+                name: '',
+                type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'collectionName',
+        outputs: [
+            {
+                internalType: 'string',
+                name: '',
+                type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'contractVersion',
+        outputs: [
+            {
+                internalType: 'uint8',
+                name: '',
+                type: 'uint8',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'tokenCost',
+                type: 'uint256',
+            },
+            {
+                internalType: 'address',
+                name: 'currencyAddress',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'maxSupply',
+                type: 'uint256',
+            },
+            {
+                internalType: 'string',
+                name: 'tokenUri',
+                type: 'string',
+            },
+        ],
+        name: 'createToken',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'deleteLastUnmintedToken',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+        ],
+        name: 'exists',
+        outputs: [
+            {
+                internalType: 'bool',
+                name: '',
+                type: 'bool',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'fundsReceiver',
+        outputs: [
+            {
+                internalType: 'address',
+                name: '',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'getAllTokenDataJSON',
+        outputs: [
+            {
+                internalType: 'string',
+                name: '',
+                type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'getCollectionAndTokenDataJSON',
+        outputs: [
+            {
+                internalType: 'string',
+                name: '',
+                type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'getCollectionDataJSON',
+        outputs: [
+            {
+                internalType: 'string',
+                name: '',
+                type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+        ],
+        name: 'getSingleTokenDataJSON',
+        outputs: [
+            {
+                internalType: 'string',
+                name: '',
+                type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'getTokenCount',
+        outputs: [
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'account',
+                type: 'address',
+            },
+            {
+                internalType: 'address',
+                name: 'operator',
+                type: 'address',
+            },
+        ],
+        name: 'isApprovedForAll',
+        outputs: [
+            {
+                internalType: 'bool',
+                name: '',
+                type: 'bool',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'to',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+            },
         ],
         name: 'mint',
         outputs: [],
@@ -351,7 +708,13 @@ const contractABI = [
     {
         inputs: [],
         name: 'owner',
-        outputs: [{ internalType: 'address', name: '', type: 'address' }],
+        outputs: [
+            {
+                internalType: 'address',
+                name: '',
+                type: 'address',
+            },
+        ],
         stateMutability: 'view',
         type: 'function',
     },
@@ -363,25 +726,74 @@ const contractABI = [
         type: 'function',
     },
     {
-        inputs: [
-            { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-            { internalType: 'uint256', name: 'salePrice', type: 'uint256' },
-        ],
-        name: 'royaltyInfo',
+        inputs: [],
+        name: 'royaltyBPS',
         outputs: [
-            { internalType: 'address', name: '', type: 'address' },
-            { internalType: 'uint256', name: '', type: 'uint256' },
+            {
+                internalType: 'uint96',
+                name: '',
+                type: 'uint96',
+            },
         ],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            { internalType: 'address', name: 'from', type: 'address' },
-            { internalType: 'address', name: 'to', type: 'address' },
-            { internalType: 'uint256[]', name: 'ids', type: 'uint256[]' },
-            { internalType: 'uint256[]', name: 'values', type: 'uint256[]' },
-            { internalType: 'bytes', name: 'data', type: 'bytes' },
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'salePrice',
+                type: 'uint256',
+            },
+        ],
+        name: 'royaltyInfo',
+        outputs: [
+            {
+                internalType: 'address',
+                name: '',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'from',
+                type: 'address',
+            },
+            {
+                internalType: 'address',
+                name: 'to',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256[]',
+                name: 'ids',
+                type: 'uint256[]',
+            },
+            {
+                internalType: 'uint256[]',
+                name: 'values',
+                type: 'uint256[]',
+            },
+            {
+                internalType: 'bytes',
+                name: 'data',
+                type: 'bytes',
+            },
         ],
         name: 'safeBatchTransferFrom',
         outputs: [],
@@ -390,11 +802,31 @@ const contractABI = [
     },
     {
         inputs: [
-            { internalType: 'address', name: 'from', type: 'address' },
-            { internalType: 'address', name: 'to', type: 'address' },
-            { internalType: 'uint256', name: 'id', type: 'uint256' },
-            { internalType: 'uint256', name: 'value', type: 'uint256' },
-            { internalType: 'bytes', name: 'data', type: 'bytes' },
+            {
+                internalType: 'address',
+                name: 'from',
+                type: 'address',
+            },
+            {
+                internalType: 'address',
+                name: 'to',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+            },
+            {
+                internalType: 'bytes',
+                name: 'data',
+                type: 'bytes',
+            },
         ],
         name: 'safeTransferFrom',
         outputs: [],
@@ -403,10 +835,115 @@ const contractABI = [
     },
     {
         inputs: [
-            { internalType: 'address', name: 'operator', type: 'address' },
-            { internalType: 'bool', name: 'approved', type: 'bool' },
+            {
+                internalType: 'address',
+                name: 'operator',
+                type: 'address',
+            },
+            {
+                internalType: 'bool',
+                name: 'approved',
+                type: 'bool',
+            },
         ],
         name: 'setApprovalForAll',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'string',
+                name: '_collectionName',
+                type: 'string',
+            },
+            {
+                internalType: 'string',
+                name: '_artistName',
+                type: 'string',
+            },
+            {
+                internalType: 'string',
+                name: '_collectionDescription',
+                type: 'string',
+            },
+            {
+                internalType: 'address',
+                name: '_fundsReceiver',
+                type: 'address',
+            },
+            {
+                internalType: 'uint96',
+                name: '_royaltyBPS',
+                type: 'uint96',
+            },
+        ],
+        name: 'setCollectionData',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'bytes4',
+                name: 'interfaceId',
+                type: 'bytes4',
+            },
+        ],
+        name: 'supportsInterface',
+        outputs: [
+            {
+                internalType: 'bool',
+                name: '',
+                type: 'bool',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'totalSupply',
+        outputs: [
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+        ],
+        name: 'totalSupply',
+        outputs: [
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'newOwner',
+                type: 'address',
+            },
+        ],
+        name: 'transferOwnership',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
@@ -418,68 +955,111 @@ const contractABI = [
                 name: '_fundsReceiver',
                 type: 'address',
             },
-            { internalType: 'uint96', name: 'royaltyBPS', type: 'uint96' },
+            {
+                internalType: 'uint96',
+                name: '_royaltyBPS',
+                type: 'uint96',
+            },
         ],
-        name: 'setFundsReceiver',
+        name: 'updateFundsReceiverAndRoyaltyBPS',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
     },
     {
         inputs: [
-            { internalType: 'uint256', name: 'tokenCost', type: 'uint256' },
-            { internalType: 'uint256', name: 'maxSupply', type: 'uint256' },
-            { internalType: 'string', name: 'tokenUri', type: 'string' },
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'tokenCost',
+                type: 'uint256',
+            },
+            {
+                internalType: 'address',
+                name: 'currencyAddress',
+                type: 'address',
+            },
         ],
-        name: 'setupTokenData',
+        name: 'updateTokenCostAndCurrency',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
     },
     {
         inputs: [
-            { internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' },
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'bool',
+                name: 'isTokenSaleActive',
+                type: 'bool',
+            },
         ],
-        name: 'supportsInterface',
-        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [],
-        name: 'totalSupply',
-        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
-        name: 'totalSupply',
-        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [
-            { internalType: 'address', name: 'newOwner', type: 'address' },
-        ],
-        name: 'transferOwnership',
+        name: 'updateTokenSaleStatus',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
     },
     {
-        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'newSupply',
+                type: 'uint256',
+            },
+        ],
+        name: 'updateTokenSupply',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'string',
+                name: 'tokenUri',
+                type: 'string',
+            },
+        ],
+        name: 'updateTokenUri',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+        ],
         name: 'uri',
-        outputs: [{ internalType: 'string', name: '', type: 'string' }],
+        outputs: [
+            {
+                internalType: 'string',
+                name: '',
+                type: 'string',
+            },
+        ],
         stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [],
-        name: 'withdraw',
-        outputs: [],
-        stateMutability: 'nonpayable',
         type: 'function',
     },
 ] as const

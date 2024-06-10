@@ -4,6 +4,7 @@ export interface Web3ModalProviderProps {
 }
 export interface saleInfoStruct {
     isTokenSaleActive: boolean
+    currentSupply: string | number
     maxSupply: string | number
     totalSupply: string | number
     tokenCost: number
@@ -13,6 +14,9 @@ export interface traitStruct {
     trait_type: string
     value: string | number
 }
+export interface currencyStruct {
+    symbol: string
+}
 export interface tokenStruct {
     name: string
     created_by?: string
@@ -21,6 +25,13 @@ export interface tokenStruct {
     image: string
     animation_url?: string
     attributes?: [traitStruct]
+    is_token_sale_active: boolean
+    max_supply: string | number
+    current_supply: string | number
+    token_cost: number
+    uri: string
+    currency_address?: string
+    currency_details?: currencyStruct
 }
 export interface projectStruct {
     title: string
@@ -32,14 +43,13 @@ export interface projectStruct {
 }
 
 export interface galleryProps {
-    allTokenSaleInfo: [saleInfoStruct]
+    allTokens: [tokenStruct]
     tokens: [tokenStruct]
     setSelectionIndex: (p: number) => void
     selectionIndex: number
 }
 export interface CardProps {
     token: tokenStruct
-    saleInfo: saleInfoStruct
     tokenIndex: number
     setSelectionIndex: (p: number) => void
     selectionIndex: number

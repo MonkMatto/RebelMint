@@ -13,12 +13,15 @@ export const RebelMintControls = ({
     selection,
     selectionIndex,
 }: ControlProps) => {
-    const { tokenCost, maxSupply, isTokenSaleActive } = selection
-        ? selection.saleInfo
-        : null
-    const { name, totalSupply } = selection ? selection.token : null
-    const maxCount = selection ? Number(maxSupply) - Number(totalSupply) : 0
-    const { writeContractAsync, data: hash, isPending } = useWriteContract()
+    const {
+        token_cost,
+        max_supply,
+        is_token_sale_active,
+        name,
+        current_supply,
+    } = selection ? selection : null
+    const maxCount = selection ? Number(max_supply) - Number(current_supply) : 0
+    const { writeContractAsync, data: hash } = useWriteContract()
     const { isLoading: isConfirming, isSuccess: isConfirmed } =
         useWaitForTransactionReceipt({
             hash,
@@ -29,15 +32,14 @@ export const RebelMintControls = ({
     const [count, setCount] = useState(1)
     const minusDisabled = count <= 1 ? true : false
     const plusDisabled = count >= (maxCount ? maxCount : 999999) ? true : false
-    const valueInEth = Number(
-        Number(tokenCost) / 1000000000000000000 < 0.000001
+    const valueInEth = Number(token_cost) / 1000000000000000000
+    const costToDisplay =
+        Number(token_cost) / 1000000000000000000 < 0.000001
             ? '< 0.000001'
-            : Number(tokenCost) / 1000000000000000000
-    )
-    const costToDisplay = Math.round(valueInEth * count * 1000000) / 1000000
+            : Number(token_cost) / 1000000000000000000
 
     console.log('isTokenSaleActive')
-    console.log(isTokenSaleActive)
+    console.log(is_token_sale_active)
 
     const handleMint = async () => {
         try {
@@ -50,7 +52,7 @@ export const RebelMintControls = ({
                     BigInt(selectionIndex),
                     BigInt(count),
                 ],
-                value: BigInt(tokenCost),
+                value: BigInt(token_cost * count),
             })
             console.log('Transaction sent successfully')
             console.log(hash)
@@ -85,7 +87,7 @@ export const RebelMintControls = ({
                 </button>
             </div>
         )
-    } else if (!isTokenSaleActive) {
+    } else if (!is_token_sale_active) {
         // Token Sold Out
         return (
             <div id="RM-controls" className="flex w-full justify-center gap-5">

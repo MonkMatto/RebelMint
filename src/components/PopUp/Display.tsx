@@ -8,8 +8,7 @@ export const PopUp = ({
     setSelectionIndex = () => {},
     numTokens,
 }: DisplayProps) => {
-    const { name, image, description, attributes, animation_url } =
-        selection.token
+    const { name, image, description, attributes, animation_url } = selection
     const style = {
         '--image-url': ` url(${image})`,
     } as React.CSSProperties
