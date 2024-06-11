@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    mode: 'jit',
     content: [
         './src/**/*.{html,js,jsx,tsx,ts}',
         './src/components/**/*.{html,js,jsx,tsx,ts}',
@@ -9,9 +10,6 @@ export default {
         extend: {
             fontFamily: {
                 satoshi: ['Satoshi'],
-            },
-            containers: {
-                '2xs': '16rem',
             },
             colors: {
                 textcol: '#ffffff',

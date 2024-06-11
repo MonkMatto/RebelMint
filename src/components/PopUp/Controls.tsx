@@ -13,15 +13,24 @@ export const RebelMintControls = ({
     selection,
     selectionIndex,
 }: ControlProps) => {
-    const { token_cost, max_supply, is_token_sale_active, current_supply } =
-        selection
-            ? selection
-            : {
-                  token_cost: 0,
-                  max_supply: 0,
-                  is_token_sale_active: false,
-                  current_supply: 0,
-              }
+    const {
+        token_cost,
+        max_supply,
+        is_token_sale_active,
+        current_supply,
+        currency_details = {
+            symbol: 'ETH',
+            name: 'Ethereum',
+            decimals: BigInt(18),
+        },
+    } = selection
+        ? selection
+        : {
+              token_cost: 0,
+              max_supply: 0,
+              is_token_sale_active: false,
+              current_supply: 0,
+          }
     const maxCount = selection ? Number(max_supply) - Number(current_supply) : 0
     const { writeContractAsync, data: hash } = useWriteContract()
     const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -34,8 +43,14 @@ export const RebelMintControls = ({
     const [count, setCount] = useState(1)
     const minusDisabled = count <= 1 ? true : false
     const plusDisabled = count >= (maxCount ? maxCount : 999999) ? true : false
-    const valueInEth = Number(token_cost) / 1000000000000000000
-    const costToDisplay = valueInEth < 0.000001 ? '< 0.000001' : valueInEth
+    //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
+    const costInCurrency =
+        currency_details.symbol == 'ETH'
+            ? BigInt(token_cost) /
+              BigInt(10) ** BigInt(currency_details.decimals)
+            : token_cost
+    const costToDisplay =
+        costInCurrency < 0.000001 ? '< 0.000001' : costInCurrency
 
     console.log('isTokenSaleActive')
     console.log(is_token_sale_active)
@@ -51,7 +66,10 @@ export const RebelMintControls = ({
                     BigInt(selectionIndex),
                     BigInt(count),
                 ],
-                value: BigInt(token_cost * count),
+                value:
+                    currency_details.symbol == 'ETH'
+                        ? BigInt(token_cost * count)
+                        : BigInt(0),
             })
             console.log('Transaction sent successfully')
             console.log(hash)
@@ -166,7 +184,7 @@ export const RebelMintControls = ({
                         onClick={handleMint}
                     >
                         {'Mint ' + (count ? count : '1')}
-                        <p>{costToDisplay + ' ' + 'ETH'}</p>
+                        <p>{costToDisplay + ' ' + currency_details.symbol}</p>
                     </button>
 
                     <button

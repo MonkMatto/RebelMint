@@ -1,4 +1,5 @@
 import { RMTokenCard } from './TokenCard'
+import '../../output.css'
 import {
     galleryProps,
     tokenStruct,

@@ -14,18 +14,30 @@ export const RMTokenCard = ({
             max_supply,
             current_supply,
             token_cost,
-            currency_address,
+            currency_details,
         } = token
-        const currencySymbol =
-            currency_address == '0x0000000000000000000000000000000000000000'
-                ? ' ETH'
-                : ' TEMP'
+
+        console.log(token.currency_details.symbol)
+
         const creator = created_by ? created_by : '...'
-        // const currency = UseTokenParameters(token.currency_address)
+
+        //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
+        const costToSend =
+            currency_details.symbol == 'ETH'
+                ? Number(
+                      BigInt(token_cost) *
+                          BigInt(10) ** BigInt(currency_details.decimals)
+                  )
+                : token_cost
+        console.log(costToSend)
+        const costInCurrency =
+            currency_details.symbol == 'ETH'
+                ? BigInt(token_cost) /
+                  BigInt(10) ** BigInt(currency_details.decimals)
+                : token_cost
         const costToDisplay =
-            Number(token_cost) / 1000000000000000000 < 0.000001
-                ? '< 0.000001'
-                : Number(token_cost) / 1000000000000000000
+            costInCurrency < 0.000001 ? '< 0.000001' : costInCurrency
+        console.log(costToDisplay)
 
         const supplyIndicator =
             current_supply && max_supply
@@ -56,7 +68,8 @@ export const RMTokenCard = ({
                         <div className="flex flex-wrap justify-between align-middle">
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
-                                    {costToDisplay.toString() + currencySymbol}
+                                    {costToDisplay.toString() +
+                                        currency_details.symbol}
                                 </p>
                             </div>
                             <p className="text-sm">{supplyIndicator}</p>
@@ -85,7 +98,8 @@ export const RMTokenCard = ({
                         <div className="flex flex-wrap justify-between align-middle">
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
-                                    {costToDisplay.toString() + currencySymbol}
+                                    {costToDisplay.toString() +
+                                        currency_details.symbol}
                                 </p>
                             </div>
                             <p className="text-sm">{supplyIndicator}</p>

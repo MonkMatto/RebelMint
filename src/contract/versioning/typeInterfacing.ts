@@ -31,7 +31,7 @@ export interface tokenStruct {
     token_cost: number
     uri: string
     currency_address?: string
-    currency_details?: currencyStruct
+    currency_details: currencyStruct
 }
 export interface projectStruct {
     title: string
@@ -54,10 +54,6 @@ export interface CardProps {
     setSelectionIndex: (p: number) => void
     selectionIndex: number
 }
-export interface selectionStruct {
-    saleInfo: saleInfoStruct
-    token: tokenStruct
-}
 export interface ControlProps {
     contractAddress: `0x${string}`
     selection: tokenStruct
@@ -72,5 +68,6 @@ export interface DisplayProps {
 }
 export interface currencyStruct {
     symbol: string
-    address: string
+    decimals: number
+    name: string
 }

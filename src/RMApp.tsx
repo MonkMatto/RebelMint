@@ -1,6 +1,7 @@
 import './output.css'
 
 import { useEffect, useState } from 'react'
+
 import RebelMintInfo from './components/ProjectInfo'
 import contractABI from './contract/abi'
 import { useReadContract } from 'wagmi'
@@ -10,15 +11,26 @@ import {
     currencyStruct,
     tokenStruct,
 } from './contract/versioning/typeInterfacing'
+import { useEthersProvider } from './contract/ethers'
+import { ethers } from 'ethers'
 
 interface RebelMintProps {
     contractAddress?: string
 }
 
+const ERC20_ABI = [
+    'function name() view returns (string)',
+    'function symbol() view returns (string)',
+    'function decimals() view returns (uint8)',
+]
+
 export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
+    // const provider = await web3Modal.connect()
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
+
+    const provider = useEthersProvider()
 
     const [selectionIndex, setSelectionIndex] = useState<number>(-1)
     const validContractAddress =
@@ -60,7 +72,20 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
         }
 
         const fetchCurrencyDetails = async (currencyAddress: string) => {
-            return { symbol: 'ETH', address: currencyAddress }
+            const contract = new ethers.Contract(
+                currencyAddress,
+                ERC20_ABI,
+                provider
+            )
+            const name = await contract.name()
+            const symbol = await contract.symbol()
+            const decimals = await contract.decimals()
+            return {
+                name: name,
+                symbol: symbol,
+                decimals: decimals,
+            }
+            // return { symbol: 'ETH', address: currencyAddress }
         }
 
         const fetchAllTokens = async () => {
@@ -78,15 +103,27 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                     )[] = await Promise.all(
                         results.map(async (token, index) => {
                             try {
-                                if (project.tokens[index].currency_address) {
+                                if (
+                                    project.tokens[index].currency_address &&
+                                    project.tokens[index].currency_address !=
+                                        '0x0000000000000000000000000000000000000000'
+                                ) {
                                     const currency_details =
                                         await fetchCurrencyDetails(
                                             project.tokens[index]
                                                 .currency_address
                                         )
+                                    console.log(currency_details)
                                     return { ...token, currency_details }
-                                } else {
-                                    return token
+                                } else if (
+                                    project.tokens[index].currency_address
+                                ) {
+                                    const currency_details = {
+                                        name: 'Ethereum',
+                                        symbol: 'ETH',
+                                        decimals: BigInt(18),
+                                    }
+                                    return { ...token, currency_details }
                                 }
                             } catch (error: any) {
                                 throw new Error(
@@ -146,7 +183,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     return (
         <div
             id="RM-container"
-            className="@container bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-start bg-cover bg-center p-2 text-xl"
+            className="@container size bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-start bg-cover bg-center p-2 text-xl"
         >
             <ShowPopUp />
             <div
@@ -156,12 +193,12 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                 <w3m-button balance="hide" />
             </div>
             <RebelMintInfo project={project} />
-            {tokens && tokens[0] ? (
+            {allTokens && allTokens[0] && allTokens[0].currency_details ? (
                 <RMGallery
                     allTokens={allTokens}
                     selectionIndex={selectionIndex}
                     setSelectionIndex={setSelectionIndex}
-                    tokens={tokens as [tokenStruct]}
+                    tokens={allTokens as [tokenStruct]}
                 />
             ) : (
                 <></>
