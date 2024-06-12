@@ -156,17 +156,16 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     console.log('Final tokens array with all info:')
     console.log(allTokens)
 
-    const selection: tokenStruct =
-        tokens != null && tokens[0] && selectionIndex >= 0
-            ? allTokens[selectionIndex]
-            : {
-                  name: '',
-                  is_token_sale_active: false,
-                  max_supply: 0,
-                  token_cost: 0,
-                  uri: '',
-                  decimals: '18',
-              }
+    const selection: tokenStruct = allTokens[selectionIndex]
+        ? allTokens[selectionIndex]
+        : {
+              name: '',
+
+              max_supply: 0,
+              token_cost: 0,
+              uri: '',
+              decimals: '18',
+          }
 
     const ShowPopUp = () => {
         if (selection && selectionIndex >= 0 && contractAddress) {
