@@ -15,9 +15,13 @@ const OpenMintInfo = ({ project }: InfoProps) => {
             id="OM-info"
             className="relative h-fit w-full rounded-lg p-12 duration-200"
         >
-            <h1 className="mb-2 text-5xl font-extrabold">{title}</h1>
-            <h3 className="mb-5 text-3xl font-bold">{'by ' + creator}</h3>
-            <p className="bg-bgcol absolute h-10 max-h-52 w-full truncate text-wrap duration-200 hover:z-10 hover:h-fit hover:overflow-y-auto">
+            <h1 className="@5xl:text-5xl @3xl:text-3xl @lg:text-xl @sm:text-md 6xl mb-0 font-extrabold">
+                {title}
+            </h1>
+            <h3 className="@5xl:text-3xl @3xl:text-xl @lg:text-lg @sm:text-sm font-regular mb-5">
+                {'by ' + creator}
+            </h3>
+            <p className="bg-bgcol @5xl:text-2xl @3xl:text-lg @sm:text-sm absolute h-10 max-h-52 w-fit truncate text-wrap duration-200 hover:z-10 hover:h-fit hover:overflow-y-auto">
                 {desc}
             </p>
         </div>

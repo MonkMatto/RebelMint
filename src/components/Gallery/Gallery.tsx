@@ -11,7 +11,7 @@ export const RMGallery = ({
     selectionIndex,
 }: galleryProps) => {
     return (
-        <div className="grid h-fit w-full grid-cols-1 justify-items-center gap-3 overflow-y-auto p-12 align-middle duration-200 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        <div className="@sm:grid-cols-1 @md:grid-cols-1 @xl:grid-cols-2 @3xl:grid-cols-3 @5xl:grid-cols-4 @7xl:grid-cols-5 grid h-fit w-full justify-items-center gap-3 overflow-y-auto p-12 align-middle duration-200">
             {allTokens &&
                 allTokens.map((a: tokenStruct, index: number) => (
                     <RMTokenCard
