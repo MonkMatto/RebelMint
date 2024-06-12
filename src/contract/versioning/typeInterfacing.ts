@@ -32,6 +32,7 @@ export interface tokenStruct {
     uri: string
     currency_address?: string
     currency_details: currencyStruct
+    decimals: string
 }
 export interface projectStruct {
     title: string

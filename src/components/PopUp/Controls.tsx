@@ -15,6 +15,7 @@ export const RebelMintControls = ({
 }: ControlProps) => {
     const {
         token_cost,
+        decimals,
         max_supply,
         is_token_sale_active,
         current_supply,
@@ -43,12 +44,10 @@ export const RebelMintControls = ({
     const [count, setCount] = useState(1)
     const minusDisabled = count <= 1 ? true : false
     const plusDisabled = count >= (maxCount ? maxCount : 999999) ? true : false
-    //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
-    const costInCurrency =
-        currency_details.symbol == 'ETH'
-            ? BigInt(token_cost) /
-              BigInt(10) ** BigInt(currency_details.decimals)
-            : token_cost
+
+    //For Contract v0, ETH token cost is wei, as costToSend
+    // While erc20 token cost is in total units, as costToDisplay
+    const costInCurrency = BigInt(token_cost) / BigInt(10) ** BigInt(decimals)
     const costToDisplay =
         costInCurrency < 0.000001 ? '< 0.000001' : costInCurrency
 

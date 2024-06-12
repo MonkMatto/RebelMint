@@ -168,14 +168,19 @@ const contractABI = [
             {
                 components: [
                     {
+                        internalType: 'address',
+                        name: 'currencyAddress',
+                        type: 'address',
+                    },
+                    {
                         internalType: 'bool',
                         name: 'isTokenSaleActive',
                         type: 'bool',
                     },
                     {
-                        internalType: 'address',
-                        name: 'currencyAddress',
-                        type: 'address',
+                        internalType: 'uint8',
+                        name: 'decimals',
+                        type: 'uint8',
                     },
                     {
                         internalType: 'uint256',
@@ -208,14 +213,19 @@ const contractABI = [
             {
                 components: [
                     {
+                        internalType: 'address',
+                        name: 'currencyAddress',
+                        type: 'address',
+                    },
+                    {
                         internalType: 'bool',
                         name: 'isTokenSaleActive',
                         type: 'bool',
                     },
                     {
-                        internalType: 'address',
-                        name: 'currencyAddress',
-                        type: 'address',
+                        internalType: 'uint8',
+                        name: 'decimals',
+                        type: 'uint8',
                     },
                     {
                         internalType: 'uint256',
@@ -346,14 +356,19 @@ const contractABI = [
         name: 'allTokenData',
         outputs: [
             {
+                internalType: 'address',
+                name: 'currencyAddress',
+                type: 'address',
+            },
+            {
                 internalType: 'bool',
                 name: 'isTokenSaleActive',
                 type: 'bool',
             },
             {
-                internalType: 'address',
-                name: 'currencyAddress',
-                type: 'address',
+                internalType: 'uint8',
+                name: 'decimals',
+                type: 'uint8',
             },
             {
                 internalType: 'uint256',

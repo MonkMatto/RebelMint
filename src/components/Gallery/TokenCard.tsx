@@ -17,8 +17,6 @@ export const RMTokenCard = ({
             currency_details,
         } = token
 
-        console.log(token.currency_details.symbol)
-
         const creator = created_by ? created_by : '...'
 
         //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
@@ -29,15 +27,11 @@ export const RMTokenCard = ({
                           BigInt(10) ** BigInt(currency_details.decimals)
                   )
                 : token_cost
-        console.log(costToSend)
+
         const costInCurrency =
-            currency_details.symbol == 'ETH'
-                ? BigInt(token_cost) /
-                  BigInt(10) ** BigInt(currency_details.decimals)
-                : token_cost
+            BigInt(token_cost) / BigInt(10) ** BigInt(currency_details.decimals)
         const costToDisplay =
             costInCurrency < 0.000001 ? '< 0.000001' : costInCurrency
-        console.log(costToDisplay)
 
         const supplyIndicator =
             current_supply && max_supply
