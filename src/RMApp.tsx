@@ -165,6 +165,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                   max_supply: 0,
                   token_cost: 0,
                   uri: '',
+                  decimals: '18',
               }
 
     const ShowPopUp = () => {
