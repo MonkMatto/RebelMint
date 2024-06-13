@@ -35,14 +35,14 @@ export const RMTokenCard = ({
             '--image-url': ` url(${image})`,
         } as React.CSSProperties
 
-        const SaleConditions = () => {
+        const SaleConditionDot = () => {
             if (is_token_sale_active) {
-                return <p className="text-sm">{supplyIndicator}</p>
+                return (
+                    <div className="ml-1 aspect-square h-2/5 rounded-full bg-green-400"></div>
+                )
             } else {
                 return (
-                    <p className="text-sm line-through decoration-red-500 decoration-2">
-                        {supplyIndicator}
-                    </p>
+                    <div className="ml-1 aspect-square h-2/5 rounded-full bg-red-400"></div>
                 )
             }
         }
@@ -103,7 +103,9 @@ export const RMTokenCard = ({
                                 </p>
                             </div>
                             <div className="flex h-5 items-center justify-end">
-                                <SaleConditions />
+                                <p className="text-sm">{supplyIndicator}</p>
+
+                                <SaleConditionDot />
                             </div>
                         </div>
                     </div>
