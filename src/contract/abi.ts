@@ -199,7 +199,7 @@ const contractABI = [
                     },
                 ],
                 indexed: false,
-                internalType: 'struct RebelMint_v0.tokenData',
+                internalType: 'struct RebelMint_v0j0.tokenData',
                 name: 'token',
                 type: 'tuple',
             },
@@ -244,7 +244,7 @@ const contractABI = [
                     },
                 ],
                 indexed: false,
-                internalType: 'struct RebelMint_v0.tokenData',
+                internalType: 'struct RebelMint_v0j0.tokenData',
                 name: 'token',
                 type: 'tuple',
             },
@@ -524,12 +524,12 @@ const contractABI = [
     },
     {
         inputs: [],
-        name: 'contractVersion',
+        name: 'contractCode',
         outputs: [
             {
-                internalType: 'uint8',
+                internalType: 'string',
                 name: '',
-                type: 'uint8',
+                type: 'string',
             },
         ],
         stateMutability: 'view',
@@ -565,6 +565,19 @@ const contractABI = [
     },
     {
         inputs: [],
+        name: 'defaultFundsReceiver',
+        outputs: [
+            {
+                internalType: 'address',
+                name: '',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
         name: 'deleteLastUnmintedToken',
         outputs: [],
         stateMutability: 'nonpayable',
@@ -584,19 +597,6 @@ const contractABI = [
                 internalType: 'bool',
                 name: '',
                 type: 'bool',
-            },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [],
-        name: 'fundsReceiver',
-        outputs: [
-            {
-                internalType: 'address',
-                name: '',
-                type: 'address',
             },
         ],
         stateMutability: 'view',
@@ -636,6 +636,25 @@ const contractABI = [
                 internalType: 'string',
                 name: '',
                 type: 'string',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+        ],
+        name: 'getFundsReceiver',
+        outputs: [
+            {
+                internalType: 'address',
+                name: '',
+                type: 'address',
             },
         ],
         stateMutability: 'view',
@@ -885,7 +904,7 @@ const contractABI = [
             },
             {
                 internalType: 'address',
-                name: '_fundsReceiver',
+                name: '_defaultFundsReceiver',
                 type: 'address',
             },
             {
@@ -895,6 +914,24 @@ const contractABI = [
             },
         ],
         name: 'setCollectionData',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'id',
+                type: 'uint256',
+            },
+            {
+                internalType: 'address',
+                name: '_fundsReceiverOverride',
+                type: 'address',
+            },
+        ],
+        name: 'setFundsReceiverOverride',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
@@ -967,7 +1004,7 @@ const contractABI = [
         inputs: [
             {
                 internalType: 'address',
-                name: '_fundsReceiver',
+                name: '_defaultFundsReceiver',
                 type: 'address',
             },
             {
@@ -976,7 +1013,7 @@ const contractABI = [
                 type: 'uint96',
             },
         ],
-        name: 'updateFundsReceiverAndRoyaltyBPS',
+        name: 'updateDefaultFundsReceiverAndRoyaltyBPS',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
