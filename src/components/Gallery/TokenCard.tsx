@@ -15,19 +15,12 @@ export const RMTokenCard = ({
             current_supply,
             token_cost,
             currency_details,
+            is_token_sale_active,
         } = token
 
         const creator = created_by ? created_by : '...'
 
         //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
-        const costToSend =
-            currency_details.symbol == 'ETH'
-                ? Number(
-                      BigInt(token_cost) *
-                          BigInt(10) ** BigInt(currency_details.decimals)
-                  )
-                : token_cost
-
         const costInCurrency =
             BigInt(token_cost) / BigInt(10) ** BigInt(currency_details.decimals)
         const costToDisplay =
@@ -41,6 +34,19 @@ export const RMTokenCard = ({
         const style = {
             '--image-url': ` url(${image})`,
         } as React.CSSProperties
+
+        const SaleConditionDot = () => {
+            if (is_token_sale_active) {
+                return (
+                    <div className="ml-1 aspect-square h-2/5 rounded-full bg-green-400"></div>
+                )
+            } else {
+                return (
+                    <div className="ml-1 aspect-square h-2/5 rounded-full bg-red-400"></div>
+                )
+            }
+        }
+
         if (tokenIndex == selectionIndex) {
             // Show that this token IS selected
             return (
@@ -96,7 +102,11 @@ export const RMTokenCard = ({
                                         currency_details.symbol}
                                 </p>
                             </div>
-                            <p className="text-sm">{supplyIndicator}</p>
+                            <div className="flex h-5 items-center justify-end">
+                                <p className="text-sm">{supplyIndicator}</p>
+
+                                <SaleConditionDot />
+                            </div>
                         </div>
                     </div>
                 </div>
