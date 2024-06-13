@@ -1,4 +1,4 @@
-import { CardProps } from '../../contract/versioning/typeInterfacing'
+import { CardProps } from '../../contract/typeInterfacing'
 
 export const RMTokenCard = ({
     token,

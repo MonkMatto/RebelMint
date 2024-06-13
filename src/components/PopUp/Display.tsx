@@ -1,5 +1,5 @@
 import { RebelMintControls } from './Controls'
-import { DisplayProps } from '../../contract/versioning/typeInterfacing'
+import { DisplayProps } from '../../contract/typeInterfacing'
 
 export const PopUp = ({
     contractAddress,
@@ -40,7 +40,7 @@ export const PopUp = ({
         if (animation_url) {
             return (
                 <div
-                    className="bg-bgcol relative flex aspect-square max-h-full w-full items-center rounded-lg md:w-1/2"
+                    className="bg-bgcol relative flex aspect-square w-full items-center rounded-lg"
                     onClick={openInNewTab}
                 >
                     <iframe
@@ -60,7 +60,7 @@ export const PopUp = ({
             )
         } else {
             return (
-                <div className="bg-bgcol relative flex aspect-square max-h-full w-full items-center rounded-lg md:w-1/2">
+                <div className="bg-bgcol relative flex aspect-square max-h-full w-full items-center rounded-lg">
                     <div
                         className="aspect-square max-h-full w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
@@ -103,19 +103,19 @@ export const PopUp = ({
                 className="bg-bghover relative flex h-4/5 w-4/5 flex-col justify-between rounded-lg p-5"
             >
                 <p
-                    className="hover:bg-cardhover bg-bghover absolute right-0 top-[-5%] z-0 aspect-[4/1] h-fit rounded-t-lg p-2 text-center hover:cursor-pointer"
+                    className="hover:bg-cardhover bg-bghover absolute right-0 top-[-5%] z-0 h-fit rounded-t-lg p-2 text-center hover:cursor-pointer"
                     onClick={() => setSelectionIndex(-1)}
                 >
                     X
                 </p>
                 <div
                     id="OM-popup-token-card"
-                    className="flex h-3/4 w-full flex-col gap-12 md:flex-row"
+                    className="@md:flex-col flex h-3/4 w-full flex-row flex-nowrap gap-12"
                 >
                     <Display />
                     <div
                         id="OM-popup-token-info"
-                        className="flex h-full flex-col justify-start md:w-1/2"
+                        className="flex h-full flex-col justify-start"
                     >
                         <h1 className="mb-8 text-center text-2xl font-bold">
                             {name}

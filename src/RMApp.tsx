@@ -8,26 +8,22 @@ import { useReadContract } from 'wagmi'
 
 import { RMGallery } from './components/Gallery/Gallery'
 import { PopUp } from './components/PopUp/Display'
-import {
-    currencyStruct,
-    tokenStruct,
-} from './contract/versioning/typeInterfacing'
+import { currencyStruct, tokenStruct } from './contract/typeInterfacing'
 import { useEthersProvider } from './contract/ethers'
 import { ethers } from 'ethers'
 
 import erc20ABI from './contract/erc20Tools/erc20ABI'
+import approvedByteCodes from './contract/bytecodes'
 interface RebelMintProps {
     contractAddress?: string
 }
 
 export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
-    // const provider = await web3Modal.connect()
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
-
     const provider = useEthersProvider()
-
+    const [byteCodeIsValid, setByteCodeIsValid] = useState(true)
     const [selectionIndex, setSelectionIndex] = useState<number>(-1)
     const validContractAddress =
         contractAddress && contractAddress.startsWith('0x')
@@ -48,14 +44,55 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
         creator: contractData ? contractData.artist_name : 'Creator',
         desc: contractData
             ? contractData.collection_description
-            : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', //   ? contractData[0]
-        //   : "This project is a project that a creator has created",
+            : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         tokens: contractData && contractData.tokens ? contractData.tokens : [],
         currency: null,
     }
 
-    // We have each token URI and need to fetch info like Token image, creator, and currency details
+    function findValueByVersionPrefix(obj: any, version: string) {
+        // Extract the prefix before "j"
+        const prefix = version.split('j')[0]
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key) && key.startsWith(prefix)) {
+                // Extract the key prefix before "j"
+                const keyPrefix = key.split('j')[0]
+                if (keyPrefix === prefix) {
+                    return obj[key]
+                }
+            }
+        }
+        return null // Return null if no matching key is found
+    }
+
+    // Actions to fire when contract is first grabbed
     useEffect(() => {
+        // Check that contract bytecode is from approved list
+        const fetchAndCompareBytecode = async () => {
+            if (provider && contractData.contract_code) {
+                const version = contractData.contract_code
+                const versionBytecode = findValueByVersionPrefix(
+                    approvedByteCodes,
+                    version
+                )
+                try {
+                    const code = await provider.getCode(
+                        contractAddress as `${string}`
+                    )
+                    console.log(code)
+
+                    console.log(versionBytecode)
+
+                    if (versionBytecode == code) {
+                        setByteCodeIsValid(true)
+                    }
+                } catch (error: any) {
+                    console.log(error.message)
+                }
+            }
+        }
+        fetchAndCompareBytecode()
+
+        // We have each token URI and need to fetch info like Token image, creator, and currency details
         const fetchDataFromURI = async (uri: string) => {
             const response = await fetch(uri)
             if (!response.ok) {
@@ -65,13 +102,13 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
             }
             return response.json()
         }
-
         const fetchCurrencyDetails = async (currencyAddress: string) => {
             const contract = new ethers.Contract(
                 currencyAddress,
                 erc20ABI,
                 provider
             )
+
             const name = await contract.name()
             const symbol = await contract.symbol()
             const decimals = await contract.decimals()
@@ -81,7 +118,6 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                 decimals: decimals,
             }
         }
-
         const fetchAllTokens = async () => {
             if (project.tokens.length > 0) {
                 try {
@@ -108,7 +144,6 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                                             project.tokens[index]
                                                 .currency_address
                                         )
-                                    console.log(currency_details)
                                     return { ...token, currency_details }
                                 } else if (
                                     project.tokens[index].currency_address
@@ -175,29 +210,41 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
             )
         }
     }
-    return (
-        <div
-            id="RM-container"
-            className="@container size bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-start bg-cover bg-center p-2 text-xl"
-        >
-            <ShowPopUp />
+
+    if (byteCodeIsValid) {
+        return (
             <div
-                id="RM-header"
-                className="flex h-fit w-full justify-end justify-self-start"
+                id="RM-container"
+                className="@container size bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-start bg-cover bg-center p-2 text-xl"
             >
-                <w3m-button balance="hide" />
+                <ShowPopUp />
+                <div
+                    id="RM-header"
+                    className="flex h-fit w-full justify-end justify-self-start"
+                >
+                    <w3m-button balance="hide" />
+                </div>
+                <RebelMintInfo project={project} />
+                {allTokens && allTokens[0] && allTokens[0].currency_details ? (
+                    <RMGallery
+                        allTokens={allTokens}
+                        selectionIndex={selectionIndex}
+                        setSelectionIndex={setSelectionIndex}
+                        tokens={allTokens as [tokenStruct]}
+                    />
+                ) : (
+                    <></>
+                )}
             </div>
-            <RebelMintInfo project={project} />
-            {allTokens && allTokens[0] && allTokens[0].currency_details ? (
-                <RMGallery
-                    allTokens={allTokens}
-                    selectionIndex={selectionIndex}
-                    setSelectionIndex={setSelectionIndex}
-                    tokens={allTokens as [tokenStruct]}
-                />
-            ) : (
-                <></>
-            )}
-        </div>
-    )
+        )
+    } else {
+        return (
+            <div
+                id="RM-container"
+                className="size bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col items-center justify-center bg-cover bg-center p-2 text-xl"
+            >
+                Warning: Contract is not RebelMint Verified
+            </div>
+        )
+    }
 }

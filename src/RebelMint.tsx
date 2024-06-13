@@ -1,6 +1,6 @@
 import './output.css'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
-import { Web3ModalProviderProps } from './contract/versioning/typeInterfacing.ts'
+import { Web3ModalProviderProps } from './contract/typeInterfacing.ts'
 
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 

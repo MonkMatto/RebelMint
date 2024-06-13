@@ -1,9 +1,6 @@
 import { RMTokenCard } from './TokenCard'
 import '../../output.css'
-import {
-    galleryProps,
-    tokenStruct,
-} from '../../contract/versioning/typeInterfacing'
+import { galleryProps, tokenStruct } from '../../contract/typeInterfacing'
 
 export const RMGallery = ({
     allTokens,
