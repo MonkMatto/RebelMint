@@ -15,19 +15,12 @@ export const RMTokenCard = ({
             current_supply,
             token_cost,
             currency_details,
+            is_token_sale_active,
         } = token
 
         const creator = created_by ? created_by : '...'
 
         //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
-        const costToSend =
-            currency_details.symbol == 'ETH'
-                ? Number(
-                      BigInt(token_cost) *
-                          BigInt(10) ** BigInt(currency_details.decimals)
-                  )
-                : token_cost
-
         const costInCurrency =
             BigInt(token_cost) / BigInt(10) ** BigInt(currency_details.decimals)
         const costToDisplay =
@@ -41,6 +34,19 @@ export const RMTokenCard = ({
         const style = {
             '--image-url': ` url(${image})`,
         } as React.CSSProperties
+
+        const SaleConditions = () => {
+            if (is_token_sale_active) {
+                return <p className="text-sm">{supplyIndicator}</p>
+            } else {
+                return (
+                    <p className="text-sm line-through decoration-red-500 decoration-2">
+                        {supplyIndicator}
+                    </p>
+                )
+            }
+        }
+
         if (tokenIndex == selectionIndex) {
             // Show that this token IS selected
             return (
@@ -96,7 +102,9 @@ export const RMTokenCard = ({
                                         currency_details.symbol}
                                 </p>
                             </div>
-                            <p className="text-sm">{supplyIndicator}</p>
+                            <div className="flex h-5 items-center justify-end">
+                                <SaleConditions />
+                            </div>
                         </div>
                     </div>
                 </div>
