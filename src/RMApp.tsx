@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import RebelMintInfo from './components/ProjectInfo'
 import contractABI from './contract/abi'
 import { useReadContract } from 'wagmi'
+
 import { RMGallery } from './components/Gallery/Gallery'
 import { PopUp } from './components/PopUp/Display'
 import {
@@ -14,15 +15,10 @@ import {
 import { useEthersProvider } from './contract/ethers'
 import { ethers } from 'ethers'
 
+import erc20ABI from './contract/erc20Tools/erc20ABI'
 interface RebelMintProps {
     contractAddress?: string
 }
-
-const ERC20_ABI = [
-    'function name() view returns (string)',
-    'function symbol() view returns (string)',
-    'function decimals() view returns (uint8)',
-]
 
 export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     // const provider = await web3Modal.connect()
@@ -58,8 +54,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
         currency: null,
     }
 
-    // We have each token URI and need to fetch info like Token image, creator,
-
+    // We have each token URI and need to fetch info like Token image, creator, and currency details
     useEffect(() => {
         const fetchDataFromURI = async (uri: string) => {
             const response = await fetch(uri)
@@ -74,7 +69,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
         const fetchCurrencyDetails = async (currencyAddress: string) => {
             const contract = new ethers.Contract(
                 currencyAddress,
-                ERC20_ABI,
+                erc20ABI,
                 provider
             )
             const name = await contract.name()
@@ -85,7 +80,6 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                 symbol: symbol,
                 decimals: decimals,
             }
-            // return { symbol: 'ETH', address: currencyAddress }
         }
 
         const fetchAllTokens = async () => {
@@ -96,7 +90,8 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                     )
                     const dataPromises = tokenUris.map(fetchDataFromURI)
                     const results = await Promise.all(dataPromises)
-                    // setTokens(results)
+
+                    // if ERC-20, grab info about the currency
                     const tokensWithCurrency: (
                         | tokenStruct
                         | { currency_details: currencyStruct }
@@ -156,16 +151,16 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
     console.log('Final tokens array with all info:')
     console.log(allTokens)
 
-    const selection: tokenStruct =
-        tokens != null && tokens[0] && selectionIndex >= 0
-            ? allTokens[selectionIndex]
-            : {
-                  name: '',
-                  is_token_sale_active: false,
-                  max_supply: 0,
-                  token_cost: 0,
-                  uri: '',
-              }
+    const selection: tokenStruct = allTokens[selectionIndex]
+        ? allTokens[selectionIndex]
+        : {
+              name: '',
+              is_token_sale_active: false,
+              max_supply: 0,
+              token_cost: 0,
+              uri: '',
+              decimals: '18',
+          }
 
     const ShowPopUp = () => {
         if (selection && selectionIndex >= 0 && contractAddress) {
