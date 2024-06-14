@@ -78,10 +78,6 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
                     const code = await provider.getCode(
                         contractAddress as `${string}`
                     )
-                    console.log(code)
-
-                    console.log(versionBytecode)
-
                     if (versionBytecode == code) {
                         setByteCodeIsValid(true)
                     }
