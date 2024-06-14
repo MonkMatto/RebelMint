@@ -7,7 +7,7 @@ import {
     useWriteContract,
 } from 'wagmi'
 import contractABI from '../../contract/abi'
-import { ControlProps } from '../../contract/versioning/typeInterfacing'
+import { ControlProps } from '../../contract/typeInterfacing'
 import erc20ABI from '../../contract/erc20Tools/erc20ABI'
 
 export const RebelMintControls = ({
