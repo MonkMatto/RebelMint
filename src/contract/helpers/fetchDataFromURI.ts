@@ -1,11 +1,15 @@
-const fetchDataFromURI = async (uri: string) => {
-    const response = await fetch(uri)
-    if (!response.ok) {
-        throw new Error(
-            `Error fetching data from ${uri}: ${response.statusText}`
-        )
+const fetchDataFromUri = async (uri: string) => {
+    try {
+        const response = await fetch(uri)
+        if (!response.ok) {
+            throw new Error(
+                `Error fetching data from ${uri}: ${response.statusText}`
+            )
+        }
+        return await response.json()
+    } catch (error: any) {
+        throw new Error(`Error fetching data from ${uri}: ${error.message}`)
     }
-    return response.json()
 }
 
-export default fetchDataFromURI
+export default fetchDataFromUri

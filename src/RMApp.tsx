@@ -5,78 +5,23 @@ import contractABI from './contract/abi'
 import Web3 from 'web3'
 import { RMGallery } from './components/Gallery/Gallery'
 import { PopUp } from './components/PopUp/Display'
-import { currencyStruct, tokenStruct } from './contract/typeInterfacing'
+import {
+    currencyStruct,
+    projectStruct,
+    tokenStruct,
+} from './contract/typeInterfacing'
 import { useEthersProvider } from './contract/ethers'
 import approvedByteCodes from './contract/bytecodes'
+import findValueByVersionPrefix from './contract/helpers/findValueByVersionPrefix'
+import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDetailsFromEndpoint'
+import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 
 interface RebelMintProps {
     contractAddress?: string
+    providerUrl: string
 }
 
-const findValueByVersionPrefix = (obj: any, version: string) => {
-    const prefix = version.split('j')[0]
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key) && key.startsWith(prefix)) {
-            const keyPrefix = key.split('j')[0]
-            if (keyPrefix === prefix) {
-                return obj[key]
-            }
-        }
-    }
-    return null
-}
-
-const fetchDataFromUri = async (uri: string) => {
-    try {
-        const response = await fetch(uri)
-        if (!response.ok) {
-            throw new Error(
-                `Error fetching data from ${uri}: ${response.statusText}`
-            )
-        }
-        return await response.json()
-    } catch (error) {
-        throw new Error(`Error fetching data from ${uri}: ${error.message}`)
-    }
-}
-
-const fetchCurrencyDetailsFromEndpoint = async (currencyAddress: string) => {
-    try {
-        const providerUrl =
-            'https://eth-sepolia.g.alchemy.com/v2/eLo2RjcL3Og5FzLml5oXcSnXRJb6ny6A'
-        const httpProvider = new Web3.providers.HttpProvider(providerUrl)
-        const web3 = new Web3(httpProvider)
-
-        const nameData = await web3.eth.call({
-            to: currencyAddress,
-            data: web3.utils.sha3('name()').substring(0, 10), // Function signature for name()
-        })
-        const symbolData = await web3.eth.call({
-            to: currencyAddress,
-            data: web3.utils.sha3('symbol()').substring(0, 10), // Function signature for symbol()
-        })
-        const decimalsData = await web3.eth.call({
-            to: currencyAddress,
-            data: web3.utils.sha3('decimals()').substring(0, 10), // Function signature for decimals()
-        })
-
-        const name = web3.utils.hexToUtf8(nameData)
-        const symbol = web3.utils.hexToUtf8(symbolData)
-        const decimals = web3.utils.hexToNumberString(decimalsData)
-
-        return {
-            name,
-            symbol,
-            decimals,
-        }
-    } catch (error) {
-        throw new Error(
-            `Error fetching currency details from ${currencyAddress}: ${error.message}`
-        )
-    }
-}
-
-const fetchAllTokens = async (project: any) => {
+const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
     if (project.tokens.length > 0) {
         const tokenUris = project.tokens.map((token: tokenStruct) => token.uri)
         const dataPromises = tokenUris.map(fetchDataFromUri)
@@ -91,7 +36,8 @@ const fetchAllTokens = async (project: any) => {
                 ) {
                     const currency_details =
                         await fetchCurrencyDetailsFromEndpoint(
-                            project.tokens[index].currency_address
+                            project.tokens[index].currency_address as string,
+                            providerUrl
                         )
                     return { ...token, currency_details }
                 } else if (project.tokens[index].currency_address) {
@@ -111,7 +57,10 @@ const fetchAllTokens = async (project: any) => {
     return []
 }
 
-export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
+export const RebelMintApp = ({
+    contractAddress,
+    providerUrl,
+}: RebelMintProps) => {
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
@@ -122,20 +71,20 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
         contractAddress && contractAddress.startsWith('0x')
             ? contractAddress
             : undefined
-    const [contractData, setContractData] = useState(null)
+    const [contractData, setContractData] = useState<any>(null)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const providerUrl =
-                    'https://eth-sepolia.g.alchemy.com/v2/eLo2RjcL3Og5FzLml5oXcSnXRJb6ny6A'
+                // const providerUrl =
+                //     'https://eth-sepolia.g.alchemy.com/v2/eLo2RjcL3Og5FzLml5oXcSnXRJb6ny6A'
                 const httpProvider = new Web3.providers.HttpProvider(
-                    providerUrl
+                    providerUrl as string
                 )
                 const web3 = new Web3(httpProvider)
                 const contract = new web3.eth.Contract(
                     contractABI,
-                    contractAddress
+                    validContractAddress
                 )
                 const result = await contract.methods
                     .getCollectionAndTokenDataJSON()
@@ -188,7 +137,7 @@ export const RebelMintApp = ({ contractAddress }: RebelMintProps) => {
         }
 
         const fetchAllTokensData = async () => {
-            const tokensData = await fetchAllTokens(project)
+            const tokensData = await fetchAllTokens(project, providerUrl)
             setTokens(tokensData)
         }
 
