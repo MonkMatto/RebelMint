@@ -55,7 +55,8 @@ export function Web3ModalProvider({ children }: Web3ModalProviderProps) {
 }
 
 interface RebelMintProps {
-    contractAddress?: string
+    contractAddress: string
+    chain: string
 }
 
 const RebelMint = ({ contractAddress }: RebelMintProps) => {
