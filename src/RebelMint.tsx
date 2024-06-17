@@ -5,10 +5,11 @@ import { Web3ModalProviderProps } from './contract/typeInterfacing.ts'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
 import { WagmiProvider } from 'wagmi'
-import { arbitrum, sepolia, base, mainnet } from 'wagmi/chains'
+import { sepolia, base, mainnet, baseSepolia } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { RebelMintApp } from './RMApp.tsx'
+import chainsData from './contract/ChainsData.ts'
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
@@ -24,7 +25,7 @@ const metadata = {
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const chains = [mainnet, sepolia, base, arbitrum] as const
+const chains = [mainnet, sepolia, base, baseSepolia] as const
 const config = defaultWagmiConfig({
     chains,
     projectId,
@@ -55,14 +56,21 @@ export function Web3ModalProvider({ children }: Web3ModalProviderProps) {
 }
 
 interface RebelMintProps {
+<<<<<<< HEAD
     contractAddress: string
     chain: string
+=======
+    contractAddress?: string
+    chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
+>>>>>>> 1e02ea49951165f9797826de47c217486a7aaaff
 }
 
-const RebelMint = ({ contractAddress }: RebelMintProps) => {
+const RebelMint = ({ contractAddress, chain }: RebelMintProps) => {
+    const { url } = chainsData[chain] || { url: '', chainID: '' }
+    console.log(`Network:` + chainsData[chain])
     return (
         <Web3ModalProvider>
-            <RebelMintApp contractAddress={contractAddress} />
+            <RebelMintApp contractAddress={contractAddress} providerUrl={url} />
         </Web3ModalProvider>
     )
 }

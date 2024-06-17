@@ -37,9 +37,8 @@ export interface projectStruct {
     title: string
     creator: string
     desc: string
-    mintPrice: number
-    allTokens: [tokenStruct]
-    imgURL: string
+    tokens: tokenStruct[]
+    currency: any
 }
 
 export interface galleryProps {
