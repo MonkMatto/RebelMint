@@ -56,13 +56,8 @@ export function Web3ModalProvider({ children }: Web3ModalProviderProps) {
 }
 
 interface RebelMintProps {
-<<<<<<< HEAD
-    contractAddress: string
-    chain: string
-=======
     contractAddress?: string
     chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
->>>>>>> 1e02ea49951165f9797826de47c217486a7aaaff
 }
 
 const RebelMint = ({ contractAddress, chain }: RebelMintProps) => {
