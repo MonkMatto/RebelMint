@@ -65,6 +65,16 @@ export interface DisplayProps {
     setSelectionIndex: (p: number) => void
     numTokens: number
 }
+export interface EditTokenProps {
+    contractAddress: string
+    selection: tokenStruct
+    selectionIndex: number
+    setSelectionIndex: (p: number) => void
+}
+export interface NewTokenProps {
+    contractAddress: string
+    setSelectionIndex: (p: number) => void
+}
 export interface currencyStruct {
     symbol: string
     decimals: number
