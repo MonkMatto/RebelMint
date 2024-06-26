@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { RebelMintApp } from './RMApp.tsx'
 import chainsData from './contract/ChainsData.ts'
+import { RebelMintTokenManagerApp } from './RMManagerApp.tsx'
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
@@ -59,6 +60,11 @@ interface RebelMintProps {
     contractAddress?: string
     chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
 }
+interface RebelMintManagerProps {
+    contractAddress?: string
+    chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
+    bypassWeb3?: boolean
+}
 
 const RebelMint = ({ contractAddress, chain }: RebelMintProps) => {
     const { url } = chainsData[chain] || { url: '', chainID: '' }
@@ -68,6 +74,34 @@ const RebelMint = ({ contractAddress, chain }: RebelMintProps) => {
             <RebelMintApp contractAddress={contractAddress} providerUrl={url} />
         </Web3ModalProvider>
     )
+}
+
+export const RebelMintTokenManager = ({
+    contractAddress,
+    chain,
+    bypassWeb3,
+}: RebelMintManagerProps) => {
+    const { url } = chainsData[chain] || { url: '', chainID: '' }
+    console.log(
+        `Network:` + chainsData[chain] ? chainsData[chain].chainID : 'undefined'
+    )
+    if (bypassWeb3) {
+        return (
+            <RebelMintTokenManagerApp
+                contractAddress={contractAddress}
+                providerUrl={url}
+            />
+        )
+    } else {
+        return (
+            <Web3ModalProvider>
+                <RebelMintTokenManagerApp
+                    contractAddress={contractAddress}
+                    providerUrl={url}
+                />
+            </Web3ModalProvider>
+        )
+    }
 }
 
 export default RebelMint
