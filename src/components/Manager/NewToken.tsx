@@ -60,26 +60,6 @@ export const NewTokenPopUp = ({
         }
     }
 
-    const toggleSale = async () => {
-        try {
-            await writeContractAsync({
-                abi: contractABI,
-                address: contractAddress as `0x${string}`,
-                functionName: 'createToken',
-                args: [
-                    BigInt(Number(form.price) * decimalMult),
-                    form.currencyAddress as `0x${string}`,
-                    BigInt(form.maxSupply),
-                    form.uri,
-                ],
-            })
-            console.log('Transaction sent successfully')
-            console.log(hash)
-        } catch (error) {
-            console.error('Error sending transaction:', error)
-        }
-    }
-
     const inputClass = 'flex-1 p-3 border-2 bg-bgcol border-textcol rounded-lg'
 
     return (
