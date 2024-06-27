@@ -108,7 +108,7 @@ export const PopUp = ({
             >
                 <div className="bg-base-800 flex flex-col">
                     <img
-                        src="close.svg"
+                        src={close}
                         className="border-base-700 h-fit w-fit self-end rounded-lg border bg-bghover p-2 text-center hover:cursor-pointer hover:bg-red-600"
                         onClick={() => setSelectionIndex(-1)}
                     />
@@ -151,7 +151,7 @@ export const PopUp = ({
                     setSelectionIndex(selectionIndex + 1)
                 }}
             >
-                <img src="right.svg" />
+                <img src={right} />
             </button>
         </div>
     )
