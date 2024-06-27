@@ -82,9 +82,11 @@ export const RebelMintTokenManager = ({
     bypassWeb3,
 }: RebelMintManagerProps) => {
     const { url } = chainsData[chain] || { url: '', chainID: '' }
-    console.log(
-        `Network:` + chainsData[chain] ? chainsData[chain].chainID : 'undefined'
-    )
+    // console.log(
+    //     `Network:` + chainsData[chain] && chainsData[chain].chainID
+    //         ? chainsData[chain].chainID
+    //         : 'undefined'
+    // )
     if (bypassWeb3) {
         return (
             <RebelMintTokenManagerApp
