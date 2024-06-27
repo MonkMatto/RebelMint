@@ -1,6 +1,7 @@
 import { useWriteContract } from 'wagmi'
 import contractABI from '../../contract/abi'
 import { EditTokenProps } from '../../contract/typeInterfacing'
+import close from './close.svg'
 
 export const EditTokenPopUp = ({
     contractAddress,
@@ -100,48 +101,53 @@ export const EditTokenPopUp = ({
             onClick={() => {
                 setSelectionIndex(-1)
             }}
-            className="absolute z-20 flex h-full w-full items-center justify-center backdrop-blur-sm"
+            className="sticky inset-0 z-20 flex h-screen w-full items-center justify-center backdrop-blur-sm"
         >
             <div
+                id="OM-popup-window"
                 onClick={(e) => {
                     e.stopPropagation()
                 }}
-                className="relative flex h-4/5 w-4/5 flex-col justify-between rounded-lg bg-bghover p-5"
+                className="bg-base-900 flex h-[75svh] w-4/5 flex-col justify-between overflow-y-auto rounded-lg p-5 lg:h-fit"
             >
-                <p
-                    className="absolute right-0 top-[-5%] z-0 h-fit rounded-t-lg bg-bghover p-2 text-center hover:cursor-pointer hover:bg-cardhover"
-                    onClick={() => setSelectionIndex(-1)}
-                >
-                    X
-                </p>
-                <div
-                    id="OM-popup-token-card"
-                    className="@md:flex-col flex h-3/4 w-full flex-row flex-nowrap gap-12"
-                >
-                    <Display />
-                    <div
-                        id="OM-popup-token-info"
-                        className="flex h-full flex-col justify-start"
-                    >
-                        <h1 className="mb-8 text-center text-2xl font-bold">
-                            {name}
-                        </h1>
-                        <p className="max-h-96 overflow-y-auto text-wrap font-light">
-                            {description}
-                        </p>
+                <div className="flex flex-col">
+                    <img
+                        src={close}
+                        className="border-base-700 bg-base-800 h-fit w-fit self-end rounded-lg border p-2 text-center hover:cursor-pointer hover:bg-red-600"
+                        onClick={() => setSelectionIndex(-1)}
+                    />
 
-                        <AllTraits />
-                    </div>
-                </div>
-                <div className="mt-5 box-border flex h-fit items-center justify-center justify-self-end">
-                    <button
-                        onClick={toggleSale}
-                        className="h-fit w-fit rounded-lg bg-textcol p-5 text-bgcol"
+                    <div
+                        id="OM-popup-token-card"
+                        className="flex h-full w-full flex-col items-center gap-12 lg:flex-row lg:items-start"
                     >
-                        {selection.is_token_sale_active
-                            ? 'Disable Token Sale'
-                            : 'Enable Token Sale'}
-                    </button>
+                        <div className="flex aspect-square w-full items-center justify-center">
+                            <Display />
+                        </div>
+                        <div
+                            id="OM-popup-token-info"
+                            className="flex h-full w-full flex-col justify-start p-4"
+                        >
+                            <h1 className="text-2lg mb-8 w-fit text-center font-bold">
+                                {name}
+                            </h1>
+                            <p className="max-h-96 text-wrap font-light">
+                                {description}
+                            </p>
+
+                            <AllTraits />
+                        </div>
+                    </div>
+                    <div className="mt-5 box-border flex h-fit justify-center justify-self-end p-4">
+                        <button
+                            onClick={toggleSale}
+                            className="h-fit w-fit rounded-lg bg-textcol p-5 text-bgcol"
+                        >
+                            {selection.is_token_sale_active
+                                ? 'Disable Token Sale'
+                                : 'Enable Token Sale'}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

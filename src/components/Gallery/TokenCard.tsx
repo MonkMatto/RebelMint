@@ -14,15 +14,28 @@ export const RMTokenCard = ({
             max_supply,
             current_supply,
             token_cost,
-            currency_details,
             is_token_sale_active,
         } = token
 
         const creator = created_by ? created_by : '...'
 
+        let currency_details
+        if (token.currency_details) {
+            currency_details = token.currency_details
+        } else {
+            currency_details = {
+                symbol: 'ETH',
+                decimals: 18,
+            }
+        }
+
         //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
+        const decimals =
+            currency_details && currency_details.decimals
+                ? currency_details.decimals
+                : 18
         const costInCurrency =
-            BigInt(token_cost) / BigInt(10) ** BigInt(currency_details.decimals)
+            BigInt(token_cost) / BigInt(10) ** BigInt(decimals)
         const costToDisplay =
             costInCurrency < 0.000001 ? '< 0.000001' : costInCurrency
 
@@ -51,7 +64,7 @@ export const RMTokenCard = ({
             // Show that this token IS selected
             return (
                 <div
-                    className="border-textcol bg-card hover:bg-cardhover box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 p-2 align-middle duration-200"
+                    className="box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol bg-card p-2 align-middle duration-200 hover:bg-cardhover"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div
@@ -69,6 +82,7 @@ export const RMTokenCard = ({
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
                                     {costToDisplay.toString() +
+                                        ' ' +
                                         currency_details.symbol}
                                 </p>
                             </div>
@@ -81,7 +95,7 @@ export const RMTokenCard = ({
             //Show that this token IS NOT selected
             return (
                 <div
-                    className="border-bgcol bg-card hover:bg-cardhover box-border flex h-full w-full flex-col justify-between rounded-lg border-2 p-2 align-middle duration-200"
+                    className="box-border flex h-full w-full flex-col justify-between rounded-lg border-2 border-bgcol bg-card p-2 align-middle duration-200 hover:bg-cardhover"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div

@@ -189,16 +189,17 @@ export const RebelMintApp = ({
         return (
             <div
                 id="RM-container"
-                className="@container size bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col justify-start bg-cover bg-center p-2 text-xl"
+                className="@container size align-center relative flex h-full w-full flex-col justify-start p-2 pt-12 font-satoshi text-xl text-textcol"
             >
-                <ShowPopUp />
                 <div
                     id="RM-header"
-                    className="flex h-fit w-full justify-end justify-self-start"
+                    className="absolute right-0 top-0 m-5 flex h-fit w-full justify-end justify-self-start md:mr-14"
                 >
                     <w3m-button balance="hide" />
                 </div>
-                <RebelMintInfo project={project} />
+                <div className="p-4 md:px-12">
+                    <RebelMintInfo project={project} />
+                </div>
                 {allTokens && allTokens[0] && allTokens[0].currency_details ? (
                     <RMGallery
                         allTokens={allTokens}
@@ -209,13 +210,14 @@ export const RebelMintApp = ({
                 ) : (
                     <></>
                 )}
+                <ShowPopUp />
             </div>
         )
     } else {
         return (
             <div
                 id="RM-container"
-                className="size bg-bgcol font-satoshi align-center text-textcol relative flex h-full w-full flex-col items-center justify-center bg-cover bg-center p-2 text-xl"
+                className="size align-center relative flex h-full w-full flex-col items-center justify-center bg-bgcol bg-cover bg-center p-2 font-satoshi text-xl text-textcol"
             >
                 Warning: Contract is not RebelMint Verified
             </div>
