@@ -16,6 +16,8 @@ import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDe
 import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 import { EditTokenPopUp } from './components/Manager/EditToken'
 
+import arrowright from './assets/arrowright.svg'
+
 interface RebelMintProps {
     contractAddress?: string
     providerUrl: string
@@ -211,19 +213,33 @@ export const RebelMintTokenManagerApp = ({
             return (
                 <div
                     id="RM-container"
-                    className="@container size align-center relative flex h-full w-full flex-col justify-start bg-bgcol bg-cover bg-center p-2 font-satoshi text-xl text-textcol"
+                    className="@container size align-center relative flex h-full w-full flex-col justify-start gap-5 p-2 font-satoshi text-xl text-textcol"
                 >
-                    <ShowEditTokenPopUp />
-                    <ShowNewTokenPopUp />
                     <div
-                        id="RM-header"
-                        className="flex h-fit w-full justify-start justify-self-start px-12"
+                        id="RM-link-to-collection"
+                        className="flex h-fit w-full gap-4"
                     >
-                        <h1>{`Managing: ${project.title}`}</h1>
+                        <div
+                            id="RM-header"
+                            className="bg-base-50 text-base-950 flex h-fit w-2/3 flex-col justify-start justify-self-start rounded-lg p-10"
+                        >
+                            <h1 className="mb-4 text-xl font-normal">
+                                Managing:
+                            </h1>
+                            <h1 className="text-3xl font-bold">{`${project.title} `}</h1>
+
+                            <h1 className="text-normal font-thin">{`by ${project.creator}`}</h1>
+                        </div>
+                        <a
+                            href={`/?contract=${contractAddress}`}
+                            target="_blank"
+                            className="bg-base-950 hover:bg-base-900 text-base-50 border-base-50 flex w-1/3 items-center justify-end rounded-lg border p-10 text-right"
+                        >
+                            View Collection Page
+                            <img className="h-full" src={arrowright} />
+                        </a>
                     </div>
-                    {allTokens &&
-                    allTokens[0] &&
-                    allTokens[0].currency_details ? (
+                    {allTokens ? (
                         <ManagerGallery
                             allTokens={allTokens}
                             selectionIndex={selectionIndex}
@@ -233,6 +249,8 @@ export const RebelMintTokenManagerApp = ({
                     ) : (
                         <></>
                     )}
+                    <ShowEditTokenPopUp />
+                    <ShowNewTokenPopUp />
                 </div>
             )
         } else {

@@ -121,7 +121,7 @@ export const RebelMintControls = ({
         return (
             <div id="RM-controls" className="flex w-full justify-center gap-5">
                 <button
-                    className="bg-bgcol hover:bg-bghover w-fit rounded-xl border-[1px] border-white p-5 duration-100 hover:scale-[102%]"
+                    className="w-fit rounded-xl border-[1px] border-white bg-bgcol p-5 duration-100 hover:scale-[102%] hover:bg-bghover"
                     onClick={() => open()}
                 >
                     Connect Wallet To Mint
@@ -148,7 +148,7 @@ export const RebelMintControls = ({
                 <button
                     id="RM-mint"
                     disabled={true}
-                    className="text-bgcol w-60 rounded-xl bg-red-200 p-5 duration-300 ease-in-out"
+                    className="w-60 rounded-xl bg-red-200 p-5 text-bgcol duration-300 ease-in-out"
                 >
                     Sale Closed
                 </button>
@@ -169,7 +169,7 @@ export const RebelMintControls = ({
                 <button
                     id="RM-mint"
                     disabled
-                    className="text-bgcol w-60 rounded-xl border-2 border-transparent bg-yellow-200 p-5 font-bold duration-300 ease-in-out"
+                    className="w-60 rounded-xl border-2 border-transparent bg-yellow-200 p-5 font-bold text-bgcol duration-300 ease-in-out"
                 >
                     Confirming...
                 </button>
@@ -188,7 +188,7 @@ export const RebelMintControls = ({
                             handleMint()
                         }
                     }}
-                    className="text-bgcol w-60 rounded-xl border-2 border-transparent bg-green-300 p-5 font-bold duration-300 ease-in-out"
+                    className="w-60 rounded-xl border-2 border-transparent bg-green-300 p-5 font-bold text-bgcol duration-300 ease-in-out"
                 >
                     {actionType === 'approval'
                         ? `Approval Successful! Mint ${count} Token${count > 1 ? 's' : ''}?`
@@ -203,7 +203,7 @@ export const RebelMintControls = ({
     const mintButton = (
         <button
             id="RM-mint"
-            className="bg-textcol text-bgcol hover:border-bgcol w-60 rounded-xl border-2 border-transparent p-5 font-bold duration-300 ease-in-out hover:invert disabled:hover:border-transparent"
+            className="w-60 rounded-xl border-2 border-transparent bg-textcol p-5 font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
             onClick={handleMint}
         >
             {mintButtonText}
@@ -226,7 +226,7 @@ export const RebelMintControls = ({
             ) : (
                 <button
                     id="RM-mint"
-                    className="bg-textcol text-bgcol hover:border-bgcol w-60 rounded-xl border-2 border-transparent p-5 font-bold duration-300 ease-in-out hover:invert disabled:hover:border-transparent"
+                    className="w-60 rounded-xl border-2 border-transparent bg-textcol p-5 font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
                     onClick={handleApproval}
                 >
                     {approveButtonText}
