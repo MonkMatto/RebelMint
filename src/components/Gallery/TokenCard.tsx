@@ -55,10 +55,6 @@ export const RMTokenCard = ({
 
         const creator = created_by ? created_by : '...'
 
-        // const decimalMult =
-        //     BigInt(10) **
-        //     BigInt(decimals ? decimals : currency_details.decimals)
-
         //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
 
         const costInCurrency = divideBigIntByPowerOf10(
@@ -101,7 +97,7 @@ export const RMTokenCard = ({
                         className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
                     />
-                    <div className="bg-base-800 flex w-full flex-col p-2">
+                    <div className="bg-base-800 flex w-full flex-col rounded-b-md p-2">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-lg">{name}</p>
                             <p className="truncate text-sm font-light">
@@ -136,7 +132,7 @@ export const RMTokenCard = ({
                         className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
                     />
-                    <div className="bg-base-800 flex w-full flex-col p-2">
+                    <div className="bg-base-800 flex w-full flex-col rounded-b-md p-2">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-lg">{name}</p>
                             <p className="truncate text-sm font-light">
