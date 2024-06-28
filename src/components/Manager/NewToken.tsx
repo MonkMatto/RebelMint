@@ -42,6 +42,7 @@ export const NewTokenPopUp = ({
         }))
     }
     const createToken = async () => {
+        console.log(BigInt(Number(form.price) * decimalMult))
         try {
             await writeContractAsync({
                 abi: contractABI,

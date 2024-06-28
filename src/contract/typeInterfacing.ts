@@ -22,6 +22,7 @@ export interface tokenStruct {
     created_by?: string
     description?: string
     external_url?: string
+    decimals?: string
     image: string
     animation_url?: string
     attributes?: [traitStruct]

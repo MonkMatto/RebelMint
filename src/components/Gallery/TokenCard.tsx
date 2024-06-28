@@ -1,5 +1,39 @@
 import { CardProps } from '../../contract/typeInterfacing'
 
+function removeTrailingZeros(num: number | BigInt | string) {
+    // Convert the number to a string
+    let str = num.toString()
+
+    // Check if the number contains a decimal point
+    if (str.indexOf('.') !== -1) {
+        // Remove trailing zeros
+        str = str.replace(/\.?0+$/, '')
+    }
+
+    return str
+}
+function divideBigIntByPowerOf10(bigIntValue: BigInt, exponent: number) {
+    // Convert BigInt to string
+    let strValue = bigIntValue.toString()
+
+    // Calculate the position of the decimal point
+    let decimalPosition = strValue.length - exponent
+
+    if (decimalPosition > 0) {
+        // Insert decimal point
+        return removeTrailingZeros(
+            strValue.slice(0, decimalPosition) +
+                '.' +
+                strValue.slice(decimalPosition)
+        )
+    } else {
+        // Add leading zeros
+        return removeTrailingZeros(
+            '0.' + '0'.repeat(-decimalPosition) + strValue
+        )
+    }
+}
+
 export const RMTokenCard = ({
     token,
     tokenIndex,
@@ -12,32 +46,28 @@ export const RMTokenCard = ({
             created_by,
             image,
             max_supply,
+            decimals,
             current_supply,
+            currency_details,
             token_cost,
             is_token_sale_active,
         } = token
 
         const creator = created_by ? created_by : '...'
 
-        let currency_details
-        if (token.currency_details) {
-            currency_details = token.currency_details
-        } else {
-            currency_details = {
-                symbol: 'ETH',
-                decimals: 18,
-            }
-        }
+        // const decimalMult =
+        //     BigInt(10) **
+        //     BigInt(decimals ? decimals : currency_details.decimals)
 
         //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
-        const decimals =
-            currency_details && currency_details.decimals
-                ? currency_details.decimals
-                : 18
-        const costInCurrency =
-            BigInt(token_cost) / BigInt(10) ** BigInt(decimals)
+
+        const costInCurrency = divideBigIntByPowerOf10(
+            BigInt(token_cost),
+            Number(decimals ? decimals : currency_details.decimals)
+        ) //Number(BigInt(token_cost) / decimalMult)
+        console.log(costInCurrency)
         const costToDisplay =
-            costInCurrency < 0.000001 ? '< 0.000001' : costInCurrency
+            Number(costInCurrency) < 0.0000001 ? '< 0.000001' : costInCurrency
 
         const supplyIndicator =
             current_supply && max_supply
@@ -82,6 +112,7 @@ export const RMTokenCard = ({
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
                                     {costToDisplay.toString() +
+                                        ' ' +
                                         currency_details.symbol}
                                 </p>
                             </div>
@@ -116,6 +147,7 @@ export const RMTokenCard = ({
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
                                     {costToDisplay.toString() +
+                                        ' ' +
                                         currency_details.symbol}
                                 </p>
                             </div>
