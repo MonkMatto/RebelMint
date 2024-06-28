@@ -46,7 +46,7 @@ export const RebelMintControls = ({
     // Handle Buttons
     const minusDisabled = count <= 1 ? true : false
     const plusDisabled =
-        count >= (maxCount ? maxCount : 999999) && !countIsOverAvailable
+        count >= (maxCount ? maxCount : 999999) || !countIsOverAvailable
             ? true
             : false
 
@@ -121,10 +121,10 @@ export const RebelMintControls = ({
         return (
             <div id="RM-controls" className="flex w-full justify-center gap-5">
                 <button
-                    className="w-fit rounded-xl border-[1px] border-white bg-bgcol p-5 duration-100 hover:scale-[102%] hover:bg-bghover"
+                    className="bg-base-50 text-base-900 hover:bg-base-100 w-full rounded-xl p-5 duration-100 hover:scale-[102%]"
                     onClick={() => open()}
                 >
-                    Connect Wallet To Mint
+                    Connect Wallet
                 </button>
             </div>
         )
@@ -132,32 +132,15 @@ export const RebelMintControls = ({
 
     if (selectionIndex === -1) return null
 
-    const commonButtonProps =
-        'bg-textcol text-bgcol rounded-xl p-5 duration-150 ease-in-out hover:invert border-2 border-bgcol disabled:invert-[70%]'
-
     if (!is_token_sale_active) {
         return (
             <div id="RM-controls" className="flex w-full justify-center gap-5">
                 <button
-                    id="RM-minus"
-                    disabled={true}
-                    className={commonButtonProps}
-                >
-                    -
-                </button>
-                <button
                     id="RM-mint"
                     disabled={true}
-                    className="w-60 rounded-xl bg-red-200 p-5 text-bgcol duration-300 ease-in-out"
+                    className="text-base-50 w-full rounded-xl bg-red-600 p-2 duration-300 ease-in-out"
                 >
                     Sale Closed
-                </button>
-                <button
-                    id="RM-plus"
-                    disabled={true}
-                    className={commonButtonProps}
-                >
-                    +
                 </button>
             </div>
         )
@@ -169,7 +152,7 @@ export const RebelMintControls = ({
                 <button
                     id="RM-mint"
                     disabled
-                    className="w-60 rounded-xl border-2 border-transparent bg-yellow-200 p-5 font-bold text-bgcol duration-300 ease-in-out"
+                    className="w-full rounded-xl border-2 border-transparent bg-yellow-200 p-2 font-bold text-bgcol duration-300 ease-in-out"
                 >
                     Confirming...
                 </button>
@@ -188,7 +171,7 @@ export const RebelMintControls = ({
                             handleMint()
                         }
                     }}
-                    className="w-60 rounded-xl border-2 border-transparent bg-green-300 p-5 font-bold text-bgcol duration-300 ease-in-out"
+                    className="w-full rounded-xl border-2 border-transparent bg-green-300 p-2 font-bold text-bgcol duration-300 ease-in-out"
                 >
                     {actionType === 'approval'
                         ? `Approval Successful! Mint ${count} Token${count > 1 ? 's' : ''}?`
@@ -198,48 +181,73 @@ export const RebelMintControls = ({
         )
     }
 
-    const mintButtonText = `Mint ${count} for ${costToDisplay} ${currency_details.symbol}`
-    const approveButtonText = `Allow ${costToDisplay} ${currency_details.symbol}`
+    let countText
+    if (count > maxCount) {
+        countText = ' text-red-500'
+    } else {
+        countText = ' text-base-50'
+    }
     const mintButton = (
         <button
             id="RM-mint"
-            className="w-60 rounded-xl border-2 border-transparent bg-textcol p-5 font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
+            className="h-fit flex-1 flex-col items-center rounded-xl border-2 border-transparent bg-textcol p-5 text-3xl font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
             onClick={handleMint}
         >
-            {mintButtonText}
+            {`Mint`}
+            <p className="text-xs font-thin">{`${costToDisplay} ${currency_details.symbol}`}</p>
         </button>
     )
     console.log('Approved erc20:' + ERC20Allowance)
     return (
-        <div id="RM-controls" className="flex w-full justify-center gap-5">
-            <button
-                id="RM-minus"
-                disabled={minusDisabled}
-                onClick={() => setCount(count - 1)}
-                className={commonButtonProps}
-            >
-                -
-            </button>
+        <div
+            id="RM-controls"
+            className="flex h-fit w-full items-center justify-center gap-5"
+        >
+            <div className="bg-base-700 flex h-full w-fit flex-nowrap rounded-xl">
+                <button
+                    id="RM-minus"
+                    disabled={minusDisabled}
+                    onClick={() => setCount(count - 1)}
+                    className="text-base-50 h-full rounded-l-xl p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%]"
+                >
+                    -
+                </button>
+
+                <input
+                    value={count}
+                    onChange={(e) => {
+                        const value = Number(e.target.value)
+                        setCount(value > 0 ? value : 0)
+                    }}
+                    className={
+                        'bg-base-700 my-auto h-full w-fit max-w-12 text-center focus:border-none focus:outline-none' +
+                        countText
+                    }
+                />
+
+                <button
+                    id="RM-plus"
+                    disabled={plusDisabled}
+                    onClick={() => setCount(count + 1)}
+                    className="text-base-50 h-full rounded-r-xl p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%]"
+                >
+                    +
+                </button>
+            </div>
+
             {currency_details.symbol === 'ETH' ||
             BigInt(ERC20Allowance) >= BigInt(token_cost * count) ? (
                 mintButton
             ) : (
                 <button
                     id="RM-mint"
-                    className="w-60 rounded-xl border-2 border-transparent bg-textcol p-5 font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
+                    className="h-fit flex-1 flex-col items-center rounded-xl border-2 border-transparent bg-textcol p-5 text-3xl font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
                     onClick={handleApproval}
                 >
-                    {approveButtonText}
+                    {`Approve`}
+                    <p className="text-xs font-thin">{`${costToDisplay} ${currency_details.symbol}`}</p>
                 </button>
             )}
-            <button
-                id="RM-plus"
-                disabled={plusDisabled}
-                onClick={() => setCount(count + 1)}
-                className={commonButtonProps}
-            >
-                +
-            </button>
         </div>
     )
 }

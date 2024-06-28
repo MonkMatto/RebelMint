@@ -11,7 +11,8 @@ export const PopUp = ({
     setSelectionIndex = () => {},
     numTokens,
 }: DisplayProps) => {
-    const { name, image, description, attributes, animation_url } = selection
+    const { name, created_by, image, description, attributes, animation_url } =
+        selection
     const style = {
         '--image-url': ` url(${image})`,
     } as React.CSSProperties
@@ -104,7 +105,7 @@ export const PopUp = ({
                 onClick={(e) => {
                     e.stopPropagation()
                 }}
-                className="flex h-[75svh] w-4/5 flex-col justify-between overflow-y-auto rounded-lg bg-bghover p-5 lg:h-fit"
+                className="flex h-[90svh] w-[90vw] flex-col justify-between overflow-y-auto rounded-lg bg-bghover p-5 lg:h-fit"
             >
                 <div className="bg-base-800 flex flex-col">
                     <img
@@ -117,29 +118,41 @@ export const PopUp = ({
                         id="OM-popup-token-card"
                         className="flex h-full w-full flex-col items-center gap-12 lg:flex-row lg:items-start"
                     >
-                        <div className="flex aspect-square w-full items-center justify-center">
-                            <Display />
+                        <div className="flex h-fit w-full flex-col">
+                            <div className="flex aspect-square w-full items-center justify-center">
+                                <Display />
+                            </div>
+                            <div className="mt-5 box-border h-fit justify-self-end">
+                                <RebelMintControls
+                                    selectionIndex={selectionIndex}
+                                    selection={selection}
+                                    contractAddress={
+                                        contractAddress as `0x${string}`
+                                    }
+                                />
+                            </div>
                         </div>
                         <div
                             id="OM-popup-token-info"
                             className="flex h-full w-full flex-col justify-start p-4"
                         >
-                            <h1 className="text-2lg mb-8 w-fit text-center font-bold">
-                                {name}
-                            </h1>
-                            <p className="max-h-96 text-wrap font-light">
+                            <div className="bg-base-50 text-base-950 h-fit w-full flex-col gap-8 rounded-lg p-6">
+                                <h1 className="w-fit text-3xl font-bold">
+                                    {name}
+                                </h1>
+                                {created_by && (
+                                    <h1 className="w-fit text-lg font-thin">
+                                        {created_by}
+                                    </h1>
+                                )}
+                            </div>
+                            <p className="border-base-800 bg-base-950 my-4 max-h-[50svh] overflow-y-auto text-wrap rounded-lg p-6 font-light">
                                 {description}
                             </p>
-
-                            <AllTraits />
+                            <div className="flex h-fit max-h-[20svh] w-full justify-self-end">
+                                <AllTraits />
+                            </div>
                         </div>
-                    </div>
-                    <div className="mt-5 box-border h-fit justify-self-end p-4">
-                        <RebelMintControls
-                            selectionIndex={selectionIndex}
-                            selection={selection}
-                            contractAddress={contractAddress as `0x${string}`}
-                        />
                     </div>
                 </div>
             </div>
