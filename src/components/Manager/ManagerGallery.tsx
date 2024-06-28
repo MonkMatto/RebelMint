@@ -11,6 +11,7 @@ export const ManagerGallery = ({
     return (
         <div className="@sm:grid-cols-1 @md:grid-cols-1 @xl:grid-cols-2 @3xl:grid-cols-3 @5xl:grid-cols-4 @7xl:grid-cols-5 grid h-fit w-full justify-items-center gap-3 align-middle duration-200">
             {allTokens[0] &&
+                allTokens[0].currency_details &&
                 allTokens.map((a: tokenStruct, index: number) => {
                     if (index < allTokens.length) {
                         return (
