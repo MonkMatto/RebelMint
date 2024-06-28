@@ -64,16 +64,16 @@ export const RMTokenCard = ({
             // Show that this token IS selected
             return (
                 <div
-                    className="box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol bg-card p-2 align-middle duration-200 hover:bg-cardhover"
+                    className="bg-base-800 box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol align-middle duration-200 hover:bg-cardhover"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div
-                        className="aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
+                        className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
                     />
-                    <div className="flex w-full flex-col">
+                    <div className="bg-base-800 flex w-full flex-col p-2">
                         <div className="mb-4 mt-3">
-                            <p className="truncate text-xl">{name}</p>
+                            <p className="truncate text-lg">{name}</p>
                             <p className="truncate text-sm font-light">
                                 {creator}
                             </p>
@@ -82,11 +82,14 @@ export const RMTokenCard = ({
                             <div className="flex h-5 flex-row justify-start align-middle">
                                 <p className="text-sm">
                                     {costToDisplay.toString() +
-                                        ' ' +
                                         currency_details.symbol}
                                 </p>
                             </div>
-                            <p className="text-sm">{supplyIndicator}</p>
+                            <div className="flex h-5 items-center justify-end">
+                                <p className="text-sm">{supplyIndicator}</p>
+
+                                <SaleConditionDot />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -95,14 +98,14 @@ export const RMTokenCard = ({
             //Show that this token IS NOT selected
             return (
                 <div
-                    className="box-border flex h-full w-full flex-col justify-between rounded-lg border-2 border-bgcol bg-card p-2 align-middle duration-200 hover:bg-cardhover"
+                    className="bg-base-900 border-base-800 hover:bg-base-700 hover:border-base-700 box-border flex h-full w-full flex-col items-center justify-around rounded-lg border-2 align-middle duration-200"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div
-                        className="aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
+                        className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
                     />
-                    <div className="flex w-full flex-col">
+                    <div className="bg-base-800 flex w-full flex-col p-2">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-lg">{name}</p>
                             <p className="truncate text-sm font-light">
