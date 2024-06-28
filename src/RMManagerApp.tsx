@@ -92,11 +92,8 @@ export const RebelMintTokenManagerApp = ({
                     .getCollectionAndTokenDataJSON()
                     .call()
                 console.log(result)
-                var fixedResult = result.replace(
-                    '"tokens": [}',
-                    '"tokens": []}'
-                )
-                setContractData(JSON.parse(fixedResult))
+
+                setContractData(JSON.parse(result))
             } catch (error) {
                 console.error('Error reading contract data:', error)
             }
