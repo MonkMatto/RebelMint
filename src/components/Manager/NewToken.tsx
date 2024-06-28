@@ -77,7 +77,7 @@ export const NewTokenPopUp = ({
                 onClick={(e) => {
                     e.stopPropagation()
                 }}
-                className="bg-base-900 flex h-[75svh] w-4/5 flex-col justify-between overflow-y-auto rounded-lg p-5 lg:h-fit"
+                className="bg-base-900 flex h-[95svh] w-[90vw] flex-col justify-between rounded-lg p-5 lg:h-fit"
             >
                 <div className="flex flex-col">
                     <img
@@ -85,8 +85,26 @@ export const NewTokenPopUp = ({
                         className="border-base-700 bg-base-800 h-fit w-fit self-end rounded-lg border p-2 text-center hover:cursor-pointer hover:bg-red-600"
                         onClick={() => setSelectionIndex(-1)}
                     />
-                    <div className="flex h-fit flex-col justify-center gap-6 p-4 font-normal">
+                    <div className="flex h-fit flex-col justify-center gap-6 overflow-y-auto p-4 font-normal">
                         <h1 className="mb-6 text-5xl">Create New Token</h1>
+                        <div className="flex flex-col gap-2">
+                            <h3>Token URI</h3>
+                            <input
+                                name="uri"
+                                value={form.uri}
+                                onChange={handleChange}
+                                className={inputClass}
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <h3>Max Supply</h3>
+                            <input
+                                name="maxSupply"
+                                value={form.maxSupply}
+                                onChange={handleChange}
+                                className={inputClass + ' w-1/4'}
+                            />
+                        </div>
                         <div className="flex flex-col gap-2">
                             <h3>
                                 {form.currencyAddress ==
@@ -102,15 +120,6 @@ export const NewTokenPopUp = ({
                             <input
                                 name="price"
                                 value={form.price}
-                                onChange={handleChange}
-                                className={inputClass + ' w-1/4'}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <h3>Max Supply</h3>
-                            <input
-                                name="maxSupply"
-                                value={form.maxSupply}
                                 onChange={handleChange}
                                 className={inputClass + ' w-1/4'}
                             />
@@ -152,15 +161,6 @@ export const NewTokenPopUp = ({
                             />
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                            <h3>Token URI</h3>
-                            <input
-                                name="uri"
-                                value={form.uri}
-                                onChange={handleChange}
-                                className={inputClass}
-                            />
-                        </div>
                         <button
                             onClick={createToken}
                             className="mt-8 h-fit w-fit self-end rounded-lg bg-textcol p-4 text-bgcol"

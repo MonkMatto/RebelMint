@@ -220,11 +220,11 @@ export const RebelMintTokenManagerApp = ({
                     >
                         <div
                             id="RM-link-to-collection"
-                            className="flex h-fit w-full gap-4"
+                            className="flex h-fit w-full flex-col gap-4 lg:flex-row"
                         >
                             <div
                                 id="RM-header"
-                                className="bg-base-50 text-base-950 flex h-fit w-2/3 flex-col justify-start justify-self-start rounded-lg p-10"
+                                className="bg-base-50 text-base-950 flex h-fit w-full flex-col justify-start justify-self-start rounded-lg p-10 lg:w-2/3"
                             >
                                 <h1 className="mb-4 text-xl font-normal">
                                     Managing:
@@ -236,7 +236,7 @@ export const RebelMintTokenManagerApp = ({
                             <a
                                 href={`/?contract=${contractAddress}`}
                                 target="_blank"
-                                className="bg-base-950 hover:bg-base-900 text-base-50 border-base-50 flex w-1/3 items-center justify-end rounded-lg border p-10 text-right"
+                                className="bg-base-950 hover:bg-base-900 text-base-50 border-base-50 flex w-full items-center justify-end rounded-lg border p-10 text-right lg:w-1/3"
                             >
                                 View Collection Page
                                 <img className="h-full" src={arrowright} />
