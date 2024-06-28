@@ -5,7 +5,7 @@ import close from './close.svg'
 import {
     // useAccount,
     // useReadContract,
-    // useWaitForTransactionReceipt,
+    useWaitForTransactionReceipt,
     useWriteContract,
 } from 'wagmi'
 interface FormStruct {
@@ -20,6 +20,11 @@ export const NewTokenPopUp = ({
     setSelectionIndex = () => {},
 }: NewTokenProps) => {
     const { writeContractAsync, data: hash } = useWriteContract()
+    const { isLoading: isConfirming, isSuccess: isConfirmed } =
+        useWaitForTransactionReceipt({
+            hash,
+            confirmations: 1,
+        })
     const [useCustomToken, setUseCustomToken] = useState(false)
     const [form, setForm] = useState<FormStruct>({
         price: '',
@@ -42,24 +47,39 @@ export const NewTokenPopUp = ({
         }))
     }
     const createToken = async () => {
-        console.log(BigInt(Number(form.price) * decimalMult))
-        try {
-            await writeContractAsync({
-                abi: contractABI,
-                address: contractAddress as `0x${string}`,
-                functionName: 'createToken',
-                args: [
-                    BigInt(Number(form.price) * decimalMult),
-                    form.currencyAddress as `0x${string}`,
-                    BigInt(form.maxSupply),
-                    form.uri,
-                ],
-            })
-            console.log('Transaction sent successfully')
-            console.log(hash)
-        } catch (error) {
-            console.error('Error sending transaction:', error)
+        if (!isConfirming && !isConfirmed) {
+            console.log(BigInt(Number(form.price) * decimalMult))
+            try {
+                await writeContractAsync({
+                    abi: contractABI,
+                    address: contractAddress as `0x${string}`,
+                    functionName: 'createToken',
+                    args: [
+                        BigInt(Number(form.price) * decimalMult),
+                        form.currencyAddress as `0x${string}`,
+                        BigInt(form.maxSupply),
+                        form.uri,
+                    ],
+                })
+                console.log('Transaction sent successfully')
+                console.log(hash)
+            } catch (error) {
+                console.error('Error sending transaction:', error)
+            }
         }
+    }
+
+    let buttonMessage
+    let buttonClass
+    if (isConfirming) {
+        buttonMessage = 'Creating Token...'
+        buttonClass = ' bg-yellow-200'
+    } else if (isConfirmed) {
+        buttonMessage = 'Token Created!'
+        buttonClass = ' bg-green-300'
+    } else {
+        buttonMessage = 'Create Token'
+        buttonClass = ''
     }
 
     const inputClass =
@@ -163,9 +183,13 @@ export const NewTokenPopUp = ({
 
                         <button
                             onClick={createToken}
-                            className="mt-8 h-fit w-fit self-end rounded-lg bg-textcol p-4 text-bgcol"
+                            disabled={isConfirming || isConfirmed}
+                            className={
+                                'mt-8 h-fit w-fit self-end rounded-lg bg-textcol p-4 text-bgcol' +
+                                buttonClass
+                            }
                         >
-                            {'Create Token'}
+                            {buttonMessage}
                         </button>
                     </div>
                 </div>
