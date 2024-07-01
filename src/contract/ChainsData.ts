@@ -1,18 +1,24 @@
 const chainsData = {
     sepolia: {
-        url: 'https://eth-sepolia.g.alchemy.com/v2/eLo2RjcL3Og5FzLml5oXcSnXRJb6ny6A',
+        url: `https://eth-sepolia.g.alchemy.com/v2/`,
+        explorerBaseUrl: 'https://sepolia.etherscan.io/address/',
         chainID: 11155111,
     },
     ethereum: {
-        url: 'https://eth-sepolia.g.alchemy.com/v2/eLo2RjcL3Og5FzLml5oXcSnXRJb6ny6A',
+        url: `https://base-mainnet.g.alchemy.com/v2/`,
+        explorerBaseUrl: 'https://etherscan.io/address/',
         chainID: 1,
     },
     baseSepolia: {
-        url: 'https://base-sepolia.g.alchemy.com/v2/BYf5iy0I_aAcML1f1KwLeK3kZnasfrdj',
+        url: `https://base-sepolia.g.alchemy.com/v2/`,
+        explorerBaseUrl: 'https://sepolia.basescan.org/address/',
+
         chainID: 84532,
     },
     base: {
-        url: 'https://base-mainnet.g.alchemy.com/v2/PE0Okxm7Ngq2PwhfirUD8AMNHwNSYEm4',
+        url: `https://base-mainnet.g.alchemy.com/v2/`,
+        explorerBaseUrl: 'https://basescan.org/address/',
+
         chainID: 8453,
     },
 }

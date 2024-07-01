@@ -48,6 +48,7 @@ export default {
                 depth: '#eeeeee',
                 accent: '#E66799',
                 accentB: '#303399',
+                rmaccent: '#EF4444',
             },
         },
     },

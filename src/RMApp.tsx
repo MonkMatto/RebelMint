@@ -19,6 +19,7 @@ import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 interface RebelMintProps {
     contractAddress?: string
     providerUrl: string
+    explorerUrl: string
 }
 
 const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
@@ -60,6 +61,7 @@ const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
 export const RebelMintApp = ({
     contractAddress,
     providerUrl,
+    explorerUrl,
 }: RebelMintProps) => {
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
@@ -198,7 +200,10 @@ export const RebelMintApp = ({
                     <w3m-button balance="hide" />
                 </div>
                 <div className="p-4 md:px-12">
-                    <RebelMintInfo project={project} />
+                    <RebelMintInfo
+                        project={project}
+                        explorerUrl={explorerUrl}
+                    />
                 </div>
                 {allTokens && allTokens[0] && allTokens[0].currency_details ? (
                     <RMGallery
