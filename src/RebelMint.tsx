@@ -69,7 +69,10 @@ interface RebelMintManagerProps {
 }
 
 const RebelMint = ({ contractAddress, chain, apiKey }: RebelMintProps) => {
-    const { url } = chainsData[chain] || { url: '', chainID: '' }
+    const { url, explorerBaseUrl } = chainsData[chain] || {
+        url: '',
+        chainID: '',
+    }
     const fullURL = url + apiKey
     console.log(`Network:` + chainsData[chain])
     return (
@@ -77,6 +80,7 @@ const RebelMint = ({ contractAddress, chain, apiKey }: RebelMintProps) => {
             <RebelMintApp
                 contractAddress={contractAddress}
                 providerUrl={fullURL}
+                explorerUrl={explorerBaseUrl + contractAddress}
             />
         </Web3ModalProvider>
     )
@@ -88,7 +92,10 @@ export const RebelMintTokenManager = ({
     bypassWeb3,
     apiKey,
 }: RebelMintManagerProps) => {
-    const { url } = chainsData[chain] || { url: '', chainID: '' }
+    const { url } = chainsData[chain] || {
+        url: '',
+        chainID: '',
+    }
     const fullURL = url + apiKey
     if (bypassWeb3) {
         return (

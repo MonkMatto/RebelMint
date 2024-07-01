@@ -10,8 +10,9 @@ interface ProjectProps {
 }
 interface InfoProps {
     project: ProjectProps
+    explorerUrl: string
 }
-const OpenMintInfo = ({ project }: InfoProps) => {
+const OpenMintInfo = ({ project, explorerUrl }: InfoProps) => {
     const { title, creator, desc } = project
     const [descToggled, setDescToggled] = useState(false)
     const descHeight = descToggled ? ' h-[50svh] md:h-64' : ' h-24'
@@ -21,9 +22,13 @@ const OpenMintInfo = ({ project }: InfoProps) => {
             className="bg-base-50 text-base-950 relative mt-8 h-fit w-full rounded-lg p-4 duration-200 md:p-12"
         >
             <div className="flex h-fit items-start">
-                <h1 className="@5xl:text-5xl @3xl:text-3xl @lg:text-xl @sm:text-md 6xl mb-0 font-extrabold">
+                <a
+                    href={explorerUrl}
+                    target="_blank"
+                    className="@5xl:text-5xl @3xl:text-3xl @lg:text-xl @sm:text-md 6xl mb-0 font-extrabold"
+                >
                     {title}
-                </h1>
+                </a>
                 <img src={badge} className="invert-[10%]"></img>
             </div>
             <h3 className="@5xl:text-3xl @3xl:text-xl @lg:text-lg @sm:text-sm font-regular mb-5">

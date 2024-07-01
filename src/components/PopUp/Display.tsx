@@ -3,6 +3,7 @@ import { DisplayProps } from '../../contract/typeInterfacing'
 import left from './left.svg'
 import right from './right.svg'
 import close from './close.svg'
+import opennew from './opennew.svg'
 
 export const PopUp = ({
     contractAddress,
@@ -11,8 +12,15 @@ export const PopUp = ({
     setSelectionIndex = () => {},
     numTokens,
 }: DisplayProps) => {
-    const { name, created_by, image, description, attributes, animation_url } =
-        selection
+    const {
+        name,
+        created_by,
+        image,
+        description,
+        attributes,
+        animation_url,
+        external_url,
+    } = selection
     const style = {
         '--image-url': ` url(${image})`,
     } as React.CSSProperties
@@ -136,14 +144,32 @@ export const PopUp = ({
                             id="OM-popup-token-info"
                             className="flex h-full w-full flex-col justify-start p-4"
                         >
-                            <div className="bg-base-50 text-base-950 h-fit w-full flex-col gap-8 rounded-lg p-6">
-                                <h1 className="w-fit text-3xl font-bold">
-                                    {name}
-                                </h1>
-                                {created_by && (
-                                    <h1 className="w-fit text-lg font-thin">
-                                        {created_by}
+                            <div className="bg-base-50 text-base-950 flex h-fit w-full flex-nowrap items-center justify-between gap-8 rounded-lg p-6">
+                                <div className="flex h-fit w-3/4 flex-col">
+                                    <h1 className="w-fit text-3xl font-bold">
+                                        {name}
                                     </h1>
+                                    {created_by && (
+                                        <h1 className="w-fit text-lg font-thin">
+                                            {created_by}
+                                        </h1>
+                                    )}
+                                </div>
+                                {external_url && (
+                                    <a
+                                        href={
+                                            external_url
+                                                ? external_url
+                                                : 'https://rebel-mint.vercel.app'
+                                        }
+                                        target="_blank"
+                                        className="aspect-square h-full"
+                                    >
+                                        <img
+                                            className="aspect-square h-full"
+                                            src={opennew}
+                                        />
+                                    </a>
                                 )}
                             </div>
                             <p className="border-base-800 bg-base-950 my-4 max-h-[50svh] overflow-y-auto text-wrap rounded-lg p-6 font-light">
