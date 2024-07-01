@@ -59,19 +59,25 @@ export function Web3ModalProvider({ children }: Web3ModalProviderProps) {
 interface RebelMintProps {
     contractAddress?: string
     chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
+    apiKey: string
 }
 interface RebelMintManagerProps {
     contractAddress?: string
     chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
     bypassWeb3?: boolean
+    apiKey: string
 }
 
-const RebelMint = ({ contractAddress, chain }: RebelMintProps) => {
+const RebelMint = ({ contractAddress, chain, apiKey }: RebelMintProps) => {
     const { url } = chainsData[chain] || { url: '', chainID: '' }
+    const fullURL = url + apiKey
     console.log(`Network:` + chainsData[chain])
     return (
         <Web3ModalProvider>
-            <RebelMintApp contractAddress={contractAddress} providerUrl={url} />
+            <RebelMintApp
+                contractAddress={contractAddress}
+                providerUrl={fullURL}
+            />
         </Web3ModalProvider>
     )
 }
@@ -80,18 +86,15 @@ export const RebelMintTokenManager = ({
     contractAddress,
     chain,
     bypassWeb3,
+    apiKey,
 }: RebelMintManagerProps) => {
     const { url } = chainsData[chain] || { url: '', chainID: '' }
-    // console.log(
-    //     `Network:` + chainsData[chain] && chainsData[chain].chainID
-    //         ? chainsData[chain].chainID
-    //         : 'undefined'
-    // )
+    const fullURL = url + apiKey
     if (bypassWeb3) {
         return (
             <RebelMintTokenManagerApp
                 contractAddress={contractAddress}
-                providerUrl={url}
+                providerUrl={fullURL}
             />
         )
     } else {
@@ -99,7 +102,7 @@ export const RebelMintTokenManager = ({
             <Web3ModalProvider>
                 <RebelMintTokenManagerApp
                     contractAddress={contractAddress}
-                    providerUrl={url}
+                    providerUrl={fullURL}
                 />
             </Web3ModalProvider>
         )
