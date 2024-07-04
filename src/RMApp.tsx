@@ -17,9 +17,10 @@ import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDe
 import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 
 interface RebelMintProps {
-    contractAddress?: string
+    contractAddress: string
     providerUrl: string
     explorerUrl: string
+    chainID: number
 }
 
 const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
@@ -62,11 +63,12 @@ export const RebelMintApp = ({
     contractAddress,
     providerUrl,
     explorerUrl,
+    chainID,
 }: RebelMintProps) => {
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
-    const provider = useEthersProvider()
+    const provider = useEthersProvider({ chainId: chainID })
     const [byteCodeIsValid, setByteCodeIsValid] = useState(true)
     const [selectionIndex, setSelectionIndex] = useState<number>(-1)
     const validContractAddress =
@@ -78,8 +80,6 @@ export const RebelMintApp = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // const providerUrl =
-                //     'https://eth-sepolia.g.alchemy.com/v2/eLo2RjcL3Og5FzLml5oXcSnXRJb6ny6A'
                 const httpProvider = new Web3.providers.HttpProvider(
                     providerUrl as string
                 )
@@ -92,8 +92,10 @@ export const RebelMintApp = ({
                     .getCollectionAndTokenDataJSON()
                     .call()
                 setContractData(JSON.parse(result))
-            } catch (error) {
-                console.error('Error reading contract data:', error)
+            } catch (error: any) {
+                console.error('Error fetching bytecode:', error)
+                console.error('Error message:', error.message)
+                console.error('Error details:', JSON.stringify(error, null, 2))
             }
         }
         fetchData()
@@ -129,8 +131,11 @@ export const RebelMintApp = ({
                     const code = await provider.getCode(
                         contractAddress as `${string}`
                     )
+
                     if (versionBytecode === code) {
                         setByteCodeIsValid(true)
+                    } else {
+                        setByteCodeIsValid(false)
                     }
                 } catch (error: any) {
                     console.log(error.message)

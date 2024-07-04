@@ -5,7 +5,7 @@ import { Web3ModalProviderProps } from './contract/typeInterfacing.ts'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
 import { WagmiProvider } from 'wagmi'
-import { sepolia, base, mainnet, baseSepolia } from 'wagmi/chains'
+import { base, baseSepolia } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { RebelMintApp } from './RMApp.tsx'
@@ -26,7 +26,7 @@ const metadata = {
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const chains = [mainnet, sepolia, base, baseSepolia] as const
+const chains = [base, baseSepolia] as const
 const config = defaultWagmiConfig({
     chains,
     projectId,
@@ -57,30 +57,35 @@ export function Web3ModalProvider({ children }: Web3ModalProviderProps) {
 }
 
 interface RebelMintProps {
-    contractAddress?: string
-    chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
+    contractAddress: string
+    test?: boolean
     apiKey: string
 }
 interface RebelMintManagerProps {
-    contractAddress?: string
-    chain: 'base' | 'ethereum' | 'sepolia' | 'baseSepolia'
+    contractAddress: string
+    test?: boolean
     bypassWeb3?: boolean
     apiKey: string
 }
 
-const RebelMint = ({ contractAddress, chain, apiKey }: RebelMintProps) => {
-    const { url, explorerBaseUrl } = chainsData[chain] || {
+const RebelMint = ({ contractAddress, test, apiKey }: RebelMintProps) => {
+    const { url, explorerBaseUrl, chainID } = chainsData[
+        test ? 'baseSepolia' : 'base'
+    ] || {
         url: '',
+        explorerBaseUrl: '',
         chainID: '',
     }
+
     const fullURL = url + apiKey
-    console.log(`Network:` + chainsData[chain])
+    console.log(`Network: ${test ? 'baseSepolia' : 'base'}`)
     return (
         <Web3ModalProvider>
             <RebelMintApp
                 contractAddress={contractAddress}
                 providerUrl={fullURL}
                 explorerUrl={explorerBaseUrl + contractAddress}
+                chainID={chainID}
             />
         </Web3ModalProvider>
     )
@@ -88,12 +93,13 @@ const RebelMint = ({ contractAddress, chain, apiKey }: RebelMintProps) => {
 
 export const RebelMintTokenManager = ({
     contractAddress,
-    chain,
+    test,
     bypassWeb3,
     apiKey,
 }: RebelMintManagerProps) => {
-    const { url } = chainsData[chain] || {
+    const { url, chainID } = chainsData[test ? 'baseSepolia' : 'base'] || {
         url: '',
+        explorerBaseUrl: '',
         chainID: '',
     }
     const fullURL = url + apiKey
@@ -102,6 +108,7 @@ export const RebelMintTokenManager = ({
             <RebelMintTokenManagerApp
                 contractAddress={contractAddress}
                 providerUrl={fullURL}
+                chainID={chainID}
             />
         )
     } else {
@@ -110,6 +117,7 @@ export const RebelMintTokenManager = ({
                 <RebelMintTokenManagerApp
                     contractAddress={contractAddress}
                     providerUrl={fullURL}
+                    chainID={chainID}
                 />
             </Web3ModalProvider>
         )

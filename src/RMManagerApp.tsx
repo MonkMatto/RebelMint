@@ -22,6 +22,7 @@ import arrowright from './assets/arrowright.svg'
 interface RebelMintProps {
     contractAddress?: string
     providerUrl: string
+    chainID: number
 }
 
 const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
@@ -63,12 +64,13 @@ const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
 export const RebelMintTokenManagerApp = ({
     contractAddress,
     providerUrl,
+    chainID,
 }: RebelMintProps) => {
     const { address } = useAccount()
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
-    const provider = useEthersProvider()
+    const provider = useEthersProvider({ chainId: chainID })
     const [byteCodeIsValid, setByteCodeIsValid] = useState(true)
     const [selectionIndex, setSelectionIndex] = useState<number>(-1)
     const validContractAddress =
@@ -91,7 +93,6 @@ export const RebelMintTokenManagerApp = ({
                 const result = await contract.methods
                     .getCollectionAndTokenDataJSON()
                     .call()
-                console.log(result)
 
                 setContractData(JSON.parse(result))
             } catch (error) {
@@ -208,7 +209,6 @@ export const RebelMintTokenManagerApp = ({
 
     if (address) {
         if (byteCodeIsValid) {
-            console.log(project)
             if (project) {
                 return (
                     <div
@@ -221,7 +221,7 @@ export const RebelMintTokenManagerApp = ({
                         >
                             <div
                                 id="RM-header"
-                                className="bg-base-50 text-base-950 flex h-fit w-full flex-col justify-start justify-self-start rounded-lg p-10 lg:w-2/3"
+                                className="flex h-fit w-full flex-col justify-start justify-self-start rounded-lg bg-base-50 p-10 text-base-950 lg:w-2/3"
                             >
                                 <h1 className="mb-4 text-xl font-normal">
                                     Managing:
@@ -233,7 +233,7 @@ export const RebelMintTokenManagerApp = ({
                             <a
                                 href={`/?contract=${contractAddress}`}
                                 target="_blank"
-                                className="bg-base-950 hover:bg-base-900 text-base-50 border-base-50 flex w-full items-center justify-end rounded-lg border p-10 text-right lg:w-1/3"
+                                className="flex w-full items-center justify-end rounded-lg border border-base-50 bg-base-950 p-10 text-right text-base-50 hover:bg-base-900 lg:w-1/3"
                             >
                                 View Collection Page
                                 <img className="h-full" src={arrowright} />

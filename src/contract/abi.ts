@@ -1,107 +1,53 @@
 const contractABI = [
-    {
-        inputs: [],
-        stateMutability: 'nonpayable',
-        type: 'constructor',
-    },
+    { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'sender',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256',
-                name: 'balance',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'needed',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'tokenId',
-                type: 'uint256',
-            },
+            { internalType: 'address', name: 'sender', type: 'address' },
+            { internalType: 'uint256', name: 'balance', type: 'uint256' },
+            { internalType: 'uint256', name: 'needed', type: 'uint256' },
+            { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
         ],
         name: 'ERC1155InsufficientBalance',
         type: 'error',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'approver',
-                type: 'address',
-            },
+            { internalType: 'address', name: 'approver', type: 'address' },
         ],
         name: 'ERC1155InvalidApprover',
         type: 'error',
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'idsLength',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'valuesLength',
-                type: 'uint256',
-            },
+            { internalType: 'uint256', name: 'idsLength', type: 'uint256' },
+            { internalType: 'uint256', name: 'valuesLength', type: 'uint256' },
         ],
         name: 'ERC1155InvalidArrayLength',
         type: 'error',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'operator',
-                type: 'address',
-            },
+            { internalType: 'address', name: 'operator', type: 'address' },
         ],
         name: 'ERC1155InvalidOperator',
         type: 'error',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'receiver',
-                type: 'address',
-            },
+            { internalType: 'address', name: 'receiver', type: 'address' },
         ],
         name: 'ERC1155InvalidReceiver',
         type: 'error',
     },
     {
-        inputs: [
-            {
-                internalType: 'address',
-                name: 'sender',
-                type: 'address',
-            },
-        ],
+        inputs: [{ internalType: 'address', name: 'sender', type: 'address' }],
         name: 'ERC1155InvalidSender',
         type: 'error',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'operator',
-                type: 'address',
-            },
-            {
-                internalType: 'address',
-                name: 'owner',
-                type: 'address',
-            },
+            { internalType: 'address', name: 'operator', type: 'address' },
+            { internalType: 'address', name: 'owner', type: 'address' },
         ],
         name: 'ERC1155MissingApprovalForAll',
         type: 'error',
@@ -131,10 +77,24 @@ const contractABI = [
         name: 'ApprovalForAll',
         type: 'event',
     },
+    { anonymous: false, inputs: [], name: 'CollectionUpdate', type: 'event' },
     {
         anonymous: false,
-        inputs: [],
-        name: 'CollectionUpdate',
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'uint256',
+                name: 'tokenId',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
+                internalType: 'address',
+                name: 'fundsReceiverOverride',
+                type: 'address',
+            },
+        ],
+        name: 'FundsReceiverOverride',
         type: 'event',
     },
     {
@@ -177,11 +137,7 @@ const contractABI = [
                         name: 'isTokenSaleActive',
                         type: 'bool',
                     },
-                    {
-                        internalType: 'uint8',
-                        name: 'decimals',
-                        type: 'uint8',
-                    },
+                    { internalType: 'uint8', name: 'decimals', type: 'uint8' },
                     {
                         internalType: 'uint256',
                         name: 'tokenCost',
@@ -222,11 +178,7 @@ const contractABI = [
                         name: 'isTokenSaleActive',
                         type: 'bool',
                     },
-                    {
-                        internalType: 'uint8',
-                        name: 'decimals',
-                        type: 'uint8',
-                    },
+                    { internalType: 'uint8', name: 'decimals', type: 'uint8' },
                     {
                         internalType: 'uint256',
                         name: 'tokenCost',
@@ -346,13 +298,7 @@ const contractABI = [
         type: 'event',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
-        ],
+        inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         name: 'allTokenData',
         outputs: [
             {
@@ -360,31 +306,11 @@ const contractABI = [
                 name: 'currencyAddress',
                 type: 'address',
             },
-            {
-                internalType: 'bool',
-                name: 'isTokenSaleActive',
-                type: 'bool',
-            },
-            {
-                internalType: 'uint8',
-                name: 'decimals',
-                type: 'uint8',
-            },
-            {
-                internalType: 'uint256',
-                name: 'tokenCost',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'maxSupply',
-                type: 'uint256',
-            },
-            {
-                internalType: 'string',
-                name: 'tokenUri',
-                type: 'string',
-            },
+            { internalType: 'bool', name: 'isTokenSaleActive', type: 'bool' },
+            { internalType: 'uint8', name: 'decimals', type: 'uint8' },
+            { internalType: 'uint256', name: 'tokenCost', type: 'uint256' },
+            { internalType: 'uint256', name: 'maxSupply', type: 'uint256' },
+            { internalType: 'string', name: 'tokenUri', type: 'string' },
         ],
         stateMutability: 'view',
         type: 'function',
@@ -392,81 +318,35 @@ const contractABI = [
     {
         inputs: [],
         name: 'artistName',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'account',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
+            { internalType: 'address', name: 'account', type: 'address' },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
         ],
         name: 'balanceOf',
-        outputs: [
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
-        ],
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'address[]',
-                name: 'accounts',
-                type: 'address[]',
-            },
-            {
-                internalType: 'uint256[]',
-                name: 'ids',
-                type: 'uint256[]',
-            },
+            { internalType: 'address[]', name: 'accounts', type: 'address[]' },
+            { internalType: 'uint256[]', name: 'ids', type: 'uint256[]' },
         ],
         name: 'balanceOfBatch',
-        outputs: [
-            {
-                internalType: 'uint256[]',
-                name: '',
-                type: 'uint256[]',
-            },
-        ],
+        outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'account',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'value',
-                type: 'uint256',
-            },
+            { internalType: 'address', name: 'account', type: 'address' },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'uint256', name: 'value', type: 'uint256' },
         ],
         name: 'burn',
         outputs: [],
@@ -475,21 +355,9 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'account',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256[]',
-                name: 'ids',
-                type: 'uint256[]',
-            },
-            {
-                internalType: 'uint256[]',
-                name: 'values',
-                type: 'uint256[]',
-            },
+            { internalType: 'address', name: 'account', type: 'address' },
+            { internalType: 'uint256[]', name: 'ids', type: 'uint256[]' },
+            { internalType: 'uint256[]', name: 'values', type: 'uint256[]' },
         ],
         name: 'burnBatch',
         outputs: [],
@@ -499,64 +367,34 @@ const contractABI = [
     {
         inputs: [],
         name: 'collectionDescription',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [],
         name: 'collectionName',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [],
         name: 'contractCode',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'tokenCost',
-                type: 'uint256',
-            },
+            { internalType: 'uint256', name: 'tokenCost', type: 'uint256' },
             {
                 internalType: 'address',
                 name: 'currencyAddress',
                 type: 'address',
             },
-            {
-                internalType: 'uint256',
-                name: 'maxSupply',
-                type: 'uint256',
-            },
-            {
-                internalType: 'string',
-                name: 'tokenUri',
-                type: 'string',
-            },
+            { internalType: 'uint256', name: 'maxSupply', type: 'uint256' },
+            { internalType: 'string', name: 'tokenUri', type: 'string' },
         ],
         name: 'createToken',
         outputs: [],
@@ -566,13 +404,7 @@ const contractABI = [
     {
         inputs: [],
         name: 'defaultFundsReceiver',
-        outputs: [
-            {
-                internalType: 'address',
-                name: '',
-                type: 'address',
-            },
-        ],
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
         stateMutability: 'view',
         type: 'function',
     },
@@ -584,155 +416,69 @@ const contractABI = [
         type: 'function',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-        ],
+        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
         name: 'exists',
-        outputs: [
-            {
-                internalType: 'bool',
-                name: '',
-                type: 'bool',
-            },
-        ],
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [],
         name: 'getAllTokenDataJSON',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [],
         name: 'getCollectionAndTokenDataJSON',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [],
         name: 'getCollectionDataJSON',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-        ],
+        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
         name: 'getFundsReceiver',
-        outputs: [
-            {
-                internalType: 'address',
-                name: '',
-                type: 'address',
-            },
-        ],
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-        ],
+        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
         name: 'getSingleTokenDataJSON',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [],
         name: 'getTokenCount',
-        outputs: [
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
-        ],
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'account',
-                type: 'address',
-            },
-            {
-                internalType: 'address',
-                name: 'operator',
-                type: 'address',
-            },
+            { internalType: 'address', name: 'account', type: 'address' },
+            { internalType: 'address', name: 'operator', type: 'address' },
         ],
         name: 'isApprovedForAll',
-        outputs: [
-            {
-                internalType: 'bool',
-                name: '',
-                type: 'bool',
-            },
-        ],
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'to',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'amount',
-                type: 'uint256',
-            },
+            { internalType: 'address', name: 'to', type: 'address' },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'uint256', name: 'amount', type: 'uint256' },
         ],
         name: 'mint',
         outputs: [],
@@ -742,13 +488,7 @@ const contractABI = [
     {
         inputs: [],
         name: 'owner',
-        outputs: [
-            {
-                internalType: 'address',
-                name: '',
-                type: 'address',
-            },
-        ],
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
         stateMutability: 'view',
         type: 'function',
     },
@@ -762,72 +502,30 @@ const contractABI = [
     {
         inputs: [],
         name: 'royaltyBPS',
-        outputs: [
-            {
-                internalType: 'uint96',
-                name: '',
-                type: 'uint96',
-            },
-        ],
+        outputs: [{ internalType: 'uint96', name: '', type: 'uint96' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'salePrice',
-                type: 'uint256',
-            },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'uint256', name: 'salePrice', type: 'uint256' },
         ],
         name: 'royaltyInfo',
         outputs: [
-            {
-                internalType: 'address',
-                name: '',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
+            { internalType: 'address', name: '', type: 'address' },
+            { internalType: 'uint256', name: '', type: 'uint256' },
         ],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'from',
-                type: 'address',
-            },
-            {
-                internalType: 'address',
-                name: 'to',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256[]',
-                name: 'ids',
-                type: 'uint256[]',
-            },
-            {
-                internalType: 'uint256[]',
-                name: 'values',
-                type: 'uint256[]',
-            },
-            {
-                internalType: 'bytes',
-                name: 'data',
-                type: 'bytes',
-            },
+            { internalType: 'address', name: 'from', type: 'address' },
+            { internalType: 'address', name: 'to', type: 'address' },
+            { internalType: 'uint256[]', name: 'ids', type: 'uint256[]' },
+            { internalType: 'uint256[]', name: 'values', type: 'uint256[]' },
+            { internalType: 'bytes', name: 'data', type: 'bytes' },
         ],
         name: 'safeBatchTransferFrom',
         outputs: [],
@@ -836,31 +534,11 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'from',
-                type: 'address',
-            },
-            {
-                internalType: 'address',
-                name: 'to',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'value',
-                type: 'uint256',
-            },
-            {
-                internalType: 'bytes',
-                name: 'data',
-                type: 'bytes',
-            },
+            { internalType: 'address', name: 'from', type: 'address' },
+            { internalType: 'address', name: 'to', type: 'address' },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'uint256', name: 'value', type: 'uint256' },
+            { internalType: 'bytes', name: 'data', type: 'bytes' },
         ],
         name: 'safeTransferFrom',
         outputs: [],
@@ -869,16 +547,8 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'operator',
-                type: 'address',
-            },
-            {
-                internalType: 'bool',
-                name: 'approved',
-                type: 'bool',
-            },
+            { internalType: 'address', name: 'operator', type: 'address' },
+            { internalType: 'bool', name: 'approved', type: 'bool' },
         ],
         name: 'setApprovalForAll',
         outputs: [],
@@ -887,16 +557,8 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'string',
-                name: '_collectionName',
-                type: 'string',
-            },
-            {
-                internalType: 'string',
-                name: '_artistName',
-                type: 'string',
-            },
+            { internalType: 'string', name: '_collectionName', type: 'string' },
+            { internalType: 'string', name: '_artistName', type: 'string' },
             {
                 internalType: 'string',
                 name: '_collectionDescription',
@@ -907,11 +569,7 @@ const contractABI = [
                 name: '_defaultFundsReceiver',
                 type: 'address',
             },
-            {
-                internalType: 'uint96',
-                name: '_royaltyBPS',
-                type: 'uint96',
-            },
+            { internalType: 'uint96', name: '_royaltyBPS', type: 'uint96' },
         ],
         name: 'setCollectionData',
         outputs: [],
@@ -920,11 +578,7 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
             {
                 internalType: 'address',
                 name: '_fundsReceiverOverride',
@@ -938,62 +592,30 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'bytes4',
-                name: 'interfaceId',
-                type: 'bytes4',
-            },
+            { internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' },
         ],
         name: 'supportsInterface',
-        outputs: [
-            {
-                internalType: 'bool',
-                name: '',
-                type: 'bool',
-            },
-        ],
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [],
         name: 'totalSupply',
-        outputs: [
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
-        ],
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-        ],
+        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
         name: 'totalSupply',
-        outputs: [
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
-        ],
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
         type: 'function',
     },
     {
         inputs: [
-            {
-                internalType: 'address',
-                name: 'newOwner',
-                type: 'address',
-            },
+            { internalType: 'address', name: 'newOwner', type: 'address' },
         ],
         name: 'transferOwnership',
         outputs: [],
@@ -1007,11 +629,7 @@ const contractABI = [
                 name: '_defaultFundsReceiver',
                 type: 'address',
             },
-            {
-                internalType: 'uint96',
-                name: '_royaltyBPS',
-                type: 'uint96',
-            },
+            { internalType: 'uint96', name: '_royaltyBPS', type: 'uint96' },
         ],
         name: 'updateDefaultFundsReceiverAndRoyaltyBPS',
         outputs: [],
@@ -1020,16 +638,8 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'tokenCost',
-                type: 'uint256',
-            },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'uint256', name: 'tokenCost', type: 'uint256' },
             {
                 internalType: 'address',
                 name: 'currencyAddress',
@@ -1043,16 +653,8 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'bool',
-                name: 'isTokenSaleActive',
-                type: 'bool',
-            },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'bool', name: 'isTokenSaleActive', type: 'bool' },
         ],
         name: 'updateTokenSaleStatus',
         outputs: [],
@@ -1061,16 +663,8 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'newSupply',
-                type: 'uint256',
-            },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'uint256', name: 'newSupply', type: 'uint256' },
         ],
         name: 'updateTokenSupply',
         outputs: [],
@@ -1079,16 +673,8 @@ const contractABI = [
     },
     {
         inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-            {
-                internalType: 'string',
-                name: 'tokenUri',
-                type: 'string',
-            },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'string', name: 'tokenUri', type: 'string' },
         ],
         name: 'updateTokenUri',
         outputs: [],
@@ -1096,21 +682,9 @@ const contractABI = [
         type: 'function',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'id',
-                type: 'uint256',
-            },
-        ],
+        inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
         name: 'uri',
-        outputs: [
-            {
-                internalType: 'string',
-                name: '',
-                type: 'string',
-            },
-        ],
+        outputs: [{ internalType: 'string', name: '', type: 'string' }],
         stateMutability: 'view',
         type: 'function',
     },

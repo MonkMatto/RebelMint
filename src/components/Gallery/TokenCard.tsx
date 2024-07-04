@@ -61,7 +61,6 @@ export const RMTokenCard = ({
             BigInt(token_cost),
             Number(decimals ? decimals : currency_details.decimals)
         ) //Number(BigInt(token_cost) / decimalMult)
-        console.log(costInCurrency)
         const costToDisplay =
             Number(costInCurrency) < 0.0000001 ? '< 0.000001' : costInCurrency
 
@@ -90,14 +89,14 @@ export const RMTokenCard = ({
             // Show that this token IS selected
             return (
                 <div
-                    className="bg-base-800 box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol align-middle duration-200 hover:bg-cardhover"
+                    className="box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol bg-base-800 align-middle duration-200 hover:bg-cardhover"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div
                         className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
                     />
-                    <div className="bg-base-800 flex w-full flex-col rounded-b-md p-2">
+                    <div className="flex w-full flex-col rounded-b-md bg-base-800 p-2">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-lg">{name}</p>
                             <p className="truncate text-sm font-light">
@@ -125,14 +124,14 @@ export const RMTokenCard = ({
             //Show that this token IS NOT selected
             return (
                 <div
-                    className="bg-base-900 border-base-800 hover:bg-base-700 hover:border-base-700 box-border flex h-full w-full flex-col items-center justify-around rounded-lg border-2 align-middle duration-200"
+                    className="box-border flex h-full w-full flex-col items-center justify-around rounded-lg border-2 border-base-800 bg-base-900 align-middle duration-200 hover:border-base-700 hover:bg-base-700"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div
                         className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                         style={style}
                     />
-                    <div className="bg-base-800 flex w-full flex-col rounded-b-md p-2">
+                    <div className="flex w-full flex-col rounded-b-md bg-base-800 p-2">
                         <div className="mb-4 mt-3">
                             <p className="truncate text-lg">{name}</p>
                             <p className="truncate text-sm font-light">
