@@ -10,6 +10,40 @@ import contractABI from '../../contract/abi'
 import { ControlProps } from '../../contract/typeInterfacing'
 import erc20ABI from '../../contract/erc20/erc20ABI'
 
+function removeTrailingZeros(num: number | BigInt | string) {
+    // Convert the number to a string
+    let str = num.toString()
+
+    // Check if the number contains a decimal point
+    if (str.indexOf('.') !== -1) {
+        // Remove trailing zeros
+        str = str.replace(/\.?0+$/, '')
+    }
+
+    return str
+}
+function divideBigIntByPowerOf10(bigIntValue: BigInt, exponent: number) {
+    // Convert BigInt to string
+    let strValue = bigIntValue.toString()
+
+    // Calculate the position of the decimal point
+    let decimalPosition = strValue.length - exponent
+
+    if (decimalPosition > 0) {
+        // Insert decimal point
+        return removeTrailingZeros(
+            strValue.slice(0, decimalPosition) +
+                '.' +
+                strValue.slice(decimalPosition)
+        )
+    } else {
+        // Add leading zeros
+        return removeTrailingZeros(
+            '0.' + '0'.repeat(-decimalPosition) + strValue
+        )
+    }
+}
+
 export const RebelMintControls = ({
     contractAddress,
     selection,
@@ -18,6 +52,7 @@ export const RebelMintControls = ({
     const {
         token_cost,
         max_supply,
+        decimals,
         is_token_sale_active,
         current_supply,
         currency_details = {
@@ -51,11 +86,13 @@ export const RebelMintControls = ({
             : false
 
     // Handle currency conversions and display optimizations
-    const costInCurrency =
-        BigInt(token_cost * count) /
-        BigInt(10) ** BigInt(currency_details.decimals)
+
+    const costInCurrency = divideBigIntByPowerOf10(
+        BigInt(token_cost),
+        Number(decimals ? decimals : currency_details.decimals)
+    )
     const costToDisplay =
-        costInCurrency < 0.000001 ? '< 0.000001' : costInCurrency
+        Number(costInCurrency) < 0.000001 ? '< 0.000001' : costInCurrency
 
     const handleApproval = async () => {
         await writeContractAsync({
@@ -121,7 +158,7 @@ export const RebelMintControls = ({
         return (
             <div id="RM-controls" className="flex w-full justify-center gap-5">
                 <button
-                    className="bg-base-50 text-base-900 hover:bg-base-100 w-full rounded-xl p-5 duration-100 hover:scale-[102%]"
+                    className="w-full rounded-xl bg-base-50 p-5 text-base-900 duration-100 hover:scale-[102%] hover:bg-base-100"
                     onClick={() => open()}
                 >
                     Connect Wallet
@@ -138,7 +175,7 @@ export const RebelMintControls = ({
                 <button
                     id="RM-mint"
                     disabled={true}
-                    className="text-base-50 w-full rounded-xl bg-red-600 p-2 duration-300 ease-in-out"
+                    className="w-full rounded-xl bg-red-600 p-2 text-base-50 duration-300 ease-in-out"
                 >
                     Sale Closed
                 </button>
@@ -203,12 +240,12 @@ export const RebelMintControls = ({
             id="RM-controls"
             className="flex h-fit w-full items-center justify-center gap-5"
         >
-            <div className="bg-base-700 flex h-full w-fit flex-nowrap rounded-xl">
+            <div className="flex h-full w-fit flex-nowrap rounded-xl bg-base-700">
                 <button
                     id="RM-minus"
                     disabled={minusDisabled}
                     onClick={() => setCount(count - 1)}
-                    className="text-base-50 h-full rounded-l-xl p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%]"
+                    className="h-full rounded-l-xl p-5 text-base-50 duration-150 ease-in-out hover:invert disabled:invert-[70%]"
                 >
                     -
                 </button>
@@ -220,7 +257,7 @@ export const RebelMintControls = ({
                         setCount(value > 0 ? value : 0)
                     }}
                     className={
-                        'bg-base-700 my-auto h-full w-fit max-w-12 text-center focus:border-none focus:outline-none' +
+                        'my-auto h-full w-fit max-w-12 bg-base-700 text-center focus:border-none focus:outline-none' +
                         countText
                     }
                 />
@@ -229,7 +266,7 @@ export const RebelMintControls = ({
                     id="RM-plus"
                     disabled={plusDisabled}
                     onClick={() => setCount(count + 1)}
-                    className="text-base-50 h-full rounded-r-xl p-5 duration-150 ease-in-out hover:invert disabled:invert-[70%]"
+                    className="h-full rounded-r-xl p-5 text-base-50 duration-150 ease-in-out hover:invert disabled:invert-[70%]"
                 >
                     +
                 </button>
