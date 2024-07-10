@@ -15,6 +15,7 @@ import approvedByteCodes from './contract/bytecodes'
 import findValueByVersionPrefix from './contract/helpers/findValueByVersionPrefix'
 import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDetailsFromEndpoint'
 import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
+import { setPageTitle } from './util/setPageTitle'
 
 interface RebelMintProps {
     contractAddress: string
@@ -91,7 +92,12 @@ export const RebelMintApp = ({
                 const result = await contract.methods
                     .getCollectionAndTokenDataJSON()
                     .call()
-                setContractData(JSON.parse(result))
+                const data = JSON.parse(result)
+                setContractData(data)
+                console.log(data)
+                if (data && data.collection_name) {
+                    setPageTitle(data.collection_name)
+                }
             } catch (error: any) {
                 console.error('Error fetching bytecode:', error)
                 console.error('Error message:', error.message)
