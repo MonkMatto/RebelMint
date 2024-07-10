@@ -231,7 +231,7 @@ export const RebelMintTokenManagerApp = ({
                                 <h1 className="text-normal font-thin">{`by ${project.creator}`}</h1>
                             </div>
                             <a
-                                href={`/?contract=${contractAddress}`}
+                                href={`/${contractAddress}`}
                                 target="_blank"
                                 className="flex w-full items-center justify-end rounded-lg border border-base-50 bg-base-950 p-10 text-right text-base-50 hover:bg-base-900 lg:w-1/3"
                             >
