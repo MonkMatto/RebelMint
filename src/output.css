@@ -449,7 +449,14 @@ video {
 @font-face {
   font-family: 'Satoshi';
 
-  src: url(./assets/fonts/Satoshi-Variable.ttf) format('ttf');
+  src:
+            url('./assets/fonts/Satoshi-Variable.woff2') format('woff2'),
+            url('./assets/fonts/Satoshi-Variable.woff') format('woff'),
+            url('./assets/fonts/Satoshi-Variable.ttf') format('truetype');
+
+  font-weight: normal;
+
+  font-style: normal;
 }
 
 *, ::before, ::after {
@@ -739,6 +746,10 @@ video {
   width: 3rem;
 }
 
+.w-3\/4 {
+  width: 75%;
+}
+
 .w-\[90vw\] {
   width: 90vw;
 }
@@ -750,10 +761,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-3\/4 {
-  width: 75%;
 }
 
 .max-w-12 {
@@ -1117,7 +1124,7 @@ video {
 }
 
 .font-satoshi {
-  font-family: Satoshi;
+  font-family: Satoshi, Roboto, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
 .text-3xl {
