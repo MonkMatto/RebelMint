@@ -36,7 +36,7 @@ export const PopUp = ({
     function AllTraits() {
         if (attributes && attributes[0]) {
             return (
-                <div className="mt-auto flex flex-wrap gap-2 justify-self-end overflow-y-auto">
+                <div className="mt-auto flex flex-wrap gap-2 justify-self-end overflow-y-auto text-lg">
                     {attributes.map((a, index) => (
                         <div key={index} className="flex w-fit bg-card p-1">
                             <p key={index}>{a.trait_type + ': '}</p>
@@ -100,7 +100,7 @@ export const PopUp = ({
         >
             <button
                 disabled={selectionIndex - 1 < 0}
-                className="bg-base-800 hover:bg-base-700 disabled:bg-base-400 hidden h-24 w-12 items-center justify-center rounded-l-lg lg:flex"
+                className="hidden h-24 w-12 items-center justify-center rounded-l-lg bg-base-800 hover:bg-base-700 disabled:bg-base-400 lg:flex"
                 onClick={(e) => {
                     e.stopPropagation()
                     setSelectionIndex(selectionIndex - 1)
@@ -115,10 +115,10 @@ export const PopUp = ({
                 }}
                 className="flex h-[90svh] w-[90vw] flex-col justify-between overflow-y-auto rounded-lg bg-bghover p-5 lg:h-fit"
             >
-                <div className="bg-base-800 flex flex-col">
+                <div className="flex flex-col bg-base-800">
                     <img
                         src={close}
-                        className="border-base-700 h-fit w-fit self-end rounded-lg border bg-bghover p-2 text-center hover:cursor-pointer hover:bg-red-600"
+                        className="h-fit w-fit self-end rounded-lg border border-base-700 bg-bghover p-2 text-center hover:cursor-pointer hover:bg-red-600"
                         onClick={() => setSelectionIndex(-1)}
                     />
 
@@ -144,7 +144,7 @@ export const PopUp = ({
                             id="OM-popup-token-info"
                             className="flex h-full w-full flex-col justify-start p-4"
                         >
-                            <div className="bg-base-50 text-base-950 flex h-fit w-full flex-nowrap items-center justify-between gap-8 rounded-lg p-6">
+                            <div className="flex h-fit w-full flex-nowrap items-center justify-between gap-8 rounded-lg bg-base-50 p-6 text-base-950">
                                 <div className="flex h-fit w-3/4 flex-col">
                                     <h1 className="w-fit text-3xl font-bold">
                                         {name}
@@ -172,7 +172,7 @@ export const PopUp = ({
                                     </a>
                                 )}
                             </div>
-                            <p className="border-base-800 bg-base-950 my-4 max-h-[50svh] overflow-y-auto text-wrap rounded-lg p-6 font-light">
+                            <p className="my-4 max-h-[50svh] overflow-y-auto text-wrap rounded-lg border-base-800 bg-base-700 p-6 text-lg font-light text-base-300">
                                 {description}
                             </p>
                             <div className="flex h-fit max-h-[20svh] w-full justify-self-end">
@@ -184,7 +184,7 @@ export const PopUp = ({
             </div>
             <button
                 disabled={selectionIndex + 1 > numTokens}
-                className="bg-base-800 disabled:bg-base-400 hover:bg-base-700 hidden h-24 w-12 items-center justify-center rounded-r-lg lg:flex"
+                className="hidden h-24 w-12 items-center justify-center rounded-r-lg bg-base-800 hover:bg-base-700 disabled:bg-base-400 lg:flex"
                 onClick={(e) => {
                     e.stopPropagation()
                     setSelectionIndex(selectionIndex + 1)

@@ -206,26 +206,30 @@ export const RebelMintApp = ({
             >
                 <div
                     id="RM-header"
-                    className="absolute right-0 top-0 m-5 flex h-fit w-full justify-end justify-self-start md:mr-14"
+                    className="flex h-fit w-full justify-end justify-self-start p-4 py-2"
                 >
                     <w3m-button balance="hide" />
                 </div>
-                <div className="p-4 md:px-12">
-                    <RebelMintInfo
-                        project={project}
-                        explorerUrl={explorerUrl}
-                    />
+                <div id="RM-content" className="flex w-full gap-4">
+                    <div className="p-4 md:px-12">
+                        <RebelMintInfo
+                            project={project}
+                            explorerUrl={explorerUrl}
+                        />
+                    </div>
+                    {allTokens &&
+                    allTokens[0] &&
+                    allTokens[0].currency_details ? (
+                        <RMGallery
+                            allTokens={allTokens}
+                            selectionIndex={selectionIndex}
+                            setSelectionIndex={setSelectionIndex}
+                            tokens={allTokens as [tokenStruct]}
+                        />
+                    ) : (
+                        <></>
+                    )}
                 </div>
-                {allTokens && allTokens[0] && allTokens[0].currency_details ? (
-                    <RMGallery
-                        allTokens={allTokens}
-                        selectionIndex={selectionIndex}
-                        setSelectionIndex={setSelectionIndex}
-                        tokens={allTokens as [tokenStruct]}
-                    />
-                ) : (
-                    <></>
-                )}
                 <ShowPopUp />
             </div>
         )

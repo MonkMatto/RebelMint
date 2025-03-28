@@ -1,5 +1,6 @@
-import badge from '../assets/badge.svg'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import TooltipWrapper from './TooltipWrapper'
+import { ShieldCheck } from 'lucide-react'
 
 interface ProjectProps {
     title?: string
@@ -14,35 +15,70 @@ interface InfoProps {
 }
 const OpenMintInfo = ({ project, explorerUrl }: InfoProps) => {
     const { title, creator, desc } = project
-    const [descToggled, setDescToggled] = useState(false)
-    const descHeight = descToggled ? ' h-[50svh] md:h-64' : ' h-24'
+    const [descExpanded, setDescExpanded] = useState(false)
+    const [needsExpansion, setNeedsExpansion] = useState(false)
+    const descRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (descRef.current) {
+            // Checking if the content is overflowing
+            const needsExpand =
+                descRef.current.scrollHeight > descRef.current.clientHeight
+            setNeedsExpansion(needsExpand)
+        }
+    }, [desc])
+
     return (
         <div
-            id="OM-info"
-            className="bg-base-50 text-base-950 relative mt-8 h-fit w-full rounded-lg p-4 duration-200 md:p-12"
+            id="RM-info"
+            className="bg-base-850 relative flex h-fit w-full flex-col gap-4 overflow-hidden rounded-lg text-base-50 duration-200"
         >
-            <div className="flex h-fit items-start">
-                <a
-                    href={explorerUrl}
-                    target="_blank"
-                    className="@5xl:text-5xl @3xl:text-3xl @lg:text-xl @sm:text-md 6xl mb-0 font-extrabold"
-                >
-                    {title}
-                </a>
-                <img src={badge} className="invert-[10%]"></img>
+            <div id="info-header" className="flex flex-col p-4 md:p-6">
+                <div className="flex h-fit items-center gap-2">
+                    <a
+                        href={explorerUrl}
+                        target="_blank"
+                        className="@5xl:text-3xl @3xl:text-2xl @lg:text-xl @sm:text-md 6xl mb-0 font-extrabold"
+                    >
+                        {title}
+                    </a>
+                    <TooltipWrapper
+                        tooltip="Verified by RebelMint"
+                        position="right"
+                    >
+                        <ShieldCheck className="size-6 text-base-400" />
+                    </TooltipWrapper>
+                </div>
+                <h3 className="@5xl:text-xl @3xl:text-xl @lg:text-lg @sm:text-sm font-regular mb-5 text-base-400">
+                    {'by ' + creator}
+                </h3>
             </div>
-            <h3 className="@5xl:text-3xl @3xl:text-xl @lg:text-lg @sm:text-sm font-regular mb-5">
-                {'by ' + creator}
-            </h3>
-            <div
-                onMouseEnter={() => setDescToggled(true)}
-                onMouseLeave={() => setDescToggled(false)}
-                className={
-                    '@5xl:text-2xl @3xl:text-lg @sm:text-sm bg-base-50 border-base-100 text-base-950 w-fit overflow-y-scroll text-wrap rounded-md border p-4 duration-200' +
-                    descHeight
-                }
-            >
-                {desc}
+
+            <div className="relative w-full bg-base-800 bg-opacity-30 p-4 md:p-6">
+                <div
+                    ref={descRef}
+                    className={`w-full min-w-[40ch] max-w-[40ch] overflow-y-scroll rounded-md text-base text-base-400 duration-200 ${
+                        !descExpanded
+                            ? 'line-clamp-4 h-24 overflow-hidden'
+                            : 'min-h-24'
+                    }`}
+                >
+                    {desc}
+                </div>
+
+                {/* Gradient overlay on collapse, can go if distracting or breaks function */}
+                {/* {!descExpanded && needsExpansion && (
+                    <div className="pointer-events-none absolute bottom-0 left-0 h-12 w-full bg-gradient-to-t from-base-800 to-transparent"></div>
+                )} */}
+
+                {needsExpansion && (
+                    <button
+                        onClick={() => setDescExpanded(!descExpanded)}
+                        className="mt-2 text-sm font-medium text-base-500 hover:text-base-700"
+                    >
+                        {descExpanded ? 'Read less' : 'Read more'}
+                    </button>
+                )}
             </div>
         </div>
     )

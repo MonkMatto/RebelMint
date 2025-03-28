@@ -89,7 +89,7 @@ export const RMTokenCard = ({
             // Show that this token IS selected
             return (
                 <div
-                    className="box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol bg-base-800 align-middle duration-200 hover:bg-cardhover"
+                    className="box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol bg-base-800 align-middle duration-100 hover:bg-base-700"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div
@@ -124,7 +124,7 @@ export const RMTokenCard = ({
             //Show that this token IS NOT selected
             return (
                 <div
-                    className="box-border flex h-full w-full flex-col items-center justify-around rounded-lg border-2 border-base-800 bg-base-900 align-middle duration-200 hover:border-base-700 hover:bg-base-700"
+                    className="hover:bg-base-750 box-border flex h-full w-full cursor-pointer flex-col items-center justify-around rounded-lg border-2 border-base-800 bg-base-900 align-middle duration-200 hover:border-base-700"
                     onClick={() => setSelectionIndex(tokenIndex)}
                 >
                     <div
