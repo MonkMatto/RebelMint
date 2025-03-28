@@ -16,6 +16,7 @@ import findValueByVersionPrefix from './contract/helpers/findValueByVersionPrefi
 import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDetailsFromEndpoint'
 import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 import { setPageTitle } from './util/setPageTitle'
+import { AlertTriangle } from 'lucide-react'
 
 interface RebelMintProps {
     contractAddress: string
@@ -70,7 +71,9 @@ export const RebelMintApp = ({
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
     const provider = useEthersProvider({ chainId: chainID })
-    const [byteCodeIsValid, setByteCodeIsValid] = useState(true)
+    const [contractValidity, setContractValidity] = useState<
+        'invalid' | 'unverified' | 'valid'
+    >('invalid')
     const [selectionIndex, setSelectionIndex] = useState<number>(-1)
     const validContractAddress =
         contractAddress && contractAddress.startsWith('0x')
@@ -80,6 +83,11 @@ export const RebelMintApp = ({
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!validContractAddress) {
+                setContractValidity('invalid')
+                return
+            }
+
             try {
                 const httpProvider = new Web3.providers.HttpProvider(
                     providerUrl as string
@@ -102,6 +110,7 @@ export const RebelMintApp = ({
                 console.error('Error fetching bytecode:', error)
                 console.error('Error message:', error.message)
                 console.error('Error details:', JSON.stringify(error, null, 2))
+                setContractValidity('invalid')
             }
         }
         fetchData()
@@ -137,14 +146,22 @@ export const RebelMintApp = ({
                     const code = await provider.getCode(
                         contractAddress as `${string}`
                     )
+                    if (code === '0x') {
+                        setContractValidity('invalid')
+                        return
+                    }
+                    console.log(`Contract code: ${code}`)
+                    console.log(`Version bytecode: ${versionBytecode}`)
+                    console.log(`Version: ${version}`)
 
                     if (versionBytecode === code) {
-                        setByteCodeIsValid(true)
+                        setContractValidity('valid')
                     } else {
-                        setByteCodeIsValid(false)
+                        setContractValidity('unverified')
                     }
                 } catch (error: any) {
                     console.log(error.message)
+                    setContractValidity('invalid')
                 }
             }
         }
@@ -198,49 +215,58 @@ export const RebelMintApp = ({
         }
     }, [selection, selectionIndex, contractAddress, tokens.length])
 
-    if (byteCodeIsValid) {
-        return (
-            <div
-                id="RM-container"
-                className="@container size align-center relative flex h-full w-full flex-col justify-start p-2 pt-12 font-satoshi text-xl text-textcol"
-            >
-                <div
-                    id="RM-header"
-                    className="flex h-fit w-full justify-end justify-self-start p-4 py-2"
-                >
-                    <w3m-button balance="hide" />
-                </div>
-                <div id="RM-content" className="flex w-full gap-4">
-                    <div className="p-4 md:px-12">
-                        <RebelMintInfo
-                            project={project}
-                            explorerUrl={explorerUrl}
-                        />
+    console.log(`contractValidity: ${contractValidity}`)
+
+    return (
+        <div
+            id="RM-container"
+            className="@container size align-center relative flex h-full w-full flex-col justify-start p-2 pt-12 font-satoshi text-xl text-textcol"
+        >
+            {contractValidity === 'unverified' ||
+                (contractValidity == 'invalid' && (
+                    <div className="flex h-full min-h-[50svh] w-full flex-col items-center justify-center gap-4 text-center">
+                        <h1 className="flex items-center gap-2 text-red-500">
+                            <AlertTriangle /> Sorry Bub, that ain't a RebelMint
+                            contract.
+                        </h1>
+                        <p>
+                            For security, this app only works with RebelMint
+                            contracts.
+                        </p>
                     </div>
-                    {allTokens &&
-                    allTokens[0] &&
-                    allTokens[0].currency_details ? (
-                        <RMGallery
-                            allTokens={allTokens}
-                            selectionIndex={selectionIndex}
-                            setSelectionIndex={setSelectionIndex}
-                            tokens={allTokens as [tokenStruct]}
-                        />
-                    ) : (
-                        <></>
-                    )}
-                </div>
-                <ShowPopUp />
-            </div>
-        )
-    } else {
-        return (
-            <div
-                id="RM-container"
-                className="size align-center relative flex h-full w-full flex-col items-center justify-center bg-bgcol bg-cover bg-center p-2 font-satoshi text-xl text-textcol"
-            >
-                Warning: Contract is not RebelMint Verified
-            </div>
-        )
-    }
+                ))}
+
+            {contractValidity === 'valid' && (
+                <>
+                    <div
+                        id="RM-header"
+                        className="flex h-fit w-full justify-end justify-self-start p-4 py-2"
+                    >
+                        <w3m-button balance="hide" />
+                    </div>
+                    <div id="RM-content" className="flex w-full gap-4">
+                        <div className="p-4 md:px-12">
+                            <RebelMintInfo
+                                project={project}
+                                explorerUrl={explorerUrl}
+                            />
+                        </div>
+                        {allTokens &&
+                        allTokens[0] &&
+                        allTokens[0].currency_details ? (
+                            <RMGallery
+                                allTokens={allTokens}
+                                selectionIndex={selectionIndex}
+                                setSelectionIndex={setSelectionIndex}
+                                tokens={allTokens as [tokenStruct]}
+                            />
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+                    <ShowPopUp />
+                </>
+            )}
+        </div>
+    )
 }
