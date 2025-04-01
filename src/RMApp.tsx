@@ -16,7 +16,7 @@ import findValueByVersionPrefix from './contract/helpers/findValueByVersionPrefi
 import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDetailsFromEndpoint'
 import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 import { setPageTitle } from './util/setPageTitle'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Loader2 } from 'lucide-react'
 
 interface RebelMintProps {
     contractAddress: string
@@ -79,10 +79,12 @@ export const RebelMintApp = ({
         contractAddress && contractAddress.startsWith('0x')
             ? contractAddress
             : undefined
+    const [loading, setLoading] = useState(true)
     const [contractData, setContractData] = useState<any>(null)
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true)
             if (!validContractAddress) {
                 setContractValidity('invalid')
                 return
@@ -111,6 +113,8 @@ export const RebelMintApp = ({
                 console.error('Error message:', error.message)
                 console.error('Error details:', JSON.stringify(error, null, 2))
                 setContractValidity('invalid')
+            } finally {
+                setLoading(false)
             }
         }
         fetchData()
@@ -136,6 +140,7 @@ export const RebelMintApp = ({
 
     useEffect(() => {
         const fetchAndCompareBytecode = async () => {
+            setLoading(true)
             if (provider && contractData?.contract_code) {
                 const version = contractData.contract_code
                 const versionBytecode = findValueByVersionPrefix(
@@ -162,6 +167,8 @@ export const RebelMintApp = ({
                 } catch (error: any) {
                     console.log(error.message)
                     setContractValidity('invalid')
+                } finally {
+                    setLoading(false)
                 }
             }
         }
@@ -222,49 +229,57 @@ export const RebelMintApp = ({
             id="RM-container"
             className="@container size align-center relative flex h-full w-full flex-col justify-start p-2 pt-12 font-satoshi text-xl text-textcol"
         >
-            {contractValidity === 'unverified' ||
-                (contractValidity == 'invalid' && (
-                    <div className="flex h-full min-h-[50svh] w-full flex-col items-center justify-center gap-4 text-center">
-                        <h1 className="flex items-center gap-2 text-red-500">
-                            <AlertTriangle /> Sorry Bub, that ain't a RebelMint
-                            contract.
-                        </h1>
-                        <p>
-                            For security, this app only works with RebelMint
-                            contracts.
-                        </p>
-                    </div>
-                ))}
-
-            {contractValidity === 'valid' && (
+            {loading ? (
+                <div className="flex h-full min-h-[50svh] w-full flex-col items-center justify-center gap-4 text-center">
+                    <Loader2 className="absolute left-1/2 top-1/2 size-10 animate-spin text-textcol" />
+                </div>
+            ) : (
                 <>
-                    <div
-                        id="RM-header"
-                        className="flex h-fit w-full justify-end justify-self-start p-4 py-2"
-                    >
-                        <w3m-button balance="hide" />
-                    </div>
-                    <div id="RM-content" className="flex w-full gap-4">
-                        <div className="p-4 md:px-12">
-                            <RebelMintInfo
-                                project={project}
-                                explorerUrl={explorerUrl}
-                            />
-                        </div>
-                        {allTokens &&
-                        allTokens[0] &&
-                        allTokens[0].currency_details ? (
-                            <RMGallery
-                                allTokens={allTokens}
-                                selectionIndex={selectionIndex}
-                                setSelectionIndex={setSelectionIndex}
-                                tokens={allTokens as [tokenStruct]}
-                            />
-                        ) : (
-                            <></>
-                        )}
-                    </div>
-                    <ShowPopUp />
+                    {(!loading && contractValidity === 'unverified') ||
+                        (contractValidity == 'invalid' && (
+                            <div className="flex h-full min-h-[50svh] w-full flex-col items-center justify-center gap-4 text-center">
+                                <h1 className="flex items-center gap-2 text-red-500">
+                                    <AlertTriangle /> Sorry Bub, that ain't a
+                                    RebelMint contract.
+                                </h1>
+                                <p>
+                                    For security, this app only works with
+                                    RebelMint contracts.
+                                </p>
+                            </div>
+                        ))}
+
+                    {!loading && contractValidity === 'valid' && (
+                        <>
+                            <div
+                                id="RM-header"
+                                className="flex h-fit w-full justify-end justify-self-start p-4 py-2"
+                            >
+                                <w3m-button balance="hide" />
+                            </div>
+                            <div id="RM-content" className="flex w-full gap-4">
+                                <div className="p-4 md:px-12">
+                                    <RebelMintInfo
+                                        project={project}
+                                        explorerUrl={explorerUrl}
+                                    />
+                                </div>
+                                {allTokens &&
+                                allTokens[0] &&
+                                allTokens[0].currency_details ? (
+                                    <RMGallery
+                                        allTokens={allTokens}
+                                        selectionIndex={selectionIndex}
+                                        setSelectionIndex={setSelectionIndex}
+                                        tokens={allTokens as [tokenStruct]}
+                                    />
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
+                            <ShowPopUp />
+                        </>
+                    )}
                 </>
             )}
         </div>
