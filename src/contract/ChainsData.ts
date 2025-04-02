@@ -57,7 +57,7 @@ export class RMInfo {
                     chainId: 1,
                     chainIdHex: '0x1',
                     name: 'ethereum',
-                    displayName: 'Ethereum Mainnet',
+                    displayName: 'Ethereum',
                     explorer: 'https://etherscan.io/',
                     isTestnet: false,
                     url: 'https://ethereum-mainnet.g.alchemy.com/v2/',
@@ -71,7 +71,7 @@ export class RMInfo {
                     chainId: 84532,
                     chainIdHex: '0x14a34',
                     name: 'base-sepolia',
-                    displayName: 'Base Sepolia Testnet',
+                    displayName: 'Base Sepolia',
                     explorer: 'https://sepolia.basescan.org/',
                     isTestnet: true,
                     url: 'https://base-sepolia.g.alchemy.com/v2/',
@@ -81,7 +81,7 @@ export class RMInfo {
                     chainId: 8453,
                     chainIdHex: '0x2105',
                     name: 'base',
-                    displayName: 'Base Mainnet',
+                    displayName: 'Base',
                     explorer: 'https://basescan.org/',
                     isTestnet: false,
                     url: 'https://base-mainnet.g.alchemy.com/v2/',
@@ -105,7 +105,7 @@ export class RMInfo {
                     chainId: 10,
                     chainIdHex: '0xa',
                     name: 'optimism',
-                    displayName: 'Optimism Mainnet',
+                    displayName: 'Optimism',
                     explorer: 'https://optimistic.etherscan.io/',
                     isTestnet: false,
                     url: 'https://optimism-mainnet.g.alchemy.com/v2/',
@@ -129,7 +129,7 @@ export class RMInfo {
                     chainId: 360,
                     chainIdHex: '0x168',
                     name: 'shape-mainnet',
-                    displayName: 'Shape Mainnet',
+                    displayName: 'Shape',
                     explorer: 'https://shapescan.xyz/',
                     isTestnet: false,
                     url: 'https://shape-mainnet.g.alchemy.com/v2/',
@@ -366,6 +366,19 @@ export class RMInfo {
     }
 
     /**
+     * Get a network configuration by its ID
+     * @param id The ID of the network to search for
+     * @returns The network configuration or undefined if not found
+     */
+    public getNetworkById(
+        id: number
+    ):
+        | (NetworkConfig & { type: NetworkType; environment: Environment })
+        | undefined {
+        return this.getAllNetworks().find((network) => network.chainId == id)
+    }
+
+    /**
      * Validate if a chain name exists
      * @param name The name of the chain to validate
      * @returns True if the chain name exists, otherwise false
@@ -383,6 +396,14 @@ export class RMInfo {
         return this.getAllNetworks().some(
             (network) => network.chainId === chainId
         )
+    }
+
+    /**
+     * Get all chain names
+     * @returns Array of all chain name values
+     */
+    public getAllChainNames(): string[] {
+        return this.getAllNetworks().map((network) => network.name)
     }
 }
 

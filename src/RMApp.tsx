@@ -17,12 +17,14 @@ import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDe
 import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 import { setPageTitle } from './util/setPageTitle'
 import { AlertTriangle, Loader2 } from 'lucide-react'
+import { NetworkConfig, rmInfo } from './contract/ChainsData'
 
 interface RebelMintProps {
     contractAddress: string
     providerUrl: string
     explorerUrl: string
     chainID: number
+    validConnectedChain: boolean
 }
 
 const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
@@ -66,6 +68,7 @@ export const RebelMintApp = ({
     providerUrl,
     explorerUrl,
     chainID,
+    validConnectedChain,
 }: RebelMintProps) => {
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
@@ -223,12 +226,21 @@ export const RebelMintApp = ({
     }, [selection, selectionIndex, contractAddress, tokens.length])
 
     console.log(`contractValidity: ${contractValidity}`)
+    const network = rmInfo.getNetworkByChainId(chainID) as NetworkConfig
 
     return (
         <div
             id="RM-container"
             className="@container size align-center relative flex h-full w-full flex-col justify-start p-2 pt-12 font-satoshi text-xl text-textcol"
         >
+            {!loading && !validConnectedChain && (
+                <div className="absolute inset-0 z-50 flex h-full w-full flex-col items-center justify-center backdrop-blur-[2px]">
+                    <div className="flex flex-col items-center justify-center gap-4 rounded-md border border-red-500 bg-base-850 p-4">
+                        <p>{`Please switch your wallet to ${network.displayName}`}</p>
+                        <w3m-network-button />
+                    </div>
+                </div>
+            )}
             {loading ? (
                 <div className="flex h-full min-h-[50svh] w-full flex-col items-center justify-center gap-4 text-center">
                     <Loader2 className="absolute left-1/2 top-1/2 size-10 animate-spin text-textcol" />
