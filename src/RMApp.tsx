@@ -82,6 +82,8 @@ export const RebelMintApp = ({
         contractAddress && contractAddress.startsWith('0x')
             ? contractAddress
             : undefined
+    console.log(`validContractAddress: ${validContractAddress}`)
+    console.log(`contractValidity: ${contractValidity}`)
     const [loading, setLoading] = useState(true)
     const [contractData, setContractData] = useState<any>(null)
 
@@ -89,6 +91,7 @@ export const RebelMintApp = ({
         const fetchData = async () => {
             setLoading(true)
             if (!validContractAddress) {
+                console.error('Invalid contract address')
                 setContractValidity('invalid')
                 return
             }

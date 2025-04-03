@@ -50,7 +50,7 @@ export class RMInfo {
                     displayName: 'Ethereum Sepolia Testnet',
                     explorer: 'https://sepolia.etherscan.io/',
                     isTestnet: true,
-                    url: 'https://ethereum-sepolia.g.alchemy.com/v2/',
+                    url: 'https://eth-sepolia.g.alchemy.com/v2/',
                 },
                 mainnet: {
                     address: '0x9763141Aa64d07741b0263d8cFb273119adB839a',
@@ -60,7 +60,7 @@ export class RMInfo {
                     displayName: 'Ethereum',
                     explorer: 'https://etherscan.io/',
                     isTestnet: false,
-                    url: 'https://ethereum-mainnet.g.alchemy.com/v2/',
+                    url: 'https://eth-mainnet.g.alchemy.com/v2/',
                 },
             },
 
@@ -98,7 +98,7 @@ export class RMInfo {
                     displayName: 'Optimism Sepolia Testnet',
                     explorer: 'https://sepolia-optimism.etherscan.io/',
                     isTestnet: true,
-                    url: 'https://optimism-sepolia.g.alchemy.com/v2/',
+                    url: 'https://opt-sepolia.g.alchemy.com/v2/',
                 },
                 mainnet: {
                     address: '0x42F6728AD23128F26248BF15F89526914b0B03aF',
@@ -108,7 +108,7 @@ export class RMInfo {
                     displayName: 'Optimism',
                     explorer: 'https://optimistic.etherscan.io/',
                     isTestnet: false,
-                    url: 'https://optimism-mainnet.g.alchemy.com/v2/',
+                    url: 'https://opt-mainnet.g.alchemy.com/v2/',
                 },
             },
 
@@ -146,7 +146,7 @@ export class RMInfo {
                     displayName: 'Arbitrum Sepolia Testnet',
                     explorer: 'https://sepolia.arbiscan.io/',
                     isTestnet: true,
-                    url: 'https://arbitrum-sepolia.g.alchemy.com/v2/',
+                    url: 'https://arb-sepolia.g.alchemy.com/v2/',
                 },
                 mainnet: {
                     address: '0x4dCe572b6d6d058D74C5bd158a177b507867ca86',
@@ -156,7 +156,7 @@ export class RMInfo {
                     displayName: 'Arbitrum Mainnet',
                     explorer: 'https://arbiscan.io/',
                     isTestnet: false,
-                    url: 'https://arbitrum-mainnet.g.alchemy.com/v2/',
+                    url: 'https://arb-mainnet.g.alchemy.com/v2/',
                 },
             },
 
