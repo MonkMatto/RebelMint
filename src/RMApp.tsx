@@ -153,11 +153,17 @@ export const RebelMintApp = ({
                     approvedByteCodes,
                     version
                 )
+                if (!versionBytecode) {
+                    console.warn(`Version bytecode not found`)
+                    setContractValidity('invalid')
+                    return
+                }
                 try {
                     const code = await provider.getCode(
                         contractAddress as `${string}`
                     )
                     if (code === '0x') {
+                        console.warn(`Contract ABI not found`)
                         setContractValidity('invalid')
                         return
                     }
@@ -168,14 +174,20 @@ export const RebelMintApp = ({
                     if (versionBytecode === code) {
                         setContractValidity('valid')
                     } else {
+                        console.warn(`Bytecode does not match`)
                         setContractValidity('unverified')
                     }
+                    setLoading(false)
                 } catch (error: any) {
                     console.log(error.message)
                     setContractValidity('invalid')
                 } finally {
                     setLoading(false)
                 }
+            } else {
+                console.warn(`Provider or contract data not available`)
+                setContractValidity('invalid')
+                setLoading(false)
             }
         }
 

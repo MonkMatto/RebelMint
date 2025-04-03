@@ -3,6 +3,15 @@ import { useMemo } from 'react'
 import type { Chain, Client, Transport } from 'viem'
 import { type Config, useClient } from 'wagmi'
 
+// Helper to add CORS proxy to URLs that need it
+function addCorsProxy(url: string): string {
+    // Only add proxy for specific problematic endpoints
+    if (url.includes('rpc.sepolia.org')) {
+        return `https://corsproxy.io/?${encodeURIComponent(url)}`
+    }
+    return url
+}
+
 export function clientToProvider(client: Client<Transport, Chain>) {
     const { chain, transport } = client
     const network = {
@@ -12,12 +21,19 @@ export function clientToProvider(client: Client<Transport, Chain>) {
     }
     if (transport.type === 'fallback') {
         const providers = (transport.transports as ReturnType<Transport>[]).map(
-            ({ value }) => new JsonRpcProvider(value?.url, network)
+            ({ value }) =>
+                new JsonRpcProvider(
+                    value?.url ? addCorsProxy(value.url) : value?.url,
+                    network
+                )
         )
         if (providers.length === 1) return providers[0]
         return new FallbackProvider(providers)
     }
-    return new JsonRpcProvider(transport.url, network)
+    return new JsonRpcProvider(
+        transport.url ? addCorsProxy(transport.url) : transport.url,
+        network
+    )
 }
 
 /** Action to convert a viem Client to an ethers.js Provider. */
