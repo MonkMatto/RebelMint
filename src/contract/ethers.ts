@@ -3,9 +3,10 @@ import { useMemo } from 'react'
 import type { Chain, Client, Transport } from 'viem'
 import { type Config, useClient } from 'wagmi'
 
-// Helper to add CORS proxy to URLs that need it
+// This function is used only for failing CORS requests that give us trouble
+// Currently, this is only for ETH-Sepolia, please update this if you add more
 function addCorsProxy(url: string): string {
-    // Only add proxy for specific problematic endpoints
+    // Only add proxy for endpoints that give us CORS issues
     if (url.includes('rpc.sepolia.org')) {
         return `https://corsproxy.io/?${encodeURIComponent(url)}`
     }
