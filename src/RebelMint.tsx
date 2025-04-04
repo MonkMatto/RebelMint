@@ -23,6 +23,8 @@ import { RebelMintApp } from './RMApp.tsx'
 import { RebelMintTokenManagerApp } from './RMManagerApp.tsx'
 import { NetworkConfig, RMInfo } from './contract/ChainsData.ts'
 import { useAccount } from 'wagmi'
+import { shape } from './contract/custom-networks/shape.ts'
+import { shapeSepolia } from './contract/custom-networks/ShapeSepolia.ts'
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
@@ -50,6 +52,8 @@ const createConfig = (chainId?: number) => {
         polygonAmoy,
         optimism,
         optimismSepolia,
+        shape,
+        shapeSepolia,
     ] as const
 
     // Always include all chains in the configuration
