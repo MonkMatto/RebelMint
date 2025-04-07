@@ -31,7 +31,7 @@ const OpenMintInfo = ({ project, explorerUrl }: InfoProps) => {
     return (
         <div
             id="RM-info"
-            className="bg-base-850 relative flex h-fit w-full flex-col gap-4 overflow-hidden rounded-lg text-base-50 duration-200"
+            className="relative flex h-fit w-full flex-col gap-4 overflow-hidden rounded-lg bg-base-850 text-base-50 duration-200"
         >
             <div id="info-header" className="flex flex-col p-4 md:p-6">
                 <div className="flex h-fit items-center gap-2">
@@ -44,7 +44,7 @@ const OpenMintInfo = ({ project, explorerUrl }: InfoProps) => {
                     </a>
                     <TooltipWrapper
                         tooltip="Verified by RebelMint"
-                        position="right"
+                        position="bottom-right"
                     >
                         <ShieldCheck className="size-6 text-base-400" />
                     </TooltipWrapper>
@@ -57,7 +57,7 @@ const OpenMintInfo = ({ project, explorerUrl }: InfoProps) => {
             <div className="relative w-full bg-base-800 bg-opacity-30 p-4 md:p-6">
                 <div
                     ref={descRef}
-                    className={`w-full min-w-[40ch] max-w-[40ch] overflow-y-scroll rounded-md text-base text-base-400 duration-200 ${
+                    className={`w-full min-w-[40ch] max-w-[40ch] overflow-y-scroll whitespace-pre-line rounded-md text-base text-base-400 duration-200 ${
                         !descExpanded
                             ? 'line-clamp-4 h-24 overflow-hidden'
                             : 'min-h-24'

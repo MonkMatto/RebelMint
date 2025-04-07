@@ -53,7 +53,7 @@ export const RMTokenCard = ({
             is_token_sale_active,
         } = token
 
-        const creator = created_by ? created_by : '...'
+        const creator = created_by ? created_by : ''
 
         //For Contract v0, ETH token cost is costToSend while erc20 token cost is costToDisplay
 
@@ -65,98 +65,61 @@ export const RMTokenCard = ({
             Number(costInCurrency) < 0.0000001 ? '< 0.000001' : costInCurrency
 
         const supplyIndicator =
-            current_supply && max_supply
-                ? current_supply + ' / ' + max_supply.toString()
-                : ''
+            current_supply && max_supply ? (
+                <div className="flex w-full flex-col gap-1">
+                    <span className="">
+                        {' '}
+                        <span className="text-base-300">{current_supply}</span>
+                        {' / ' + max_supply.toString() + ' minted'}
+                    </span>
+                    <div className="h-1 w-full rounded-full bg-base-800">
+                        <div
+                            className="h-2.5 rounded-full bg-base-50"
+                            style={{
+                                width: `${(Number(current_supply) / Number(max_supply)) * 100}%`,
+                            }}
+                        ></div>
+                    </div>
+                </div>
+            ) : (
+                ''
+            )
 
         const style = {
             '--image-url': ` url(${image})`,
         } as React.CSSProperties
 
-        const SaleConditionDot = () => {
-            if (is_token_sale_active) {
-                return (
-                    <div className="ml-1 aspect-square h-2/5 rounded-full bg-green-400"></div>
-                )
-            } else {
-                return (
-                    <div className="ml-1 aspect-square h-2/5 rounded-full bg-red-400"></div>
-                )
-            }
-        }
-
-        if (tokenIndex == selectionIndex) {
-            // Show that this token IS selected
-            return (
+        return (
+            <div
+                className="hover:bg-base-750 box-border flex h-full w-full cursor-pointer flex-col items-center justify-around overflow-hidden rounded-lg border-2 border-base-850 bg-base-900 align-middle duration-200 hover:border-base-700"
+                onClick={() => setSelectionIndex(tokenIndex)}
+            >
                 <div
-                    className="box-border flex h-full w-full scale-105 flex-col justify-between rounded-lg border-2 border-textcol bg-base-800 align-middle duration-100 hover:bg-base-700"
-                    onClick={() => setSelectionIndex(tokenIndex)}
-                >
-                    <div
-                        className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
-                        style={style}
-                    />
-                    <div className="flex w-full flex-col rounded-b-md bg-base-800 p-2">
-                        <div className="mb-4 mt-3">
-                            <p className="truncate text-lg">{name}</p>
-                            <p className="truncate text-sm font-light">
-                                {creator}
-                            </p>
-                        </div>
-                        <div className="flex flex-wrap justify-between align-middle">
-                            <div className="flex h-5 flex-row justify-start align-middle">
+                    className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
+                    style={style}
+                />
+                <div className="flex w-full flex-col rounded-b-md bg-base-850">
+                    <div className="mb-4 mt-3 px-2">
+                        <p className="truncate text-lg">{name}</p>
+                        <p className="truncate text-sm font-light">{creator}</p>
+                    </div>
+                    <div className="flex flex-col flex-nowrap justify-between gap-4 bg-base-850 px-2 pb-2">
+                        {is_token_sale_active && (
+                            <div className="flex h-5 flex-row justify-start align-middle text-base-200">
                                 <p className="text-sm">
                                     {costToDisplay.toString() +
                                         ' ' +
                                         currency_details.symbol}
                                 </p>
                             </div>
-                            <div className="flex h-5 items-center justify-end">
-                                <p className="text-sm">{supplyIndicator}</p>
+                        )}
 
-                                <SaleConditionDot />
-                            </div>
-                        </div>
+                        <p className="text-sm text-base-600">
+                            {supplyIndicator}
+                        </p>
                     </div>
                 </div>
-            )
-        } else if (tokenIndex != selectionIndex || selectionIndex == null) {
-            //Show that this token IS NOT selected
-            return (
-                <div
-                    className="hover:bg-base-750 box-border flex h-full w-full cursor-pointer flex-col items-center justify-around rounded-lg border-2 border-base-800 bg-base-900 align-middle duration-200 hover:border-base-700"
-                    onClick={() => setSelectionIndex(tokenIndex)}
-                >
-                    <div
-                        className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
-                        style={style}
-                    />
-                    <div className="flex w-full flex-col rounded-b-md bg-base-800 p-2">
-                        <div className="mb-4 mt-3">
-                            <p className="truncate text-lg">{name}</p>
-                            <p className="truncate text-sm font-light">
-                                {creator}
-                            </p>
-                        </div>
-                        <div className="flex flex-wrap justify-between align-middle">
-                            <div className="flex h-5 flex-row justify-start align-middle">
-                                <p className="text-sm">
-                                    {costToDisplay.toString() +
-                                        ' ' +
-                                        currency_details.symbol}
-                                </p>
-                            </div>
-                            <div className="flex h-5 items-center justify-end">
-                                <p className="text-sm">{supplyIndicator}</p>
-
-                                <SaleConditionDot />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-    } else {
-        return <></>
+            </div>
+        )
     }
 }

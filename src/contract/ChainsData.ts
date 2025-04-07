@@ -3,6 +3,10 @@
  * Provides typesafe access to network configurations and utility methods
  */
 
+import BaseLogo from '../assets/chain-icons/base.svg'
+import OptimismLogo from '../assets/chain-icons/optimism.svg'
+import ShapeLogo from '../assets/chain-icons/shape.svg'
+
 // Define the network type structure
 interface NetworkConfig {
     address: string
@@ -13,6 +17,7 @@ interface NetworkConfig {
     explorer: string
     isTestnet: boolean
     url: string // Added RPC URL
+    icon?: string // Optional icon URL
 }
 
 // Define the network types
@@ -42,16 +47,6 @@ export class RMInfo {
         this.networks = {
             // Ethereum network configuration
             ethereum: {
-                testnet: {
-                    address: '0xBb657C226D81F967F5C9133a1663d47E9B73981B',
-                    chainId: 11155111,
-                    chainIdHex: '0xaa36a7',
-                    name: 'ethereum-sepolia',
-                    displayName: 'Ethereum Sepolia Testnet',
-                    explorer: 'https://sepolia.etherscan.io/',
-                    isTestnet: true,
-                    url: 'https://eth-sepolia.g.alchemy.com/v2/',
-                },
                 mainnet: {
                     address: '0x9763141Aa64d07741b0263d8cFb273119adB839a',
                     chainId: 1,
@@ -61,21 +56,23 @@ export class RMInfo {
                     explorer: 'https://etherscan.io/',
                     isTestnet: false,
                     url: 'https://eth-mainnet.g.alchemy.com/v2/',
+                    icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022',
+                },
+                testnet: {
+                    address: '0xBb657C226D81F967F5C9133a1663d47E9B73981B',
+                    chainId: 11155111,
+                    chainIdHex: '0xaa36a7',
+                    name: 'ethereum-sepolia',
+                    displayName: 'Ethereum Sepolia',
+                    explorer: 'https://sepolia.etherscan.io/',
+                    isTestnet: true,
+                    url: 'https://eth-sepolia.g.alchemy.com/v2/',
+                    icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022',
                 },
             },
 
             // Base network configuration
             base: {
-                testnet: {
-                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
-                    chainId: 84532,
-                    chainIdHex: '0x14a34',
-                    name: 'base-sepolia',
-                    displayName: 'Base Sepolia',
-                    explorer: 'https://sepolia.basescan.org/',
-                    isTestnet: true,
-                    url: 'https://base-sepolia.g.alchemy.com/v2/',
-                },
                 mainnet: {
                     address: '0x69Cc263973b1b22F7d81C5Be880A27CAd4c4E0De',
                     chainId: 8453,
@@ -85,21 +82,23 @@ export class RMInfo {
                     explorer: 'https://basescan.org/',
                     isTestnet: false,
                     url: 'https://base-mainnet.g.alchemy.com/v2/',
+                    icon: BaseLogo,
+                },
+                testnet: {
+                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                    chainId: 84532,
+                    chainIdHex: '0x14a34',
+                    name: 'base-sepolia',
+                    displayName: 'Base Sepolia',
+                    explorer: 'https://sepolia.basescan.org/',
+                    isTestnet: true,
+                    url: 'https://base-sepolia.g.alchemy.com/v2/',
+                    icon: BaseLogo,
                 },
             },
 
             // Optimism network configuration
             optimism: {
-                testnet: {
-                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
-                    chainId: 11155420,
-                    chainIdHex: '0xaa37dc',
-                    name: 'optimism-sepolia',
-                    displayName: 'Optimism Sepolia Testnet',
-                    explorer: 'https://sepolia-optimism.etherscan.io/',
-                    isTestnet: true,
-                    url: 'https://opt-sepolia.g.alchemy.com/v2/',
-                },
                 mainnet: {
                     address: '0x42F6728AD23128F26248BF15F89526914b0B03aF',
                     chainId: 10,
@@ -109,21 +108,23 @@ export class RMInfo {
                     explorer: 'https://optimistic.etherscan.io/',
                     isTestnet: false,
                     url: 'https://opt-mainnet.g.alchemy.com/v2/',
+                    icon: OptimismLogo,
+                },
+                testnet: {
+                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                    chainId: 11155420,
+                    chainIdHex: '0xaa37dc',
+                    name: 'optimism-sepolia',
+                    displayName: 'Optimism Sepolia',
+                    explorer: 'https://sepolia-optimism.etherscan.io/',
+                    isTestnet: true,
+                    url: 'https://opt-sepolia.g.alchemy.com/v2/',
+                    icon: OptimismLogo,
                 },
             },
 
             // Shape network configuration
             shape: {
-                testnet: {
-                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
-                    chainId: 11011,
-                    chainIdHex: '0x2b03',
-                    name: 'shape-sepolia',
-                    displayName: 'Shape Sepolia Testnet',
-                    explorer: 'https://explorer-sepolia.shape.network/',
-                    isTestnet: true,
-                    url: 'https://shape-sepolia.g.alchemy.com/v2/',
-                },
                 mainnet: {
                     address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
                     chainId: 360,
@@ -133,54 +134,70 @@ export class RMInfo {
                     explorer: 'https://shapescan.xyz/',
                     isTestnet: false,
                     url: 'https://shape-mainnet.g.alchemy.com/v2/',
+                    icon: ShapeLogo,
+                },
+                testnet: {
+                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                    chainId: 11011,
+                    chainIdHex: '0x2b03',
+                    name: 'shape-sepolia',
+                    displayName: 'Shape Sepolia',
+                    explorer: 'https://explorer-sepolia.shape.network/',
+                    isTestnet: true,
+                    url: 'https://shape-sepolia.g.alchemy.com/v2/',
+                    icon: ShapeLogo,
                 },
             },
 
             // Arbitrum network configuration
             arbitrum: {
-                testnet: {
-                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
-                    chainId: 421614,
-                    chainIdHex: '0x66eee',
-                    name: 'arbitrum-sepolia',
-                    displayName: 'Arbitrum Sepolia Testnet',
-                    explorer: 'https://sepolia.arbiscan.io/',
-                    isTestnet: true,
-                    url: 'https://arb-sepolia.g.alchemy.com/v2/',
-                },
                 mainnet: {
                     address: '0x4dCe572b6d6d058D74C5bd158a177b507867ca86',
                     chainId: 42161,
                     chainIdHex: '0xa4b1',
                     name: 'arbitrum',
-                    displayName: 'Arbitrum Mainnet',
+                    displayName: 'Arbitrum',
                     explorer: 'https://arbiscan.io/',
                     isTestnet: false,
                     url: 'https://arb-mainnet.g.alchemy.com/v2/',
+                    icon: 'https://cryptologos.cc/logos/arbitrum-arb-logo.svg?v=022',
+                },
+                testnet: {
+                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                    chainId: 421614,
+                    chainIdHex: '0x66eee',
+                    name: 'arbitrum-sepolia',
+                    displayName: 'Arbitrum Sepolia',
+                    explorer: 'https://sepolia.arbiscan.io/',
+                    isTestnet: true,
+                    url: 'https://arb-sepolia.g.alchemy.com/v2/',
+                    icon: 'https://cryptologos.cc/logos/arbitrum-arb-logo.svg?v=022',
                 },
             },
 
             // Polygon network configuration
             polygon: {
-                testnet: {
-                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
-                    chainId: 80002,
-                    chainIdHex: '0x13882',
-                    name: 'polygon-amoy',
-                    displayName: 'Polygon Amoy Testnet',
-                    explorer: 'https://amoy.polygonscan.com/',
-                    isTestnet: true,
-                    url: 'https://polygon-amoy.g.alchemy.com/v2/',
-                },
                 mainnet: {
                     address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
                     chainId: 137,
                     chainIdHex: '0x89',
                     name: 'polygon-mainnet',
-                    displayName: 'Polygon Mainnet',
+                    displayName: 'Polygon',
                     explorer: 'https://polygonscan.com/',
                     isTestnet: false,
                     url: 'https://polygon-mainnet.g.alchemy.com/v2/',
+                    icon: 'https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022',
+                },
+                testnet: {
+                    address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                    chainId: 80002,
+                    chainIdHex: '0x13882',
+                    name: 'polygon-amoy',
+                    displayName: 'Polygon Amoy',
+                    explorer: 'https://amoy.polygonscan.com/',
+                    isTestnet: true,
+                    url: 'https://polygon-amoy.g.alchemy.com/v2/',
+                    icon: 'https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022',
                 },
             },
         }
