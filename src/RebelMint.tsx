@@ -24,7 +24,7 @@ import { RebelMintTokenManagerApp } from './RMManagerApp.tsx'
 import { NetworkConfig, RMInfo } from './contract/ChainsData.ts'
 import { useAccount } from 'wagmi'
 import { shape } from './contract/custom-networks/shape.ts'
-import { shapeSepolia } from './contract/custom-networks/ShapeSepolia.ts'
+import { shapeSepolia } from './contract/custom-networks/shapeSepolia.ts'
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()

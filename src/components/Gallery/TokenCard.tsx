@@ -38,7 +38,7 @@ export const RMTokenCard = ({
     token,
     tokenIndex,
     setSelectionIndex = () => {},
-    selectionIndex,
+    // selectionIndex,
 }: CardProps) => {
     if (token) {
         const {
