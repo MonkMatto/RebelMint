@@ -2,7 +2,9 @@
  * RMInfo - An object for managing blockchain network information
  * Provides typesafe access to network configurations and utility methods
  */
-
+import EthLogo from '../assets/chain-icons/ethereum.svg'
+import ArbitrumLogo from '../assets/chain-icons/arbitrum.svg'
+import PolygonLogo from '../assets/chain-icons/polygon.svg'
 import BaseLogo from '../assets/chain-icons/base.svg'
 import OptimismLogo from '../assets/chain-icons/optimism.svg'
 import ShapeLogo from '../assets/chain-icons/shape.svg'
@@ -53,7 +55,7 @@ export const RMInfo = {
                 explorer: 'https://etherscan.io/',
                 isTestnet: false,
                 url: 'https://eth-mainnet.g.alchemy.com/v2/',
-                icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022',
+                icon: EthLogo,
             },
             testnet: {
                 address: '0xBb657C226D81F967F5C9133a1663d47E9B73981B',
@@ -64,7 +66,7 @@ export const RMInfo = {
                 explorer: 'https://sepolia.etherscan.io/',
                 isTestnet: true,
                 url: 'https://eth-sepolia.g.alchemy.com/v2/',
-                icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022',
+                icon: EthLogo,
             },
         },
 
@@ -157,7 +159,7 @@ export const RMInfo = {
                 explorer: 'https://arbiscan.io/',
                 isTestnet: false,
                 url: 'https://arb-mainnet.g.alchemy.com/v2/',
-                icon: 'https://cryptologos.cc/logos/arbitrum-arb-logo.svg?v=022',
+                icon: ArbitrumLogo,
             },
             testnet: {
                 address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
@@ -168,7 +170,7 @@ export const RMInfo = {
                 explorer: 'https://sepolia.arbiscan.io/',
                 isTestnet: true,
                 url: 'https://arb-sepolia.g.alchemy.com/v2/',
-                icon: 'https://cryptologos.cc/logos/arbitrum-arb-logo.svg?v=022',
+                icon: ArbitrumLogo,
             },
         },
 
@@ -183,7 +185,7 @@ export const RMInfo = {
                 explorer: 'https://polygonscan.com/',
                 isTestnet: false,
                 url: 'https://polygon-mainnet.g.alchemy.com/v2/',
-                icon: 'https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022',
+                icon: PolygonLogo,
             },
             testnet: {
                 address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
@@ -194,7 +196,7 @@ export const RMInfo = {
                 explorer: 'https://amoy.polygonscan.com/',
                 isTestnet: true,
                 url: 'https://polygon-amoy.g.alchemy.com/v2/',
-                icon: 'https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022',
+                icon: PolygonLogo,
             },
         },
     } as NetworksStructure,
