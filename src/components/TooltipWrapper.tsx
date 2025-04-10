@@ -78,21 +78,21 @@ const TooltipWrapper: React.FC<TooltipWrapperProps> = ({
     const getTooltipArrowPositionClass = (): string => {
         switch (position) {
             case 'left':
-                return 'left-full top-1/2 -translate-y-1/2 border-l-base-700 dark:border-l-base-100'
+                return 'left-full top-1/2 -translate-y-1/2 border-l-base-700 '
             case 'right':
-                return 'right-full top-1/2 -translate-y-1/2 border-r-base-700 dark:border-r-base-100'
+                return 'right-full top-1/2 -translate-y-1/2 border-r-base-700 '
             case 'top-left':
-                return 'top-full left-2 border-t-base-700 dark:border-t-base-100'
+                return 'top-full left-2 border-t-base-700 '
             case 'top-right':
-                return 'top-full right-2 border-t-base-700 dark:border-t-base-100'
+                return 'top-full right-2 border-t-base-700 '
             case 'bottom':
-                return 'bottom-full left-1/2 -translate-x-1/2 border-b-base-700 dark:border-b-base-100'
+                return 'bottom-full left-1/2 -translate-x-1/2 border-b-base-700 '
             case 'bottom-right':
-                return 'bottom-full right-2 border-b-base-700 dark:border-b-base-100'
+                return 'bottom-full right-2 border-b-base-700 '
             case 'bottom-left':
-                return 'bottom-full left-2 border-b-base-700 dark:border-b-base-100'
+                return 'bottom-full left-2 border-b-base-700 '
             default: // top
-                return 'top-full left-1/2 -translate-x-1/2 border-t-base-700 dark:border-t-base-100'
+                return 'top-full left-1/2 -translate-x-1/2 border-t-base-700 '
         }
     }
 
@@ -105,7 +105,7 @@ const TooltipWrapper: React.FC<TooltipWrapperProps> = ({
             {children}
             {tooltip && (
                 <div
-                    className={`pointer-events-none ${isVisible ? 'opacity-100' : 'opacity-0'} absolute z-[99] whitespace-nowrap rounded-lg bg-base-700 px-3 py-2 text-sm font-medium text-white transition-opacity duration-150 dark:bg-base-100 dark:text-black ${getTooltipPositionClass()}`}
+                    className={`pointer-events-none ${isVisible ? 'opacity-100' : 'opacity-0'} absolute z-[99] whitespace-nowrap rounded-lg bg-base-700 px-3 py-2 text-sm font-medium text-white transition-opacity duration-150 ${getTooltipPositionClass()}`}
                 >
                     {tooltip}
                     <div

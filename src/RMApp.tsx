@@ -17,7 +17,7 @@ import fetchCurrencyDetailsFromEndpoint from './contract/helpers/fetchCurrencyDe
 import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 import { setPageTitle } from './util/setPageTitle'
 import { AlertTriangle, Loader2 } from 'lucide-react'
-import { NetworkConfig, rmInfo } from './contract/ChainsData'
+import { NetworkConfig, RMInfo } from './contract/RMInfo'
 
 interface RebelMintProps {
     contractAddress: string
@@ -241,7 +241,7 @@ export const RebelMintApp = ({
     }, [selection, selectionIndex, contractAddress, tokens.length])
 
     console.log(`contractValidity: ${contractValidity}`)
-    const network = rmInfo.getNetworkByChainId(chainID) as NetworkConfig
+    const network = RMInfo.getNetworkByChainId(chainID) as NetworkConfig
 
     return (
         <div

@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react'
 
 import { RebelMintApp } from './RMApp.tsx'
 import { RebelMintTokenManagerApp } from './RMManagerApp.tsx'
-import { NetworkConfig, RMInfo } from './contract/ChainsData.ts'
+import { NetworkConfig, RMInfo } from './contract/RMInfo.ts'
 import { useAccount } from 'wagmi'
 import { shape } from './contract/custom-networks/shape.ts'
 import { shapeSepolia } from './contract/custom-networks/shapeSepolia.ts'
@@ -159,8 +159,7 @@ const RebelMint = ({
     apiKey,
     useExistingProvider = true,
 }: RebelMintProps) => {
-    const rmInfo = new RMInfo()
-    const network = rmInfo.getNetworkById(chainId as number) as NetworkConfig
+    const network = RMInfo.getNetworkById(chainId as number) as NetworkConfig
     const { url, explorer } = network
     const fullURL = url + apiKey
 
@@ -216,8 +215,7 @@ export const RebelMintTokenManager = ({
     apiKey,
     useExistingProvider = true,
 }: RebelMintManagerProps) => {
-    const rmInfo = new RMInfo()
-    const network = rmInfo.getNetworkById(chainId as number) as NetworkConfig
+    const network = RMInfo.getNetworkById(chainId as number) as NetworkConfig
     const { url } = network
     const fullURL = url + apiKey
 
