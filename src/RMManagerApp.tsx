@@ -18,6 +18,7 @@ import { EditTokenPopUp } from './components/Manager/EditToken'
 import { useAccount } from 'wagmi'
 
 import arrowright from './assets/arrowright.svg'
+import { RMInfo } from './contract/RMInfo'
 
 interface RebelMintProps {
     contractAddress?: string
@@ -71,6 +72,7 @@ export const RebelMintTokenManagerApp = ({
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
     const provider = useEthersProvider({ chainId: chainID })
+    const chainName = RMInfo.getNetworkByChainId(chainID)?.name
     const [byteCodeIsValid, setByteCodeIsValid] = useState(true)
     const [selectionIndex, setSelectionIndex] = useState<number>(-1)
     const validContractAddress =
@@ -231,7 +233,7 @@ export const RebelMintTokenManagerApp = ({
                                 <h1 className="text-normal font-thin">{`by ${project.creator}`}</h1>
                             </div>
                             <a
-                                href={`/${contractAddress}`}
+                                href={`/${chainName}/${contractAddress}`}
                                 target="_blank"
                                 className="flex w-full items-center justify-end rounded-lg border border-base-50 bg-base-950 p-10 text-right text-base-50 hover:bg-base-900 lg:w-1/3"
                             >
