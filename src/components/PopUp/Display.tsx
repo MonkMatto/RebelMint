@@ -38,7 +38,10 @@ export const PopUp = ({
             return (
                 <div className="mt-auto flex flex-wrap gap-2 justify-self-end overflow-y-auto text-lg">
                     {attributes.map((a, index) => (
-                        <div key={index} className="flex w-fit bg-card p-1">
+                        <div
+                            key={index}
+                            className="flex w-fit gap-2 bg-card px-2 py-1"
+                        >
                             <p key={index}>{a.trait_type + ': '}</p>
                             <p key={index + attributes.length}>{a.value}</p>
                         </div>
