@@ -27,13 +27,30 @@ interface RebelMintProps {
 }
 
 const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
+    console.log('Fetching all tokens...')
+    console.log('Project:', project)
+    console.log(project.tokens)
     if (project.tokens.length > 0) {
         const tokenUris = project.tokens.map((token: tokenStruct) => token.uri)
-        const dataPromises = tokenUris.map(fetchDataFromUri)
+        const dataPromises = tokenUris.map((uri, index) =>
+            fetchDataFromUri(uri).catch((err) => {
+                console.error(
+                    `Failed to fetch token data from URI: ${uri}`,
+                    err
+                )
+                return {
+                    name: 'Invalid Token URI',
+                    external_url: 'https://docs.rebelmint.org/token-uri-errors',
+                    description: `This token's URI is invalid or not reachable.`,
+                    image: '/broken_link.svg',
+                } // Return a placeholder object instead of failing
+            })
+        )
         const results = await Promise.all(dataPromises)
 
         const tokensWithCurrency = await Promise.all(
             results.map(async (token, index) => {
+                console.log('Token:', token)
                 if (
                     project.tokens[index].currency_address &&
                     project.tokens[index].currency_address !==
@@ -58,6 +75,8 @@ const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
         )
 
         return tokensWithCurrency
+    } else {
+        console.log('No tokens found in the project')
     }
     return []
 }
@@ -71,6 +90,7 @@ export const RebelMintTokenManagerApp = ({
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
+    console.log('Tokens:', tokens)
     const provider = useEthersProvider({ chainId: chainID })
     const chainName = RMInfo.getNetworkByChainId(chainID)?.name
     const [byteCodeIsValid, setByteCodeIsValid] = useState(true)
@@ -223,7 +243,7 @@ export const RebelMintTokenManagerApp = ({
                         >
                             <div
                                 id="RM-header"
-                                className="flex h-fit w-full flex-col justify-start justify-self-start rounded-lg bg-base-50 p-10 text-base-950 lg:w-2/3"
+                                className="flex h-fit w-full flex-col justify-start justify-self-start rounded-lg bg-base-800 p-10 text-base-50 md:w-3/4"
                             >
                                 <h1 className="mb-4 text-xl font-normal">
                                     Managing:
@@ -235,7 +255,7 @@ export const RebelMintTokenManagerApp = ({
                             <a
                                 href={`/${chainName}/${contractAddress}`}
                                 target="_blank"
-                                className="flex w-full items-center justify-end rounded-lg border border-base-50 bg-base-950 p-10 text-right text-base-50 hover:bg-base-900 lg:w-1/3"
+                                className="flex w-full items-center justify-end rounded-lg border border-base-50 bg-base-950 p-10 text-right text-base-50 hover:bg-base-900 md:w-1/4"
                             >
                                 View Collection Page
                                 <img className="h-full" src={arrowright} />

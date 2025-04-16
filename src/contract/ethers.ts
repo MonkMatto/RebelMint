@@ -8,7 +8,7 @@ import { type Config, useClient } from 'wagmi'
 function addCorsProxy(url: string): string {
     // Only add proxy for endpoints that give us CORS issues
     if (url.includes('rpc.sepolia.org')) {
-        return `https://corsproxy.io/?${encodeURIComponent(url)}`
+        return `https://api.cors.lol/?url=${encodeURIComponent(url)}`
     }
     return url
 }

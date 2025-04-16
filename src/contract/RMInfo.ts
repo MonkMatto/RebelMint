@@ -47,7 +47,7 @@ export const RMInfo = {
         // Ethereum network configuration
         ethereum: {
             mainnet: {
-                address: '0x9763141Aa64d07741b0263d8cFb273119adB839a',
+                address: '0x6cD252548d3F12f6D3AC5dbBB24586B173796204',
                 chainId: 1,
                 chainIdHex: '0x1',
                 name: 'ethereum',
@@ -58,7 +58,7 @@ export const RMInfo = {
                 icon: EthLogo,
             },
             testnet: {
-                address: '0xBb657C226D81F967F5C9133a1663d47E9B73981B',
+                address: '0x1ffc13d77Ee2fd093D3F2E238380be43e751698a',
                 chainId: 11155111,
                 chainIdHex: '0xaa36a7',
                 name: 'ethereum-sepolia',
@@ -73,7 +73,7 @@ export const RMInfo = {
         // Base network configuration
         base: {
             mainnet: {
-                address: '0x69Cc263973b1b22F7d81C5Be880A27CAd4c4E0De',
+                address: '0xd3cc62630c584fee8aa27c64a576b79aad5aa031',
                 chainId: 8453,
                 chainIdHex: '0x2105',
                 name: 'base',
@@ -84,7 +84,7 @@ export const RMInfo = {
                 icon: BaseLogo,
             },
             testnet: {
-                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                address: '0x7f463b874eC264dC7BD8C780f5790b4Fc371F11f',
                 chainId: 84532,
                 chainIdHex: '0x14a34',
                 name: 'base-sepolia',
@@ -99,7 +99,7 @@ export const RMInfo = {
         // Optimism network configuration
         optimism: {
             mainnet: {
-                address: '0x42F6728AD23128F26248BF15F89526914b0B03aF',
+                address: '0xaFb9c739A6b667E4E1FE145aC3c2FC35e1766508',
                 chainId: 10,
                 chainIdHex: '0xa',
                 name: 'optimism',
@@ -110,7 +110,7 @@ export const RMInfo = {
                 icon: OptimismLogo,
             },
             testnet: {
-                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                address: '0x42F6728AD23128F26248BF15F89526914b0B03aF',
                 chainId: 11155420,
                 chainIdHex: '0xaa37dc',
                 name: 'optimism-sepolia',
@@ -125,7 +125,7 @@ export const RMInfo = {
         // Shape network configuration
         shape: {
             mainnet: {
-                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                address: '0x6FFdEF0A5dDFF6AF79E6A2B2e77A081D170C8d4B',
                 chainId: 360,
                 chainIdHex: '0x168',
                 name: 'shape',
@@ -136,7 +136,7 @@ export const RMInfo = {
                 icon: ShapeLogo,
             },
             testnet: {
-                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                address: '0x6FFdEF0A5dDFF6AF79E6A2B2e77A081D170C8d4B',
                 chainId: 11011,
                 chainIdHex: '0x2b03',
                 name: 'shape-sepolia',
@@ -151,7 +151,7 @@ export const RMInfo = {
         // Arbitrum network configuration
         arbitrum: {
             mainnet: {
-                address: '0x4dCe572b6d6d058D74C5bd158a177b507867ca86',
+                address: '0x7f463b874eC264dC7BD8C780f5790b4Fc371F11f',
                 chainId: 42161,
                 chainIdHex: '0xa4b1',
                 name: 'arbitrum',
@@ -162,7 +162,7 @@ export const RMInfo = {
                 icon: ArbitrumLogo,
             },
             testnet: {
-                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                address: '0x6FFdEF0A5dDFF6AF79E6A2B2e77A081D170C8d4B',
                 chainId: 421614,
                 chainIdHex: '0x66eee',
                 name: 'arbitrum-sepolia',
@@ -177,7 +177,7 @@ export const RMInfo = {
         // Polygon network configuration
         polygon: {
             mainnet: {
-                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                address: '0x42F6728AD23128F26248BF15F89526914b0B03aF',
                 chainId: 137,
                 chainIdHex: '0x89',
                 name: 'polygon',
@@ -188,7 +188,7 @@ export const RMInfo = {
                 icon: PolygonLogo,
             },
             testnet: {
-                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                address: '0x6FFdEF0A5dDFF6AF79E6A2B2e77A081D170C8d4B',
                 chainId: 80002,
                 chainIdHex: '0x13882',
                 name: 'polygon-amoy',

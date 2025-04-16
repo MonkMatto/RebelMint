@@ -133,6 +133,7 @@ export const RebelMintControls = ({
         }
     }
 
+
     useEffect(() => {
         if (isApproved) {
             setIsApproved(false)

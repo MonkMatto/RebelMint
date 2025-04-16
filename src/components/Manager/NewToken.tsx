@@ -97,12 +97,12 @@ export const NewTokenPopUp = ({
                 onClick={(e) => {
                     e.stopPropagation()
                 }}
-                className="bg-base-900 flex h-[95svh] w-[90vw] flex-col justify-between rounded-lg p-5 lg:h-fit"
+                className="flex h-[95svh] w-[90vw] flex-col justify-between rounded-lg bg-base-900 p-5 lg:h-fit"
             >
                 <div className="flex flex-col">
                     <img
                         src={close}
-                        className="border-base-700 bg-base-800 h-fit w-fit self-end rounded-lg border p-2 text-center hover:cursor-pointer hover:bg-red-600"
+                        className="h-fit w-fit self-end rounded-lg border border-base-700 bg-base-800 p-2 text-center hover:cursor-pointer hover:bg-red-600"
                         onClick={() => setSelectionIndex(-1)}
                     />
                     <div className="flex h-fit flex-col justify-center gap-6 overflow-y-auto p-4 font-normal">

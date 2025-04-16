@@ -1,7 +1,8 @@
-import { useWriteContract } from 'wagmi'
+import { useAccount, useWriteContract } from 'wagmi'
 import contractABI from '../../contract/abi'
 import { EditTokenProps } from '../../contract/typeInterfacing'
 import close from './close.svg'
+import { useState } from 'react'
 
 export const EditTokenPopUp = ({
     contractAddress,
@@ -9,8 +10,28 @@ export const EditTokenPopUp = ({
     selectionIndex,
     setSelectionIndex = () => {},
 }: EditTokenProps) => {
-    const { name, image, description, attributes, created_by, animation_url } =
-        selection
+    const {
+        name,
+        image,
+        description,
+        attributes,
+        created_by,
+        animation_url,
+        current_supply,
+        max_supply,
+        currency_details,
+    } = selection
+    const { address: userAddress } = useAccount()
+    const [count, setCount] = useState(1)
+    const countIsOverAvailable =
+        count <= Number(max_supply) - Number(current_supply)
+    // Handle Buttons
+    const maxCount = selection ? Number(max_supply) - Number(current_supply) : 0
+    const minusDisabled = count <= 1 ? true : false
+    const plusDisabled =
+        count >= (maxCount ? maxCount : 999999) || !countIsOverAvailable
+            ? true
+            : false
     const style = {
         '--image-url': ` url(${image})`,
     } as React.CSSProperties
@@ -31,6 +52,26 @@ export const EditTokenPopUp = ({
                 address: contractAddress as `0x${string}`,
                 functionName: 'updateTokenSaleStatus',
                 args: [BigInt(selectionIndex), !selection.is_token_sale_active],
+            })
+            console.log('Transaction sent successfully')
+            console.log(hash)
+        } catch (error) {
+            console.error('Error sending transaction:', error)
+        }
+    }
+
+    const handleOwnerMint = async () => {
+        try {
+            console.log('Minting', selectionIndex, count, 'to ', userAddress)
+            await writeContractAsync({
+                abi: contractABI,
+                address: contractAddress as `0x${string}`,
+                functionName: 'mint',
+                args: [
+                    userAddress as `0x${string}`,
+                    BigInt(selectionIndex),
+                    BigInt(count),
+                ],
             })
             console.log('Transaction sent successfully')
             console.log(hash)
@@ -111,10 +152,10 @@ export const EditTokenPopUp = ({
                 }}
                 className="flex h-[90svh] w-[90vw] flex-col justify-between overflow-y-auto rounded-lg bg-bghover p-5 lg:h-fit"
             >
-                <div className="bg-base-800 flex flex-col">
+                <div className="flex flex-col bg-base-800">
                     <img
                         src={close}
-                        className="border-base-700 h-fit w-fit self-end rounded-lg border bg-bghover p-2 text-center hover:cursor-pointer hover:bg-red-600"
+                        className="h-fit w-fit self-end rounded-lg border border-base-700 bg-bghover p-2 text-center hover:cursor-pointer hover:bg-red-600"
                         onClick={() => setSelectionIndex(-1)}
                     />
 
@@ -122,7 +163,7 @@ export const EditTokenPopUp = ({
                         id="OM-popup-token-card"
                         className="flex h-full w-full flex-col items-center gap-12 lg:flex-row lg:items-start"
                     >
-                        <div className="flex h-fit w-full flex-col">
+                        <div className="flex h-fit w-full flex-col gap-2">
                             <div className="flex aspect-square w-full items-center justify-center">
                                 <Display />
                             </div>
@@ -141,12 +182,61 @@ export const EditTokenPopUp = ({
                                         : 'Enable Token Sale'}
                                 </button>
                             </div>
+                            <div
+                                id="owner-mint"
+                                className="flex flex-nowrap items-center gap-2"
+                            >
+                                <div
+                                    id="owner-mint-controls"
+                                    className="flex h-fit w-fit items-center justify-center gap-5"
+                                >
+                                    <div className="flex h-full w-fit flex-nowrap rounded-xl bg-base-700">
+                                        <button
+                                            id="RM-minus"
+                                            disabled={minusDisabled}
+                                            onClick={() => setCount(count - 1)}
+                                            className="h-full rounded-l-xl p-5 text-base-50 duration-150 ease-in-out hover:text-base-300 disabled:opacity-50"
+                                        >
+                                            -
+                                        </button>
+
+                                        <input
+                                            value={count}
+                                            onChange={(e) => {
+                                                const value = Number(
+                                                    e.target.value
+                                                )
+                                                setCount(value > 0 ? value : 0)
+                                            }}
+                                            className={`my-auto h-full w-fit max-w-12 bg-base-700 text-center focus:border-none focus:outline-none ${count > maxCount ? 'text-red-500' : 'text-base-50'}`}
+                                        />
+
+                                        <button
+                                            id="RM-plus"
+                                            disabled={plusDisabled}
+                                            onClick={() => setCount(count + 1)}
+                                            className="h-full rounded-r-xl p-5 text-base-50 duration-150 ease-in-out hover:text-base-300 disabled:opacity-50"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button
+                                    id="RM-mint"
+                                    className="h-fit flex-1 flex-col items-center rounded-xl border-2 border-transparent bg-textcol p-1 text-3xl font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
+                                    onClick={handleOwnerMint}
+                                >
+                                    {`Owner Mint`}
+                                    <p className="text-xs font-thin">{`0 ${currency_details?.symbol}`}</p>
+                                </button>
+                            </div>
                         </div>
                         <div
                             id="OM-popup-token-info"
                             className="flex h-full w-full flex-col justify-start p-4"
                         >
-                            <div className="bg-base-50 text-base-950 h-fit w-full flex-col gap-8 rounded-lg p-6">
+                            <div className="h-fit w-full flex-col gap-8 rounded-lg bg-base-50 p-6 text-base-950">
                                 <h1 className="w-fit text-3xl font-bold">
                                     {name}
                                 </h1>
@@ -156,7 +246,7 @@ export const EditTokenPopUp = ({
                                     </h1>
                                 )}
                             </div>
-                            <p className="border-base-800 bg-base-950 my-4 max-h-[50svh] overflow-y-auto text-wrap rounded-lg p-6 font-light">
+                            <p className="my-4 max-h-[50svh] overflow-y-auto text-wrap rounded-lg border-base-800 bg-base-950 p-6 font-light">
                                 {description}
                             </p>
                             <div className="flex h-fit max-h-[20svh] w-full justify-self-end">

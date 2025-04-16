@@ -493,6 +493,17 @@ const contractABI = [
         type: 'function',
     },
     {
+        inputs: [
+            { internalType: 'address', name: 'to', type: 'address' },
+            { internalType: 'uint256', name: 'id', type: 'uint256' },
+            { internalType: 'uint256', name: 'amount', type: 'uint256' },
+        ],
+        name: 'ownerMint',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
         inputs: [],
         name: 'renounceOwnership',
         outputs: [],
