@@ -1,4 +1,4 @@
-// SaleToggle.tsx
+import React, { useState, useEffect } from 'react'
 import {
     useWriteContract,
     useWaitForTransactionReceipt,
@@ -6,6 +6,7 @@ import {
 } from 'wagmi'
 import contractABI from '../../../contract/abi'
 import { RMInfo } from '../../../contract/RMInfo'
+import Toggle from '../../Toggle'
 
 interface SaleToggleProps {
     contractAddress: `0x${string}`
@@ -16,10 +17,14 @@ interface SaleToggleProps {
 export const ToggleSale = ({
     contractAddress,
     selectionIndex,
-    isTokenSaleActive,
+    isTokenSaleActive: initialTokenSaleActive,
 }: SaleToggleProps) => {
     const { chain } = useAccount()
     const network = RMInfo.getNetworkByChainId(chain?.id as number)
+    const [isTokenSaleActive, setIsTokenSaleActive] = useState(
+        initialTokenSaleActive
+    )
+
     const {
         writeContractAsync,
         data: hash,
@@ -35,13 +40,20 @@ export const ToggleSale = ({
         hash,
     })
 
-    const toggleSale = async () => {
+    useEffect(() => {
+        if (isConfirmed) {
+            // Update the toggle state when the transaction is confirmed
+            setIsTokenSaleActive((prev) => !prev)
+        }
+    }, [isConfirmed])
+
+    const toggleSale = async (newStatus: boolean) => {
         try {
             await writeContractAsync({
                 abi: contractABI,
                 address: contractAddress,
                 functionName: 'updateTokenSaleStatus',
-                args: [BigInt(selectionIndex), !isTokenSaleActive],
+                args: [BigInt(selectionIndex), newStatus],
             })
         } catch (error) {
             console.error('Error sending transaction:', error)
@@ -50,22 +62,15 @@ export const ToggleSale = ({
 
     return (
         <div className="flex flex-col gap-2">
-            <button
-                onClick={toggleSale}
-                disabled={isWriting || isConfirming}
-                className={
-                    'h-fit w-full rounded-lg border border-base-400 bg-base-800 p-2 text-base-200 hover:bg-base-700 ' +
-                    (isWriting || isConfirming
-                        ? ' cursor-not-allowed opacity-50'
-                        : '')
-                }
-            >
-                {isWriting || isConfirming
-                    ? 'Processing...'
-                    : isTokenSaleActive
-                      ? 'Disable Token Sale'
-                      : 'Enable Token Sale'}
-            </button>
+            <Toggle
+                label="Token Sale Status"
+                checked={isTokenSaleActive}
+                onChange={(newStatus) => {
+                    if (!isWriting && !isConfirming) {
+                        toggleSale(newStatus)
+                    }
+                }}
+            />
 
             {(isWriting ||
                 isConfirming ||
@@ -86,6 +91,7 @@ export const ToggleSale = ({
                             <a
                                 target="_blank"
                                 href={`${network?.explorer}/tx/${hash}`}
+                                rel="noopener noreferrer"
                             >
                                 View on explorer
                             </a>

@@ -27,10 +27,11 @@ interface RebelMintProps {
     chainID: number
 }
 
-const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
-    console.log('Fetching all tokens...')
-    console.log('Project:', project)
-    console.log(project.tokens)
+const fetchAllTokens = async (
+    project: projectStruct,
+    providerUrl: string,
+    chainId: number
+) => {
     if (project.tokens.length > 0) {
         const tokenUris = project.tokens.map((token: tokenStruct) => token.uri)
         const dataPromises = tokenUris.map((uri) =>
@@ -51,24 +52,13 @@ const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
 
         const tokensWithCurrency = await Promise.all(
             results.map(async (token, index) => {
-                console.log('Token:', token)
-                if (
-                    project.tokens[index].currency_address &&
-                    project.tokens[index].currency_address !==
-                        '0x0000000000000000000000000000000000000000'
-                ) {
+                if (project.tokens[index].currency_address) {
                     const currency_details =
                         await fetchCurrencyDetailsFromEndpoint(
                             project.tokens[index].currency_address as string,
-                            providerUrl
+                            providerUrl,
+                            chainId
                         )
-                    return { ...token, currency_details }
-                } else if (project.tokens[index].currency_address) {
-                    const currency_details = {
-                        name: 'Ethereum',
-                        symbol: 'ETH',
-                        decimals: '18',
-                    }
                     return { ...token, currency_details }
                 }
                 return token
@@ -76,8 +66,6 @@ const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
         )
 
         return tokensWithCurrency
-    } else {
-        console.log('No tokens found in the project')
     }
     return []
 }
@@ -167,8 +155,16 @@ export const RebelMintTokenManagerApp = ({
         }
 
         const fetchAllTokensData = async () => {
-            const tokensData = await fetchAllTokens(project, providerUrl)
-            setTokens(tokensData)
+            try {
+                const tokensData = await fetchAllTokens(
+                    project,
+                    providerUrl,
+                    chainID
+                )
+                setTokens(tokensData)
+            } catch (error) {
+                console.error('Error fetching all tokens data:', error)
+            }
         }
         const fetchOwnerAddress = async () => {
             try {

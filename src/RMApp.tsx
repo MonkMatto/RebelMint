@@ -27,7 +27,11 @@ interface RebelMintProps {
     validConnectedChain: boolean
 }
 
-const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
+const fetchAllTokens = async (
+    project: projectStruct,
+    providerUrl: string,
+    chainId: number
+) => {
     if (project.tokens.length > 0) {
         const tokenUris = project.tokens.map((token: tokenStruct) => token.uri)
         const dataPromises = tokenUris.map((uri) =>
@@ -48,23 +52,13 @@ const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
 
         const tokensWithCurrency = await Promise.all(
             results.map(async (token, index) => {
-                if (
-                    project.tokens[index].currency_address &&
-                    project.tokens[index].currency_address !==
-                        '0x0000000000000000000000000000000000000000'
-                ) {
+                if (project.tokens[index].currency_address) {
                     const currency_details =
                         await fetchCurrencyDetailsFromEndpoint(
                             project.tokens[index].currency_address as string,
-                            providerUrl
+                            providerUrl,
+                            chainId
                         )
-                    return { ...token, currency_details }
-                } else if (project.tokens[index].currency_address) {
-                    const currency_details = {
-                        name: 'Ethereum',
-                        symbol: 'ETH',
-                        decimals: '18',
-                    }
                     return { ...token, currency_details }
                 }
                 return token
@@ -123,7 +117,7 @@ export const RebelMintApp = ({
                     .call()
                 const data = JSON.parse(result)
                 setContractData(data)
-                console.log('Contract data:', data)
+                // console.log('Contract data:', data)
                 console.log(data)
                 if (data && data.collection_name) {
                     setPageTitle(data.collection_name)
@@ -181,9 +175,9 @@ export const RebelMintApp = ({
                         setContractValidity('invalid')
                         return
                     }
-                    console.log(`Contract code: ${code}`)
-                    console.log(`Version bytecode: ${versionBytecode}`)
-                    console.log(`Version: ${version}`)
+                    // console.log(`Contract code: ${code}`)
+                    // console.log(`Version bytecode: ${versionBytecode}`)
+                    // console.log(`Version: ${version}`)
 
                     if (versionBytecode === code) {
                         setContractValidity('valid')
@@ -206,7 +200,11 @@ export const RebelMintApp = ({
         }
 
         const fetchAllTokensData = async () => {
-            const tokensData = await fetchAllTokens(project, providerUrl)
+            const tokensData = await fetchAllTokens(
+                project,
+                providerUrl,
+                chainID
+            )
             setTokens(tokensData)
         }
 

@@ -20,6 +20,11 @@ interface NetworkConfig {
     isTestnet: boolean
     url: string // Added RPC URL
     icon?: string // Optional icon URL
+    currency?: {
+        name: string
+        symbol: string
+        decimals: number
+    }
 }
 
 // Define the network types
@@ -186,6 +191,11 @@ export const RMInfo = {
                 isTestnet: false,
                 url: 'https://polygon-mainnet.g.alchemy.com/v2/',
                 icon: PolygonLogo,
+                currency: {
+                    name: 'Polygon',
+                    symbol: 'POL',
+                    decimals: 18,
+                },
             },
             testnet: {
                 address: '0x6FFdEF0A5dDFF6AF79E6A2B2e77A081D170C8d4B',
@@ -197,6 +207,11 @@ export const RMInfo = {
                 isTestnet: true,
                 url: 'https://polygon-amoy.g.alchemy.com/v2/',
                 icon: PolygonLogo,
+                currency: {
+                    name: 'Polygon',
+                    symbol: 'POL',
+                    decimals: 18,
+                },
             },
         },
     } as NetworksStructure,
