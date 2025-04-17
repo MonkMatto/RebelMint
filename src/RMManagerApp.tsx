@@ -19,6 +19,7 @@ import { useAccount } from 'wagmi'
 
 import arrowright from './assets/arrowright.svg'
 import { RMInfo } from './contract/RMInfo'
+import { AlertTriangle } from 'lucide-react'
 
 interface RebelMintProps {
     contractAddress?: string
@@ -87,6 +88,7 @@ export const RebelMintTokenManagerApp = ({
     chainID,
 }: RebelMintProps) => {
     const { address } = useAccount()
+    const network = RMInfo.getNetworkByChainId(chainID)
     const [tokens, setTokens] = useState<
         (tokenStruct | { currency_details: currencyStruct })[]
     >([])
@@ -100,6 +102,7 @@ export const RebelMintTokenManagerApp = ({
             ? contractAddress
             : undefined
     const [contractData, setContractData] = useState<any>(null)
+    const [ownerAddress, setOwnerAddress] = useState<string | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -167,10 +170,47 @@ export const RebelMintTokenManagerApp = ({
             const tokensData = await fetchAllTokens(project, providerUrl)
             setTokens(tokensData)
         }
+        const fetchOwnerAddress = async () => {
+            try {
+                const response = await fetch(
+                    `${network?.url}${import.meta.env.VITE_ALCHEMY_KEY}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            jsonrpc: '2.0',
+                            method: 'eth_call',
+                            params: [
+                                {
+                                    to: contractAddress,
+                                    data: '0x8da5cb5b', // owner() function selector
+                                },
+                                'latest',
+                            ],
+                            id: 1,
+                        }),
+                    }
+                )
+                const data = await response.json()
+                if (data.result) {
+                    const owner = `0x${data.result.slice(26)}`
+                    console.log('Owner address:', owner)
+                    console.log('User address:', address)
+                    setOwnerAddress(owner)
+                } else {
+                    console.error('Failed to fetch owner address:', data.error)
+                }
+            } catch (error) {
+                console.error('Error fetching owner address:', error)
+            }
+        }
 
         if (contractData) {
             fetchAndCompareBytecode()
             fetchAllTokensData()
+            fetchOwnerAddress()
         }
     }, [contractData, provider, project, contractAddress])
 
@@ -228,6 +268,24 @@ export const RebelMintTokenManagerApp = ({
             return null
         }
     }, [selection, selectionIndex, contractAddress, tokens.length])
+
+    if (address && ownerAddress?.toLowerCase() != address?.toLowerCase()) {
+        console.log('Owner address compared:', ownerAddress)
+        console.log('User address:', address)
+        return (
+            <div
+                id="RM-container"
+                className="@container size align-center relative flex h-full w-full flex-col justify-start gap-5 p-2 font-satoshi text-xl text-textcol"
+            >
+                <div className="flex h-[50vh] w-full flex-col items-center justify-center gap-4">
+                    <AlertTriangle color="red" size={100} />
+                    <h1 className="text-xl">
+                        You are not the owner of this contract
+                    </h1>
+                </div>
+            </div>
+        )
+    }
 
     if (address) {
         if (byteCodeIsValid) {

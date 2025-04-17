@@ -123,6 +123,7 @@ export const RebelMintApp = ({
                     .call()
                 const data = JSON.parse(result)
                 setContractData(data)
+                console.log('Contract data:', data)
                 console.log(data)
                 if (data && data.collection_name) {
                     setPageTitle(data.collection_name)
