@@ -74,7 +74,7 @@ export const RMTokenCard = ({
                     </span>
                     <div className="h-1 w-full rounded-full bg-base-800">
                         <div
-                            className="h-2.5 rounded-full bg-base-50"
+                            className="h-1 rounded-full bg-base-50"
                             style={{
                                 width: `${(Number(current_supply) / Number(max_supply)) * 100}%`,
                             }}

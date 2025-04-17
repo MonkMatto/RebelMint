@@ -1,8 +1,8 @@
-import { useAccount, useWriteContract } from 'wagmi'
-import contractABI from '../../contract/abi'
 import { EditTokenProps } from '../../contract/typeInterfacing'
 import close from './close.svg'
-import { useState } from 'react'
+
+import { OwnerMintControls } from './controls/OwnerMint'
+import { ToggleSale } from './controls/ToggleSale'
 
 export const EditTokenPopUp = ({
     contractAddress,
@@ -20,22 +20,11 @@ export const EditTokenPopUp = ({
         current_supply,
         max_supply,
         currency_details,
+        is_token_sale_active,
     } = selection
-    const { address: userAddress } = useAccount()
-    const [count, setCount] = useState(1)
-    const countIsOverAvailable =
-        count <= Number(max_supply) - Number(current_supply)
-    // Handle Buttons
-    const maxCount = selection ? Number(max_supply) - Number(current_supply) : 0
-    const minusDisabled = count <= 1 ? true : false
-    const plusDisabled =
-        count >= (maxCount ? maxCount : 999999) || !countIsOverAvailable
-            ? true
-            : false
     const style = {
         '--image-url': ` url(${image})`,
     } as React.CSSProperties
-    const { writeContractAsync, data: hash } = useWriteContract()
 
     const openInNewTab = () => {
         window.open(
@@ -43,41 +32,6 @@ export const EditTokenPopUp = ({
             '_blank',
             'noreferrer'
         )
-    }
-
-    const toggleSale = async () => {
-        try {
-            await writeContractAsync({
-                abi: contractABI,
-                address: contractAddress as `0x${string}`,
-                functionName: 'updateTokenSaleStatus',
-                args: [BigInt(selectionIndex), !selection.is_token_sale_active],
-            })
-            console.log('Transaction sent successfully')
-            console.log(hash)
-        } catch (error) {
-            console.error('Error sending transaction:', error)
-        }
-    }
-
-    const handleOwnerMint = async () => {
-        try {
-            console.log('Minting', selectionIndex, count, 'to ', userAddress)
-            await writeContractAsync({
-                abi: contractABI,
-                address: contractAddress as `0x${string}`,
-                functionName: 'mint',
-                args: [
-                    userAddress as `0x${string}`,
-                    BigInt(selectionIndex),
-                    BigInt(count),
-                ],
-            })
-            console.log('Transaction sent successfully')
-            console.log(hash)
-        } catch (error) {
-            console.error('Error sending transaction:', error)
-        }
     }
 
     function AllTraits() {
@@ -167,70 +121,24 @@ export const EditTokenPopUp = ({
                             <div className="flex aspect-square w-full items-center justify-center">
                                 <Display />
                             </div>
-                            <div className="mt-5 box-border h-fit justify-self-end">
-                                <button
-                                    onClick={toggleSale}
-                                    className={
-                                        'h-fit w-full rounded-lg bg-textcol p-2 text-bgcol ' +
-                                        (selection.is_token_sale_active
-                                            ? 'bg-red-200'
-                                            : 'bg-green-200')
+                            <div className="box-border h-fit justify-self-end">
+                                <ToggleSale
+                                    contractAddress={
+                                        contractAddress as `0x${string}`
                                     }
-                                >
-                                    {selection.is_token_sale_active
-                                        ? 'Disable Token Sale'
-                                        : 'Enable Token Sale'}
-                                </button>
+                                    selectionIndex={selectionIndex}
+                                    isTokenSaleActive={is_token_sale_active}
+                                />
                             </div>
-                            <div
-                                id="owner-mint"
-                                className="flex flex-nowrap items-center gap-2"
-                            >
-                                <div
-                                    id="owner-mint-controls"
-                                    className="flex h-fit w-fit items-center justify-center gap-5"
-                                >
-                                    <div className="flex h-full w-fit flex-nowrap rounded-xl bg-base-700">
-                                        <button
-                                            id="RM-minus"
-                                            disabled={minusDisabled}
-                                            onClick={() => setCount(count - 1)}
-                                            className="h-full rounded-l-xl p-5 text-base-50 duration-150 ease-in-out hover:text-base-300 disabled:opacity-50"
-                                        >
-                                            -
-                                        </button>
-
-                                        <input
-                                            value={count}
-                                            onChange={(e) => {
-                                                const value = Number(
-                                                    e.target.value
-                                                )
-                                                setCount(value > 0 ? value : 0)
-                                            }}
-                                            className={`my-auto h-full w-fit max-w-12 bg-base-700 text-center focus:border-none focus:outline-none ${count > maxCount ? 'text-red-500' : 'text-base-50'}`}
-                                        />
-
-                                        <button
-                                            id="RM-plus"
-                                            disabled={plusDisabled}
-                                            onClick={() => setCount(count + 1)}
-                                            className="h-full rounded-r-xl p-5 text-base-50 duration-150 ease-in-out hover:text-base-300 disabled:opacity-50"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <button
-                                    id="RM-mint"
-                                    className="h-fit flex-1 flex-col items-center rounded-xl border-2 border-transparent bg-textcol p-1 text-3xl font-bold text-bgcol duration-300 ease-in-out hover:border-bgcol hover:invert disabled:hover:border-transparent"
-                                    onClick={handleOwnerMint}
-                                >
-                                    {`Owner Mint`}
-                                    <p className="text-xs font-thin">{`0 ${currency_details?.symbol}`}</p>
-                                </button>
-                            </div>
+                            <OwnerMintControls
+                                contractAddress={
+                                    contractAddress as `0x${string}`
+                                }
+                                selectionIndex={selectionIndex}
+                                maxSupply={Number(max_supply)}
+                                currentSupply={Number(current_supply)}
+                                currencySymbol={currency_details?.symbol}
+                            />
                         </div>
                         <div
                             id="OM-popup-token-info"

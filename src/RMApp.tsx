@@ -30,7 +30,20 @@ interface RebelMintProps {
 const fetchAllTokens = async (project: projectStruct, providerUrl: string) => {
     if (project.tokens.length > 0) {
         const tokenUris = project.tokens.map((token: tokenStruct) => token.uri)
-        const dataPromises = tokenUris.map(fetchDataFromUri)
+        const dataPromises = tokenUris.map((uri) =>
+            fetchDataFromUri(uri).catch((err) => {
+                console.error(
+                    `Failed to fetch token data from URI: ${uri}`,
+                    err
+                )
+                return {
+                    name: 'Invalid Token URI',
+                    external_url: 'https://docs.rebelmint.org/token-uri-errors',
+                    description: `This token's URI is invalid or not reachable.`,
+                    image: '/broken_link.svg',
+                }
+            })
+        )
         const results = await Promise.all(dataPromises)
 
         const tokensWithCurrency = await Promise.all(
