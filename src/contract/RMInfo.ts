@@ -8,6 +8,7 @@ import PolygonLogo from '../assets/chain-icons/polygon.svg'
 import BaseLogo from '../assets/chain-icons/base.svg'
 import OptimismLogo from '../assets/chain-icons/optimism.svg'
 import ShapeLogo from '../assets/chain-icons/shape.svg'
+import ZoraLogo from '../assets/chain-icons/zora.png'
 
 // Define the network type structure
 interface NetworkConfig {
@@ -212,6 +213,31 @@ export const RMInfo = {
                     symbol: 'POL',
                     decimals: 18,
                 },
+            },
+        },
+        // Zora network configuration
+        zora: {
+            mainnet: {
+                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                chainId: 7777777,
+                chainIdHex: '0x76adf1',
+                name: 'zora',
+                displayName: 'Zora',
+                explorer: 'https://explorer.zora.energy/',
+                isTestnet: false,
+                url: 'https://zora-mainnet.g.alchemy.com/v2/',
+                icon: ZoraLogo,
+            },
+            testnet: {
+                address: '0xA97A9C1cd3e6d0bB82c571c466AaDa2578dF731C',
+                chainId: 999999999,
+                chainIdHex: '0x3b9ac9ff',
+                name: 'zora-sepolia',
+                displayName: 'Zora Sepolia',
+                explorer: 'https://sepolia.explorer.zora.energy/',
+                isTestnet: true,
+                url: 'https://zora-sepolia.g.alchemy.com/v2/',
+                icon: ZoraLogo,
             },
         },
     } as NetworksStructure,

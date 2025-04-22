@@ -15,6 +15,8 @@ import {
     polygonAmoy,
     optimism,
     optimismSepolia,
+    zora,
+    zoraSepolia,
 } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -54,6 +56,8 @@ const createConfig = (chainId?: number) => {
         optimismSepolia,
         shape,
         shapeSepolia,
+        zora,
+        zoraSepolia,
     ] as const
 
     // Always include all chains in the configuration
