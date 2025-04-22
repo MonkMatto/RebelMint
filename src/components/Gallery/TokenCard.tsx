@@ -98,7 +98,7 @@ export const RMTokenCard = ({
                     className="m-2 box-content aspect-square w-full bg-[image:var(--image-url)] bg-contain bg-center bg-no-repeat"
                     style={style}
                 />
-                <div className="flex w-full flex-col rounded-b-md bg-base-850">
+                <div className="flex h-full w-full flex-col justify-between rounded-b-md bg-base-850">
                     <div className="mb-4 mt-3 px-2">
                         <p className="truncate text-lg">{name}</p>
                         <p className="truncate text-sm font-light">{creator}</p>
