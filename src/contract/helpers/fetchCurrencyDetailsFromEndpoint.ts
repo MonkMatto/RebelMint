@@ -11,6 +11,7 @@ const fetchCurrencyDetailsFromEndpoint = async (
         console.log(`providerUrl: ${providerUrl}`)
 
         // Check if this is the zero address (representing native token)
+        // If not found in network.currency and not in special cases, default to ETH
         if (currencyAddress === '0x0000000000000000000000000000000000000000') {
             // Get network info from RMInfo
             const network = RMInfo.getNetworkByChainId(chainId) as NetworkConfig
@@ -25,38 +26,12 @@ const fetchCurrencyDetailsFromEndpoint = async (
                 }
             }
 
-            // Otherwise, build a default token based on network type if available
-            if (network) {
-                let name, symbol
-
-                // Use network displayName for the token name
-                name = network.displayName
-
-                // Use first 3 letters of the name for the symbol (uppercase)
-                symbol = network.name.substring(0, 3).toUpperCase()
-
-                // Some networks need special handling
-                if (network.name.includes('ethereum')) {
-                    symbol = 'ETH'
-                } else if (network.name.includes('polygon')) {
-                    symbol = 'MATIC'
-                } else if (network.name.includes('arbitrum')) {
-                    symbol = 'ETH' // Arbitrum uses ETH
-                } else if (network.name.includes('optimism')) {
-                    symbol = 'ETH' // Optimism uses ETH
-                } else if (network.name.includes('base')) {
-                    symbol = 'ETH' // Base uses ETH
-                }
-
-                return {
-                    name: name,
-                    symbol: symbol,
-                    decimals: '18', // Most native tokens use 18 decimals
-                }
+            // Otherwise default to ETH for all networks
+            return {
+                name: network?.displayName || 'Ethereum',
+                symbol: 'ETH',
+                decimals: '18',
             }
-
-            // Fallback for unknown networks
-            return { name: 'Ethereum', symbol: 'ETH', decimals: '18' }
         }
 
         // If not the zero address, continue with ERC20 token lookup
