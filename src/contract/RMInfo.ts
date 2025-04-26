@@ -48,6 +48,11 @@ type NetworksStructure = {
 }
 
 // Define the RMInfo object
+/**
+ * @sdk RMInfo
+ * An object for managing blockchain network information
+ * Provides typesafe access to network configurations and utility methods
+ */
 export const RMInfo = {
     networks: {
         // Ethereum network configuration

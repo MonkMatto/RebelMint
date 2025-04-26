@@ -22,6 +22,7 @@ function removeTrailingZeros(num: number | BigInt | string) {
 
     return str
 }
+
 function divideBigIntByPowerOf10(bigIntValue: BigInt, exponent: number) {
     // Convert BigInt to string
     let strValue = bigIntValue.toString()
@@ -44,7 +45,7 @@ function divideBigIntByPowerOf10(bigIntValue: BigInt, exponent: number) {
     }
 }
 
-export const RebelMintControls = ({
+export const MintButton = ({
     contractAddress,
     selection,
     selectionIndex,
@@ -60,6 +61,7 @@ export const RebelMintControls = ({
             name: 'Ethereum',
             decimals: BigInt(18),
         },
+        currency_address,
     } = selection
     const maxCount = selection ? Number(max_supply) - Number(current_supply) : 0
     const { writeContractAsync, data: hash } = useWriteContract()
@@ -86,18 +88,19 @@ export const RebelMintControls = ({
             : false
 
     // Handle currency conversions and display optimizations
-
     const costInCurrency = divideBigIntByPowerOf10(
         BigInt(token_cost),
         Number(decimals ? decimals : currency_details.decimals)
     )
     const costToDisplay =
-        Number(costInCurrency) < 0.000001 ? '< 0.000001' : costInCurrency
+        Number(costInCurrency) < 0.000001 && Number(costInCurrency) != 0
+            ? '< 0.000001'
+            : costInCurrency
 
     const handleApproval = async () => {
         await writeContractAsync({
             abi: erc20ABI,
-            address: selection.currency_address as `0x${string}`,
+            address: currency_address as `0x${string}`,
             functionName: 'approve',
             args: [
                 contractAddress as `0x${string}`,
@@ -133,7 +136,6 @@ export const RebelMintControls = ({
         }
     }
 
-
     useEffect(() => {
         if (isApproved) {
             setIsApproved(false)
@@ -144,7 +146,7 @@ export const RebelMintControls = ({
     if (userAddress && currency_details.symbol !== 'ETH') {
         console.log('should run erc20 allowance check')
         const { data: allowance } = useReadContract({
-            address: selection.currency_address as `0x${string}`,
+            address: currency_address as `0x${string}`,
             abi: erc20ABI,
             functionName: 'allowance',
             args: [userAddress, contractAddress],
@@ -236,6 +238,7 @@ export const RebelMintControls = ({
         </button>
     )
     console.log('Approved erc20:' + ERC20Allowance)
+
     return (
         <div
             id="RM-controls"

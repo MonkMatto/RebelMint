@@ -4,7 +4,7 @@ import RebelMintInfo from './components/ProjectInfo'
 import contractABI from './contract/abi'
 import Web3 from 'web3'
 import { RMGallery } from './components/Gallery/Gallery'
-import { PopUp } from './components/PopUp/Display'
+
 import {
     currencyStruct,
     projectStruct,
@@ -18,6 +18,7 @@ import fetchDataFromUri from './contract/helpers/fetchDataFromURI'
 import { setPageTitle } from './util/setPageTitle'
 import { AlertTriangle, Loader2 } from 'lucide-react'
 import { NetworkConfig, RMInfo } from './contract/RMInfo'
+import { PopUp } from './components/PopUp/PopUp'
 
 interface RebelMintProps {
     contractAddress: string
