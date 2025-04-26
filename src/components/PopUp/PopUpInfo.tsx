@@ -1,3 +1,4 @@
+import { ArrowUpRightFromSquare } from 'lucide-react'
 import opennew from './opennew.svg'
 
 interface PopUpInfoProps {
@@ -21,14 +22,14 @@ export const PopUpInfo = ({ selection }: PopUpInfoProps) => {
     return (
         <div
             id="OM-popup-token-info"
-            className="flex h-full w-full flex-col justify-start p-4"
+            className="flex h-full w-full flex-col justify-start gap-4 p-4"
         >
-            <div className="flex h-fit w-full flex-nowrap items-center justify-between gap-8 rounded-lg bg-base-50 p-6 text-base-950">
+            <div className="flex h-fit w-full flex-nowrap items-center justify-between gap-8 rounded-lg text-base-50">
                 <div className="flex h-fit w-3/4 flex-col">
                     <h1 className="w-fit text-3xl font-bold">{name}</h1>
                     {created_by && (
-                        <h1 className="w-fit text-lg font-thin">
-                            {created_by}
+                        <h1 className="w-fit text-lg font-thin text-base-200">
+                            by {created_by}
                         </h1>
                     )}
                 </div>
@@ -42,7 +43,7 @@ export const PopUpInfo = ({ selection }: PopUpInfoProps) => {
                         target="_blank"
                         className="aspect-square h-full"
                     >
-                        <img className="aspect-square h-full" src={opennew} />
+                        <ArrowUpRightFromSquare />
                     </a>
                 )}
             </div>
