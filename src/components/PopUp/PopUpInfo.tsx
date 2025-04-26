@@ -1,5 +1,4 @@
 import { ArrowUpRightFromSquare } from 'lucide-react'
-import opennew from './opennew.svg'
 
 interface PopUpInfoProps {
     selection: {
