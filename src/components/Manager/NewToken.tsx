@@ -62,6 +62,9 @@ export const NewTokenPopUp = ({
                     ],
                 })
                 console.log('Transaction sent successfully')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000)
                 console.log(hash)
             } catch (error) {
                 console.error('Error sending transaction:', error)
@@ -75,7 +78,7 @@ export const NewTokenPopUp = ({
         buttonMessage = 'Creating Token...'
         buttonClass = ' bg-yellow-200'
     } else if (isConfirmed) {
-        buttonMessage = 'Token Created!'
+        buttonMessage = 'Token Created! Reloading...'
         buttonClass = ' bg-green-300'
     } else {
         buttonMessage = 'Create Token'
