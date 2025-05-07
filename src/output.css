@@ -1520,11 +1520,6 @@ video {
   color: rgb(161 98 7 / var(--tw-text-opacity));
 }
 
-.text-base-150 {
-  --tw-text-opacity: 1;
-  color: rgb(238 238 238 / var(--tw-text-opacity));
-}
-
 .opacity-0 {
   opacity: 0;
 }
@@ -1731,6 +1726,10 @@ video {
 @container (min-width: 28rem) {
   .\@md\:grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .\@md\:flex-row {
+    flex-direction: row;
   }
 }
 

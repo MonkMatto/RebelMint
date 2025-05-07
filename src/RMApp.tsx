@@ -297,7 +297,10 @@ export const RebelMintApp = ({
                             >
                                 <w3m-button balance="hide" />
                             </div>
-                            <div id="RM-content" className="flex w-full gap-4">
+                            <div
+                                id="RM-content"
+                                className="@md:flex-row flex w-full flex-col gap-4"
+                            >
                                 <div className="p-4 md:px-12">
                                     <RebelMintInfo
                                         project={project}
